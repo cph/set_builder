@@ -8,6 +8,13 @@ class TraitsTest < ActiveSupport::TestCase
     assert_equal expected_traits, Friend.traits.collect(&:name)
   end
   
+  test "traits' accessor" do
+    traits = Friend.traits
+    assert_kind_of SetBuilder::Traits, traits
+    assert_equal "awesome", traits[0].name
+    assert_kind_of SetBuilder::Trait::Base, traits[:born]
+  end
+  
   
 
 
@@ -16,7 +23,7 @@ end
 
 
 class Friend
-  extend SetBuilder::Traits
+  extend SetBuilder
 
 
   trait "awesome", :reflexive do |query|

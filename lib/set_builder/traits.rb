@@ -2,18 +2,17 @@ require 'set_builder/trait/noun'
 require 'set_builder/trait/predicate'
 
 module SetBuilder
-  module Traits
+  class Traits < Array
     
     
-    def traits
-      @traits ||= []
-    end
-    
-    
-    def trait(name, part_of_speech_or_type, options={}, &block)
-      klass = part_of_speech_or_type.is_a?(Class) ? Trait::Noun : Trait::Predicate
-      trait = klass.new(name, part_of_speech_or_type, options, &block)
-      traits << trait
+    def [](index)
+      case index
+      when Symbol, String
+        index = index.to_s
+        self.find {|trait| trait.name == index}
+      else
+        super
+      end
     end
     
     

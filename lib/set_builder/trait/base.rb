@@ -1,3 +1,5 @@
+require 'set_builder/inflector'
+
 module SetBuilder
   module Trait
     class Base
