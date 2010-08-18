@@ -1,4 +1,5 @@
 require 'set_builder/inflector'
+require 'set_builder/constraint'
 
 module SetBuilder
   module Trait
@@ -26,6 +27,12 @@ module SetBuilder
     
       def to_s
         plural
+      end
+      
+      
+      
+      def apply(*args)
+        SetBuilder::Constraint.new(self, *args)
       end
 
     

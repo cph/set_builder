@@ -11,42 +11,14 @@ class TraitsTest < ActiveSupport::TestCase
   test "traits' accessor" do
     traits = Friend.traits
     assert_kind_of SetBuilder::Traits, traits
-    assert_equal "awesome", traits[0].name
-    assert_kind_of SetBuilder::Trait::Base, traits[:born]
+    assert_equal "awesome", traits[0].name, "Array getter should still work like normal"
+    assert_kind_of SetBuilder::Trait::Base, traits[:born], "If you pass a string or symbol Traits should lookup a trait by name"
   end
   
-  
-
-
-
-end
-
-
-class Friend
-  extend SetBuilder
-
-
-  trait "awesome", :reflexive do |query|
-    {:conditions => {:awesome => true}}
-  end
-
-  trait "born", :passive, :prepositions => [Date] do |query|
-    {:conditions => query.prepositions.first.build_conditions_for("friends.birthday")}
-  end
-
-  trait "attended", :perfect, :params => [:school] do |query|
-    {
-      :joins => "INNER JOIN schools ON friends.school_id=schools.id",
-      :conditions => {"schools.name" => query.school}
-    }
-  end
-
-  trait "died", :active do |query|
-    {:conditions => {:alive => false}}
-  end
-
-  trait "name", String do |query|
-    {:conditions => query.build_conditions_for("friends.name")}
+  test "trait method is protected" do
+    assert_raises NoMethodError, "this method is for use within class definition" do
+      Friend.trait
+    end
   end
 
 

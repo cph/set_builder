@@ -1,4 +1,6 @@
+require 'activerecord'
 require 'set_builder/traits'
+require 'set_builder/set'
 
 
 module SetBuilder
@@ -9,9 +11,16 @@ module SetBuilder
   end
   
   
-  def traits
-    @traits
+  attr_reader :traits
+  
+  
+  def find_set(set)
+    set = SetBuilder::Set.new(self, set)
+    set.perform
   end
+  
+  
+protected
   
   
   def trait(name, part_of_speech_or_type, options={}, &block)

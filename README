@@ -1,13 +1,35 @@
-Lail-extensions
-===============
+SetBuilder
+==========
 
-Introduction goes here.
+SetBuilder's purpose is to transform _described_ data sets into queries or natural language.
 
 
 Example
 =======
 
-Example goes here.
+The following set describes a group of people using simple data structures (Arrays, Strings, Symbols, and Hashes):
+
+     [[:awesome],
+      [:attended, "school"],
+      [:died, :not],
+      [:name, {:is => "Jerome"}]]
+
+SetBuilder can render this set in plain English:
+
+    [Everyone] who is awesome, who attended school, who has not died, and whose name is Jerome.
+
+It can also generate a NamedScope on an ActiveRecord model to fetch the people who fit in this set.
 
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+Usage
+=====
+
+
+
+Roadmap
+=======
+
+Right now SetBuilder uses ActiveRecord::NamedScope::Scope internally, but it shouldn't be hard to refactor it to use DataMapper's composable queries instead.
+
+
+Copyright (c) 2010 Bob Lail, released under the MIT license
