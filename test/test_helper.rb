@@ -44,10 +44,18 @@ class Friend
   # by stubbing out scoped, we can unit test the `performed` features
   def self.scoped(*args)
     @composed_scope ||= []
-    @composed_scope << args
+    @composed_scope << args unless args.blank?
     self
   end
   
-
-
+  def self.composed_scope
+    @composed_scope || []
+  end
+  
+  def self.reset_composed_scope
+    @composed_scope = []
+  end
+  
+  
+  
 end

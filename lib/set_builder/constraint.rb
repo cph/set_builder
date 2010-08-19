@@ -43,8 +43,9 @@ module SetBuilder
     
     
     def perform(scope)
+      block = @block
       scope.instance_eval do      # the idea is to compose scopes: to filter within the context of the current scope
-        @block.call(self)
+        block.call(self)
       end
     end
     
