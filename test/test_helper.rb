@@ -23,20 +23,20 @@ class Friend
 
   # this trait accepts modifiers --- an adverbial clause
   trait("born", :passive, :modifiers => [Date]) do |query|
-    scoped({:conditions => query.prepositions.first.build_conditions_for("friends.birthday")})
+    scoped({:conditions => query.modifiers[0].build_conditions_for("friends.birthday")})
   end
 
   # this trait has a direct object
   trait({"attended" => String}, :perfect) do |query|
     scoped({
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
-      :conditions => {"schools.name" => query.school}
+      :conditions => {"schools.name" => query.direct_object}
     })
   end
 
   # this trait is a noun
   trait("name", String) do |query|
-    scoped({:conditions => query.build_conditions_for("friends.name")})
+    scoped({:conditions => query.modifiers[0].build_conditions_for("friends.name")})
   end
   
   

@@ -25,8 +25,36 @@ module SetBuilder
         
         
         
+        def build_conditions_for(selector)
+          case operator
+          when :is
+            ["#{selector}=?", values[0]]
+          else
+            ["#{selector} LIKE ?", get_like_value_for_operator]
+          end
+        end
+        
+        
+        
         def to_s
           "#{operator} #{values.to_sentence}"
+        end
+        
+        
+        
+      private
+        
+        
+        
+        def get_like_value_for_operator
+          case operator
+          when :contains
+            "%#{values[0]}%"
+          when :begins_with
+            "#{values[0]}%"
+          when :ends_with
+            "%#{values[0]}"
+          end
         end
         
         

@@ -28,17 +28,24 @@ class SetTest < ActiveSupport::TestCase
       [:awesome],
       [:attended, "Concordia"],
       [:died],
-      [:name, {:is => "Jerome"}]]
-    set = SetBuilder::Set.new(Friend, data)    
+      [:name, {:begins_with => "Jerome"}]]
+    set = SetBuilder::Set.new(Friend, data)
     
     expected_results = [
       [{:conditions => {:awesome => true}}],
       [{:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.name" => "Concordia"}}],
       [{:conditions => {:alive => false}}],
-      [{:conditions => "friends.name='Jerome'"}]
+      [{:conditions => ["friends.name LIKE ?", "Jerome%"]}]
     ]
     Friend.reset_composed_scope
     assert_equal expected_results, set.perform.composed_scope
+  end
+  
+  test "invalid set" do
+    data = [[:name, {:starts_with => "Jerome"}]]  # starts_with is not a valid operator
+    set = SetBuilder::Set.new(Friend, data)
+    
+    # !todo: what to do?
   end
 
 
