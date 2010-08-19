@@ -9,7 +9,7 @@ require 'redgreen'
 
 # Sample class used by tests
 
-class Friend # < ActiveRecord::Base
+class Friend
   extend SetBuilder
 
 

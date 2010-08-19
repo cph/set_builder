@@ -4,8 +4,8 @@ class TraitsTest < ActiveSupport::TestCase
 
 
   test "traits" do
-    expected_traits = %w{awesome born attended died name}
-    assert_equal expected_traits, Friend.traits.collect(&:name)
+    expected_traits = %w{attended awesome born died name}
+    assert_equal expected_traits, Friend.traits.collect(&:name).sort
   end
   
   test "traits' accessor" do
