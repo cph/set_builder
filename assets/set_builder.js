@@ -1,58 +1,3 @@
-/*
-      Extensions to core objects to provide Ruby-like idioms
-      ===========================================================
-*/
-
-
-Array.prototype.toSentence = function() {
-  switch(this.length) {
-    case 0:
-      return '';
-    case 1:
-      return this[0];
-    case 2:
-      return this[0].toString() + ' and ' + this[1].toString();
-    default:
-      return this.slice(0, -1).join(', ') + ', and ' + this[this.length - 1].toString();
-  }
-}
-
-Array.prototype.each = function(fn) {
-  for(i=0; i<this.length; i++) {
-    fn(this[i]);
-  }
-}
-
-Array.prototype.collect = function(fn) {
-  var new_array = [];
-  for(i=0; i<this.length; i++) {
-    new_array.push(fn(this[i]));
-  }
-  return new_array;
-}
-
-Array.prototype.inject = function(memo, fn) {
-  for(i=0; i<this.length; i++) {
-    memo = fn(memo, this[i]);
-  }
-  return memo;
-}
-
-Array.prototype.find = function(fn) {
-  for(i=0; i<this.length; i++) {
-    if(fn(this[i])) {
-      return this[i];
-    }
-  }
-  return null;
-}
-
-
-/*
-      The SetBuilder namespace
-      ===========================================================
-*/
-
 var SetBuilder; if(!SetBuilder) SetBuilder={};
 
 
@@ -68,7 +13,7 @@ SetBuilder.Constraint = function(_trait, args) {
 
   var _direct_object;
   if(_trait.requires_direct_object) {
-    _direct_object = args.shift();
+    // _direct_object = args.shift();
   }
   var _modifiers = []; // TODO
   var _description;
@@ -114,11 +59,15 @@ SetBuilder.Constraint = function(_trait, args) {
 SetBuilder.Set = function(_traits, _raw_data) {
   
   if(!_raw_data) _raw_data = [];
-  var _constraints = _raw_data.inject([], function(constraints, line) {
-    var args = line.slice(1, -1);
+  var _constraints = [];
+  
+  _raw_data.each(function(line) {
     var trait = _traits.find(line[0]);
+    var args = line.slice(1);
     if(trait) {
-      constraints.push(trait.apply(args))
+      _constraints.push(trait.apply(args));
+    } else if(window.console && window.console.log) {
+      window.console.log('trait not found with name "' + line[0] + '"');
     }
   });
   
@@ -153,9 +102,9 @@ SetBuilder.Set = function(_traits, _raw_data) {
 
 SetBuilder.Trait = function(_raw_data) {
 
-  var _name = _raw_data.shift();
-  var _part_of_speech = _raw_data.shift().toString().toLowerCase();
-  var _modifiers = _raw_data.shift();
+  var _name = _raw_data[0];
+  var _part_of_speech = _raw_data[1].toString().toLowerCase();
+  var _modifiers = _raw_data.slice(2);
   var _direct_object;
   
   if(typeof(_name) != 'string') {
@@ -231,7 +180,3 @@ SetBuilder.Traits = function(_raw_data) {
   }
 
 }
-
-// SetBuilder.Traits.prototype = new Array();
-// SetBuilder.Traits.constructor = SetBuilder.Traits;
-
