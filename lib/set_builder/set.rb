@@ -3,14 +3,9 @@ module SetBuilder
     
     
     
-    def initialize(model_or_scope, set)
-      @set = set
-      case model_or_scope # or association?
-      when ActiveRecord::NamedScope::Scope
-        @model, @scope = model_or_scope.proxy_scope, model_or_scope
-      else
-        @model, @scope = model_or_scope, model_or_scope.scoped()
-      end
+    def initialize(model_or_scope, raw_data)
+      @model, @scope = get_model_and_scope(model_or_scope)
+      @set = raw_data
     end
     
     
@@ -63,6 +58,19 @@ module SetBuilder
         trait = model.traits[trait_name]
         constraints << trait.apply(*args) if trait
       end
+    end
+    
+    
+    
+    # !todo: this can be overriden or factored out to allow SetBuilder 
+    #   to be used with other ORMs like DataMapper
+    def get_model_and_scope(model_or_scope)
+      case model_or_scope # or association?
+      when ActiveRecord::NamedScope::Scope
+        model_or_scope.proxy_scope, model_or_scope
+      else
+        model_or_scope, model_or_scope.scoped()
+      end      
     end
     
     
