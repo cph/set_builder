@@ -4,27 +4,44 @@ require 'set_builder/constraint'
 module SetBuilder
   module Trait
     class Base
-    
-    
-      ### initialization
+      
+      
+      
       def initialize(name, part_of_speech, options={}, &block)
-        @name = name
-        @part_of_speech = part_of_speech
+        case name
+        when Hash
+          @name, @direct_object_type = name.first[0], name.first[1]
+        else
+          @name = name
+        end
+        @part_of_speech, @block, @modifiers = part_of_speech, block, (options[:modifiers]||[])
       end
-    
-    
-      ### macros
-      attr_reader :name, :part_of_speech
-    
-    
+      
+      
+      
+      attr_reader :name, :part_of_speech, :modifiers
+      
+      
+      
+      def requires_direct_object?
+        !@direct_object_type.nil?
+      end
+      alias :direct_object_required? :requires_direct_object?
+      
+      
+      
       def singular
         @singular ||= SetBuilder::Inflector.singular(part_of_speech, name)
       end
-    
+      
+      
+      
       def plural
         @plural ||= SetBuilder::Inflector.plural(part_of_speech, name)
       end
-    
+      
+      
+      
       def to_s
         plural
       end
@@ -32,10 +49,11 @@ module SetBuilder
       
       
       def apply(*args)
-        SetBuilder::Constraint.new(self, *args)
+        SetBuilder::Constraint.new(self, *args, &@block)
       end
-
-    
+      
+      
+      
     end
   end
 end

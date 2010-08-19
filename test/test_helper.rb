@@ -15,11 +15,11 @@ class Friend < ActiveRecord::Base
     {:conditions => {:awesome => true}}
   end
 
-  trait "born", :passive, :prepositions => [Date] do |query|
+  trait "born", :passive, :modifiers => [Date] do |query|
     {:conditions => query.prepositions.first.build_conditions_for("friends.birthday")}
   end
 
-  trait "attended", :perfect, :params => [:school] do |query|
+  trait({"attended" => String}, :perfect) do |query|
     {
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
       :conditions => {"schools.name" => query.school}
