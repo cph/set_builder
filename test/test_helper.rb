@@ -11,11 +11,11 @@ class Friend < ActiveRecord::Base
   extend SetBuilder
 
 
-  trait "awesome", :reflexive do |query|
+  trait("awesome", :reflexive) do |query|
     {:conditions => {:awesome => true}}
   end
 
-  trait "born", :passive, :modifiers => [Date] do |query|
+  trait("born", :passive, :modifiers => [Date]) do |query|
     {:conditions => query.prepositions.first.build_conditions_for("friends.birthday")}
   end
 
@@ -26,11 +26,11 @@ class Friend < ActiveRecord::Base
     }
   end
 
-  trait "died", :active do |query|
+  trait("died", :active) do |query|
     {:conditions => {:alive => false}}
   end
 
-  trait "name", String do |query|
+  trait("name", String) do |query|
     {:conditions => query.build_conditions_for("friends.name")}
   end
 
