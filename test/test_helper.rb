@@ -42,6 +42,9 @@ class Friend
   
   
   # by stubbing out scoped, we can unit test the `performed` features
+  
+  # !todo: to test constraint.perform, would it be good for `scoped` to return a new object each time?
+  
   def self.scoped(*args)
     @composed_scope ||= []
     @composed_scope << args unless args.blank?
