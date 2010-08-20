@@ -1,12 +1,23 @@
 describe 'SetBuilder'
   before_each
-    traits = new SetBuilder.Traits([
+
+    SetBuilder.registerTraits([
       ['awesome', 'reflexive'],
       ['died', 'active'],
       ['born', 'passive', ['date']],
       [['attended', 'string'], 'perfect'],
       ['name', 'noun', ['string']]
     ]);
+
+    SetBuilder.registerModifiers({
+      string: {
+        contains: ['string'],
+        begins_with: ['string'],
+        ends_with: ['string'],
+        is: ['string']
+      }
+    });
+
     set_data = [
       ['awesome'],
       ['attended', "school"],
@@ -45,6 +56,9 @@ describe 'SetBuilder'
   
   
   describe '.Traits'
+    before_each
+      traits = SetBuilder.traits();
+    end
   
     describe '.length'
       it 'should have parsed the data structure correctly'
@@ -63,31 +77,53 @@ describe 'SetBuilder'
     end
     
   end
+
+
+
+  describe '.Modifiers'
+    before_each
+      modifiers = SetBuilder.modifiers();
+    end
+
+    describe '.length'
+      it 'should have parsed the data structure correctly'
+        expect(modifiers.length()).to(be, 1);
+      end
+    end
+
+    describe '.operators_for'
+      it 'should get the modifiers for the "string" modifier'
+        var expected_modifiers = ['contains', 'begins_with', 'ends_with', 'is'];
+        expect(modifiers.operators_for('string')).to(eql, expected_modifiers);
+      end
+    end
+
+  end
   
   
   
   describe '.Set'
-    before_each
-      set = new SetBuilder.Set(traits, set_data);
-    end
     
     describe '.constraints'
       it 'should have parsed the correct number of objects'
+        var set = new SetBuilder.Set(set_data);
         expect(set.constraints().length).to(be, 4);
       end
     end
   
     describe '.toString'
       it 'should generate the natural language description of a simple set'
-        var simple_set = new SetBuilder.Set(traits, [['awesome']]);
+        var simple_set = new SetBuilder.Set([['awesome']]);
         expect(simple_set.toString()).to(eql, 'who are awesome');
       end
       
       it 'should generate the natural language description of a complex set'
+        var set = new SetBuilder.Set(set_data);
         var expected_string = 'who are awesome, who have attended school, who died, and whose name is Jerome'
         expect(set.toString()).to(be, expected_string);
       end
     end
+    
   end
 end
 

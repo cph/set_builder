@@ -18,6 +18,16 @@ describe 'Array'
     end
   end
   
+  describe '.dup'
+    it 'should create an independently modifiable array'
+      var a = [1, 2, 3];
+      var b = a.dup();
+      a.shift();
+      expect(a.length).to(be, 2);
+      expect(b.length).to(be, 3);
+    end
+  end
+  
   describe '.each'
     it 'should correctly work through this array of arrays'
       var i = 0;
@@ -57,4 +67,16 @@ describe 'Array'
     end
   end
   
+end
+
+
+
+describe 'Object'
+
+  describe '.keys'
+    it 'should return the properties of a JSON object'
+      expect(Object.keys({one:1, test:2, contains:'hi'})).to(eql, ['one', 'test', 'contains']);
+    end
+  end
+
 end

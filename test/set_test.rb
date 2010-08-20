@@ -9,14 +9,14 @@ class SetTest < ActiveSupport::TestCase
       [:attended, "school"],
       [:died],
       [:name, {:is => "Jerome"}]]
-    set = SetBuilder::Set.new(Friend, data)
+    set = Friend.that_belong_to(data)
     assert set.valid?
     assert_equal "who are awesome, who have attended school, who died, and whose name is Jerome", set.to_s
   end
   
   test "simple perform" do
     data = [[:awesome]]
-    set = SetBuilder::Set.new(Friend, data)
+    set = Friend.that_belong_to(data)
 
     expected_results = [[{:conditions => {:awesome => true}}]]
     Friend.reset_composed_scope
@@ -29,7 +29,7 @@ class SetTest < ActiveSupport::TestCase
       [:attended, "Concordia"],
       [:died],
       [:name, {:begins_with => "Jerome"}]]
-    set = SetBuilder::Set.new(Friend, data)
+    set = Friend.that_belong_to(data)
     
     expected_results = [
       [{:conditions => {:awesome => true}}],
@@ -43,7 +43,7 @@ class SetTest < ActiveSupport::TestCase
   
   test "invalid set" do
     data = [[:name, {:starts_with => "Jerome"}]]  # starts_with is not a valid operator
-    set = SetBuilder::Set.new(Friend, data)
+    set = Friend.that_belong_to(data)
     
     # !todo: what to do?
   end

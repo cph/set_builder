@@ -22,6 +22,28 @@ module SetBuilder
         
         
         
+        def to_s
+          "#{operator} #{values.to_sentence}"
+        end
+        
+        
+        
+        def self.to_hash
+          hash = {}
+          operators.each do |operator, array|
+            hash[operator.to_s] = array.map {|klass| klass.name.downcase }
+          end
+          hash
+        end
+        
+        
+        
+        def self.to_json
+          to_hash.to_json
+        end
+        
+        
+        
       end
     end
   end

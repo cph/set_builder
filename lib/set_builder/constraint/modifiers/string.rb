@@ -9,10 +9,10 @@ module SetBuilder
         
         def self.operators
           {
-            :contains => [String],
-            :begins_with => [String],
-            :ends_with => [String],
-            :is => [String],
+            :contains => [::String],
+            :begins_with => [::String],
+            :ends_with => [::String],
+            :is => [::String],
           }
         end
         
@@ -32,12 +32,6 @@ module SetBuilder
           else
             ["#{selector} LIKE ?", get_like_value_for_operator]
           end
-        end
-        
-        
-        
-        def to_s
-          "#{operator} #{values.to_sentence}"
         end
         
         

@@ -14,9 +14,8 @@ module SetBuilder
   attr_reader :traits
   
   
-  def find_set(set)
-    set = SetBuilder::Set.new(self, set)
-    set.perform
+  def that_belong_to(set)
+    SetBuilder::Set.new(self, set)
   end
   
   

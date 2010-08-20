@@ -3,6 +3,17 @@
       ===========================================================
 */
 
+Object.keys = function(o) {
+  var keys = [];
+  for(key in o) {
+    keys.push(key);
+  }
+  return keys;  
+}
+
+
+
+
 
 Array.prototype.toSentence = function() {
   switch(this.length) {
@@ -15,6 +26,10 @@ Array.prototype.toSentence = function() {
     default:
       return this.slice(0, -1).join(', ') + ', and ' + this[this.length - 1].toString();
   }
+}
+
+Array.prototype.dup = function(fn) {
+  return this.slice(0);
 }
 
 Array.prototype.each = function(fn) {

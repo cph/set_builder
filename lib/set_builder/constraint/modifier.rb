@@ -13,6 +13,22 @@ module SetBuilder
       
       
       
+      def self.to_hash
+        hash = {}
+        @registered_modifiers.each do |type, modifier_type|
+          hash[type.to_s] = modifier_type.to_hash
+        end
+        hash
+      end
+      
+      
+      
+      def self.to_json
+        to_hash.to_json
+      end
+      
+      
+      
       def self.for(type)
         type = get_type(type)
         @registered_modifiers[type] || raise(ArgumentError, "A modifier has not been registered for #{type}")
