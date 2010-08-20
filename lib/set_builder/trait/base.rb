@@ -48,6 +48,16 @@ module SetBuilder
       
       
       
+      def to_json
+        array = []
+        array << (requires_direct_object? ? [name, @direct_object_type.name.downcase] : name)
+        array << part_of_speech
+        array << modifiers.collect{|klass| klass.name.downcase} unless modifiers.empty?
+        array.to_json
+      end
+      
+      
+      
       def apply(*args)
         SetBuilder::Constraint.new(self, *args, &@block)
       end

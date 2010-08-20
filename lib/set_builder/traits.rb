@@ -5,6 +5,7 @@ module SetBuilder
   class Traits < Array
     
     
+    
     def [](index)
       case index
       when Symbol, String
@@ -14,6 +15,13 @@ module SetBuilder
         super
       end
     end
+    
+    
+    
+    def to_json
+      "[#{collect(&:to_json).join(",")}]"
+    end
+    
     
     
   end
