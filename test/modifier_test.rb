@@ -45,12 +45,19 @@ class ModifierTest < ActiveSupport::TestCase
   end
 
   test "converting modifiers to json" do
-    expected_results = {"string" => {
-      "contains"    => ["string"],
-      "begins_with" => ["string"],
-      "ends_with"   => ["string"],
-      "is"          => ["string"]
-    }}.to_json
+    expected_results = {
+      "string" => {
+        "contains"    => ["string"],
+        "begins_with" => ["string"],
+        "ends_with"   => ["string"],
+        "is"          => ["string"]
+      },
+      "date" => {
+        "after"       => ["date"],
+        "before"      => ["date"],
+        "on"          => ["date"]
+      }
+    }.to_json
     assert_equal expected_results, SetBuilder::Constraint::Modifier.to_json
   end
   

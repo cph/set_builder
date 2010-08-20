@@ -94,7 +94,7 @@ module SetBuilder
     # Force predefined modifiers to pass `valid_modifier?`
     #
     Modifier.register(
-      # [:date,     SetBuilder::Constraint::Modifier::Date],
+      [:date,     SetBuilder::Constraint::Modifier::Date],
       # [:integer,  SetBuilder::Constraint::Modifier::Integer],
       [:string,   SetBuilder::Constraint::Modifier::String]
     )

@@ -12,15 +12,8 @@ module SetBuilder
             :contains => [::String],
             :begins_with => [::String],
             :ends_with => [::String],
-            :is => [::String],
+            :is => [::String]
           }
-        end
-        
-        
-        
-        def valid?
-          arguments = self.class.operators[operator]
-          !arguments.nil? and (arguments.length == values.length)
         end
         
         

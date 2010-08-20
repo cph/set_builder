@@ -17,7 +17,8 @@ module SetBuilder
         
         
         def valid?
-          raise NotImplementedError
+          arguments = self.class.operators[operator]
+          !arguments.nil? and (arguments.length == values.length)
         end
         
         
