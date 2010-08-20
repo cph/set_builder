@@ -259,21 +259,30 @@ SetBuilder.Trait = function(_raw_data) {
   this.modifiers = function() {
     return _modifiers;
   }
-   
-  this.toString = function() {
+  
+  this.prefix = function() {
     switch(_part_of_speech) {
       case 'active':
-        return 'who ' + this.name();
+        return 'who';
       case 'perfect':
-        return 'who have ' + this.name();
+        return 'who have';
       case 'passive':
-        return 'who were ' + this.name();
+        return 'who were';
       case 'reflexive':
-        return 'who are ' + this.name();
+        return 'who are';
       case 'noun':
-        return 'whose ' + this.name();
+        return 'whose';
       default:
-        return '';
+        return undefined;
+    }    
+  }
+   
+  this.toString = function() {
+    var prefix = this.prefix();
+    if(prefix) {
+      return prefix + ' ' + this.name();
+    } else {
+      return '';
     }
   }
 
@@ -303,6 +312,12 @@ SetBuilder.Traits = function(_raw_data) {
   
   this.length = function() {
     return _traits.length;
+  }
+  
+  this.names = function() {
+    return _traits.collect(function(trait) {
+      return trait.name();
+    });
   }
   
   this.find = function(name) {
