@@ -97,7 +97,7 @@ module SetBuilder
   #
   Modifier.register(
     [:date,     Modifiers::DateModifier],
-    [:integer,  Modifiers::NumberModifier],
+    [:number,   Modifiers::NumberModifier],
     [:string,   Modifiers::StringModifier]
   )
   
