@@ -9,7 +9,7 @@ class TraitTest < ActiveSupport::TestCase
 
     constraint = trait.apply({:is => "Jerome"})
     assert_equal 1, constraint.modifiers.length
-    assert_kind_of SetBuilder::Constraint::Modifier::String, constraint.modifiers.first
+    assert_kind_of SetBuilder::Constraint::Modifier::StringModifier, constraint.modifiers.first
   end
   
   test "modifiers should find correct values" do

@@ -5,17 +5,17 @@ class ModifierTest < ActiveSupport::TestCase
 
   test "get type with class" do
     assert_equal :string, SetBuilder::Constraint::Modifier.get_type(String)
-    assert_equal SetBuilder::Constraint::Modifier::String, SetBuilder::Constraint::Modifier.for(String)
+    assert_equal SetBuilder::Constraint::Modifier::StringModifier, SetBuilder::Constraint::Modifier.for(String)
   end
 
   test "get type with string" do
     assert_equal :string, SetBuilder::Constraint::Modifier.get_type("String")
-    assert_equal SetBuilder::Constraint::Modifier::String, SetBuilder::Constraint::Modifier.for("string")
+    assert_equal SetBuilder::Constraint::Modifier::StringModifier, SetBuilder::Constraint::Modifier.for("string")
   end
 
   test "get type with symbol" do
     assert_equal :string, SetBuilder::Constraint::Modifier.get_type(:string)
-    assert_equal SetBuilder::Constraint::Modifier::String, SetBuilder::Constraint::Modifier.for(:string)
+    assert_equal SetBuilder::Constraint::Modifier::StringModifier, SetBuilder::Constraint::Modifier.for(:string)
   end
 
   test "registering a modifier" do
@@ -25,7 +25,7 @@ class ModifierTest < ActiveSupport::TestCase
     SetBuilder::Constraint::Modifier.register(Hash, HashModifier)
     assert_nothing_raised ArgumentError do
       SetBuilder::Constraint::Modifier.for(Hash)
-    end    
+    end
   end
   
   test "registering an invalid modifier" do

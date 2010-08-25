@@ -1,6 +1,6 @@
-require 'set_builder/constraint/modifiers/string'
-require 'set_builder/constraint/modifiers/date'
-require 'set_builder/constraint/modifiers/integer'
+require 'set_builder/constraint/modifiers/string_modifier'
+require 'set_builder/constraint/modifiers/date_modifier'
+require 'set_builder/constraint/modifiers/integer_modifier'
 
 
 module SetBuilder
@@ -94,9 +94,9 @@ module SetBuilder
     # Force predefined modifiers to pass `valid_modifier?`
     #
     Modifier.register(
-      [:date,     SetBuilder::Constraint::Modifier::Date],
+      [:date,     Modifier::DateModifier],
       # [:integer,  SetBuilder::Constraint::Modifier::Integer],
-      [:string,   SetBuilder::Constraint::Modifier::String]
+      [:string,   Modifier::StringModifier]
     )
     
     

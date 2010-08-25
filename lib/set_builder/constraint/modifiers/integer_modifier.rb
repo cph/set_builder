@@ -1,7 +1,7 @@
 module SetBuilder
   class Constraint
     module Modifier
-      class Integer
+      class IntegerModifier
         
         
         

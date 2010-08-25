@@ -3,7 +3,7 @@ require 'set_builder/constraint/modifiers/base'
 module SetBuilder
   class Constraint
     module Modifier
-      class Date < Base
+      class DateModifier < Base
         
         
         
