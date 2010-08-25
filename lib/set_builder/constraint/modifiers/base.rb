@@ -6,7 +6,7 @@ module SetBuilder
         
         
         def initialize(hash)
-          @operator, @values = hash.first[0], hash.first[1]
+          @operator, @values = hash.first[0].to_sym, hash.first[1]
           @values = [@values] unless @values.is_a?(Array)
         end
         

@@ -34,9 +34,13 @@ var SetBuilder = (function() {
 */
 
 SetBuilder.Constraint = function(_trait, args) {
+  
+  var _direct_object;
+  if(typeof(_trait) == 'string') {
+    _trait = SetBuilder.traits().find(_trait);
+  }
 
   args = args.dup();
-  var _direct_object;
   if(_trait.requires_direct_object()) _direct_object = args.shift();
   var _modifiers = _trait.modifiers().collect(function(modifier_type) {
     return SetBuilder.modifiers().apply(modifier_type, args.shift());
@@ -47,11 +51,19 @@ SetBuilder.Constraint = function(_trait, args) {
   
   // Public methods
   
-  this.trait = function() {
+  this.trait = function(val) {
+    if(val !== undefined) {
+      _trait = val;
+      _direct_object = undefined;
+      _modifiers = [];
+    }
     return _trait;
   }
   
-  this.direct_object = function() {
+  this.direct_object = function(val) {
+    if(val !== undefined) {
+      _direct_object = val;
+    }
     return _direct_object;
   }
   
@@ -63,16 +75,18 @@ SetBuilder.Constraint = function(_trait, args) {
     return _trait.requires_direct_object();
   }
   
-  this.toString = function() {
-    if(!_description) {
-      _description = _trait.toString();
-      if(_direct_object) {
-        _description += ' ' + _direct_object
-      }
-      _modifiers.each(function(modifier) {
-        _description += ' ' + modifier.toString();
-      });
+  this.prefix = function() {
+    return _trait.prefix();
+  }
+  
+  this.toString = function(include_prefix) {
+    var _description = _trait.toString(include_prefix);
+    if(_direct_object) {
+      _description += ' ' + _direct_object
     }
+    _modifiers.each(function(modifier) {
+      _description += ' ' + modifier.toString();
+    });
     return _description;
   }
 
@@ -97,8 +111,8 @@ SetBuilder.Modifier = function(_name, _operator, _values) {
     return _name;
   }
   
-  this.operators = function() {
-    return _operators;
+  this.operator = function() {
+    return _operator;
   }
   
   this.values = function() {
@@ -147,23 +161,26 @@ SetBuilder.Modifiers = function(_modifiers) {
   }
 
   // Returns the names of the operators allowed for the given modifier
-  this.operators_for = function(name) {
-    return Object.keys(_operators_for(name));
+  this.operators_for = function(modifier_type) {
+    return Object.keys(_operators_for(modifier_type));
   }
   
   // Returns the names of the arguments a given operator anticipates
-  this.params_for_operator = function(name, operator_name) {
-    var params = _operators_for(name)[operator_name];
+  this.params_for_operator = function(modifier_type, operator_name) {
+    if(!operator_name) throw 'An operator name was not supplied.'
+    var params = _operators_for(modifier_type)[operator_name];
     if(params) {
       return params;
     } else {
-      throw ('"' + operator.toString() + '" is not an operator for the ' + name + ' modifier.');
+      throw ('"' + operator_name.toString() + '" is not an operator for the ' + modifier_type + ' modifier.');
     }
   }
   
-  this.apply = function(name, args) {
+  this.apply = function(modifier_type, args) {
     var operator = Object.keys(args)[0];
-    var params = this.params_for_operator(name, operator);
+    if(!operator) throw 'An operator name was not supplied.'
+    
+    var params = this.params_for_operator(modifier_type, operator);
     var values = (args||{})[operator];
 
     if(!(values instanceof Array)) values = [values];
@@ -192,6 +209,7 @@ SetBuilder.Set = function(_raw_data) {
   _raw_data.each(function(line) {
     var trait = SetBuilder.traits().find(line[0]);
     var args = line.slice(1);
+    // window.console.log(args);
     if(trait) {
       _constraints.push(trait.apply(args));
     } else if(window.console && window.console.log) {
@@ -234,7 +252,7 @@ SetBuilder.Trait = function(_raw_data) {
   // window.console.log(_raw_data);
   var _name = _raw_data[0];
   var _part_of_speech = _raw_data[1].toString().toLowerCase();
-  var _modifiers = _raw_data.slice(2); // .collect(function(modifier_name) {
+  var _modifiers = _raw_data[2] || []; //.collect(function(modifier_name) {
   //     return SetBuilder.Modifiers.find(modifier_name);
   //   });
   var _direct_object;
@@ -250,6 +268,10 @@ SetBuilder.Trait = function(_raw_data) {
   
   this.requires_direct_object = function() {
     return !!_direct_object;
+  }
+  
+  this.direct_object_type = function() {
+    return _direct_object;
   }
   
   this.name = function() {
@@ -277,10 +299,10 @@ SetBuilder.Trait = function(_raw_data) {
     }    
   }
    
-  this.toString = function() {
+  this.toString = function(include_prefix) {
     var prefix = this.prefix();
-    if(prefix) {
-      return prefix + ' ' + this.name();
+    if(prefix) { // return an empty string if the prefix is invalid
+      return (include_prefix==false) ? this.name() : (prefix + ' ' + this.name());
     } else {
       return '';
     }

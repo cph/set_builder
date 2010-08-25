@@ -35,13 +35,27 @@ if(!Array.prototype.dup) {
   }
 }
 
+// Array.each = function(array, fn) {
+//   for(i=0, len=array.length; i<len; i++) {
+//     fn(array[i]);
+//   }
+// }
+
 if(!Array.prototype.each) {
   Array.prototype.each = function(fn) {
-    for(i=0; i<this.length; i++) {
+    for(i=0, len=this.length; i<len; i++) {
       fn(this[i]);
     }
   }
 }
+
+// Array.collect = function(array, fn) {
+//   var new_array = [];
+//   for(var i=0; i<array.length; i++) {
+//     new_array.push(fn(array[i]));
+//   }
+//   return new_array;
+// }
 
 if(!Array.prototype.collect) {
   Array.prototype.collect = function(fn) {
