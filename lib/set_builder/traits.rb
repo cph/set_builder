@@ -26,11 +26,14 @@ module SetBuilder
     
     
     def modifiers
-      inject(ModifierCollection.new) do |modifiers, trait|
+      # !nb: not sure why inject was failing but it was modifying trait.modifiers!
+      @modifiers = ModifierCollection.new
+      each do |trait|
         trait.modifiers.each do |modifier|
-          modifiers << modifier unless modifiers.member?(modifier)
+          @modifiers << modifier unless @modifiers.member?(modifier)
         end
       end
+      @modifiers
     end
     
     

@@ -40,19 +40,20 @@ class ModifierTest < ActiveSupport::TestCase
 
   test "converting modifiers to json" do
     expected_results = {
+      "date" => {
+        "after"       => ["date"],
+        "before"      => ["date"],
+        "on"          => ["date"],
+        "in_the_last" => ["number", "period"]
+      },
       "string" => {
         "contains"    => ["string"],
         "begins_with" => ["string"],
         "ends_with"   => ["string"],
         "is"          => ["string"]
-      },
-      "date" => {
-        "after"       => ["date"],
-        "before"      => ["date"],
-        "on"          => ["date"]
       }
-    }.to_json
-    assert_equal expected_results, Friend.modifiers.collect.join(", ")
+    }
+    assert_equal expected_results, Friend.modifiers.to_hash
   end
 
 

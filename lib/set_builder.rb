@@ -34,9 +34,6 @@ protected
     part_of_speech = get_part_of_speech(args.shift)
     name = args.shift
     traits << Trait.new(name, part_of_speech, *args, &block)
-    # klass = part_of_speech_or_type.is_a?(Class) ? Trait::Noun : Trait::Predicate
-    # trait = klass.new(name, part_of_speech_or_type, options, &block)
-    # traits << trait
   end
   
   

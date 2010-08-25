@@ -18,7 +18,7 @@ module SetBuilder
     def to_hash
       hash = {}
       each do |modifier|
-        hash[Modifier.name(modifier)] = modifier.to_hash
+        hash[Modifier.name(modifier).to_s] = modifier.to_hash
       end
       hash
     end
