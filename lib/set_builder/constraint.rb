@@ -1,17 +1,24 @@
-require 'set_builder/constraint/modifier'
+require 'set_builder/modifier'
 
 
 module SetBuilder
   class Constraint
     
     
-    
+    #
+    # Sample constraints:
+    # 
+    #     [:awesome],
+    #     [:attended, "school"],
+    #     [:died],
+    #     [:name, {:is => "Jerome"}]]
+    # 
     def initialize(trait, *args, &block)
       @trait, @block = trait, block
       @direct_object = args.shift if trait.requires_direct_object?
-      @modifiers = trait.modifiers.collect do |modifier_type|
-         Modifier.for(modifier_type).new(args.shift)
-      end
+      p "constraint.trait: " + trait.name
+      p "constriant.trait.modifiers: [" + trait.modifiers.join(", ") + "]"
+      @modifiers = trait.modifiers.collect {|modifier_type| modifier_type.new(args.shift)}
     end
     
     

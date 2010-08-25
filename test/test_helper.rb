@@ -13,21 +13,21 @@ class Friend
   extend SetBuilder
 
 
-  trait("awesome", :reflexive) do |query|
+  trait(:is, "awesome") do |query|
     scoped({:conditions => {:awesome => true}})
   end
 
-  trait("died", :active) do |query|
+  trait(nil, "died") do |query|
     scoped({:conditions => {:alive => false}})
   end
 
   # this trait accepts modifiers --- an adverbial clause
-  trait("born", :passive, :modifiers => [Date]) do |query|
+  trait(:was, "born", :date) do |query|
     scoped({:conditions => query.modifiers[0].build_conditions_for("friends.birthday")})
   end
 
   # this trait has a direct object
-  trait({"attended" => String}, :perfect) do |query|
+  trait(:has, {"attended" => :string}) do |query|
     scoped({
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
       :conditions => {"schools.name" => query.direct_object}
@@ -35,7 +35,8 @@ class Friend
   end
 
   # this trait is a noun
-  trait("name", String) do |query|
+  # also modifiers can be classes
+  trait(:whose, "name", StringModifier) do |query|
     scoped({:conditions => query.modifiers[0].build_conditions_for("friends.name")})
   end
   

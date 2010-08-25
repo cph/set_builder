@@ -1,5 +1,6 @@
-require 'set_builder/trait/noun'
-require 'set_builder/trait/predicate'
+require 'set_builder/trait'
+require 'set_builder/modifier_collection'
+
 
 module SetBuilder
   class Traits < Array
@@ -20,6 +21,16 @@ module SetBuilder
     
     def to_json
       "[#{collect(&:to_json).join(",")}]"
+    end
+    
+    
+    
+    def modifiers
+      inject(ModifierCollection.new) do |modifiers, trait|
+        trait.modifiers.each do |modifier|
+          modifiers << modifier unless modifiers.member?(modifier)
+        end
+      end
     end
     
     
