@@ -18,6 +18,11 @@ var SetBuilder = (function() {
     registerValueMap: function(key, map) {
       _value_maps[key] = map;
     },
+    registerValueMaps: function(_data) {
+      for(key in _data) {
+        _value_maps[key] = _data[key];
+      }
+    },    
     traits: function() {
       return _traits;
     },
@@ -30,6 +35,9 @@ var SetBuilder = (function() {
     getValue: function(key, value) {
       map = _value_maps[key];
       return map ? map[value.toString()] : value;
+    },
+    getValueMaps: function() {
+      return Object.keys(_value_maps);
     }
   }
   

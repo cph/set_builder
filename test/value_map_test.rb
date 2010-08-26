@@ -19,6 +19,12 @@ class ValueMapTest < ActiveSupport::TestCase
     expected_school = "Concordia"
     assert_equal expected_school, SetBuilder::ValueMap.to_s("school", 1)
   end
+  
+  
+  test "value map should generate json that can be handed to the client-side SetBuilder" do
+    expected_json = "{\"school\":[[\"Concordia\",1],[\"McKendree\",2]]}"
+    assert_equal expected_json, SetBuilder::ValueMap.to_json
+  end
 
 
 end

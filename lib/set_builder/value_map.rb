@@ -29,9 +29,22 @@ module SetBuilder
     
     
     
-    def self.register(name, map)
+    def self.register(name, map, name_method = :name, id_method = :id)
       name = name.to_sym
+      if map.is_a?(Array)
+        map = map.inject({}){|hash, i| hash[i.send(id_method).to_s] = i.send(name_method); hash}
+      end
       @registered_value_maps[name] = map
+    end
+    
+    
+    
+    def self.to_json
+      new_hash = {}
+      @registered_value_maps.each do |key, value|
+        new_hash[key] = value.map {|id, name| [name, id]}
+      end
+      new_hash.to_json
     end
     
     

@@ -42,6 +42,12 @@ describe 'SetBuilder'
     end
   end
   
+  describe '.getValueMaps'
+    it 'should return the names of the value maps registered'
+      expect(SetBuilder.getValueMaps()).to(eql, ['school']);
+    end
+  end
+  
   
   
   describe '.Trait'
