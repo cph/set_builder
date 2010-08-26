@@ -40,11 +40,7 @@ module SetBuilder
     
     
     def self.to_json
-      new_hash = {}
-      @registered_value_maps.each do |key, value|
-        new_hash[key] = value.map {|id, name| [name, id]}
-      end
-      new_hash.to_json
+      @registered_value_maps.to_json
     end
     
     
