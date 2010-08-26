@@ -1,6 +1,7 @@
 require 'activerecord'
 require 'set_builder/traits'
 require 'set_builder/modifiers'
+require 'set_builder/value_map'
 require 'set_builder/set'
 
 

@@ -26,6 +26,7 @@ module SetBuilder
     
     
     delegate :direct_object_required?,
+             :direct_object_type,
              :to => :trait
     
     
@@ -39,7 +40,7 @@ module SetBuilder
     def to_s
       @description ||= begin
         description = trait.to_s
-        description << " #{direct_object}" if direct_object_required?
+        description << " #{ValueMap.to_s(direct_object_type, direct_object)}" if direct_object_required?
         description << " #{modifiers.join(" ")}" unless modifiers.empty?
         description
       end

@@ -23,7 +23,13 @@ module SetBuilder
       
       
       def to_s
-        "#{operator} #{values.to_sentence}"
+        words = [operator.to_s]
+        arguments = self.class.operators[operator]
+        (0...arguments.length).each do |i|
+          words << ValueMap.to_s(arguments[i], values[i])
+        end
+        words.join(" ")
+        # "#{operator} #{values.collect{|value| ValueMap.to_s(value)}.to_sentence}"
       end
       
       

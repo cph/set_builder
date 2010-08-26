@@ -9,6 +9,7 @@ module SetBuilder
       
       def self.operators
         {
+          '.' => [],
           :before => [:date],
           :after => [:date],
           :on => [:date],

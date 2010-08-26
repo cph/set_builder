@@ -120,7 +120,7 @@ SetBuilder.Modifier = function(_name, _operator, _values) {
   }
   
   this.toString = function() {
-    return _operator + ' ' + _values.toSentence();
+    return _operator + ' ' + _values.join(' ');
   }
 
 }

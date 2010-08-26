@@ -6,12 +6,12 @@ class SetTest < ActiveSupport::TestCase
   test "set data struture" do
     data = [
       [:awesome],
-      [:attended, "school"],
+      [:attended, 2],
       [:died],
       [:name, {:is => "Jerome"}]]
     set = Friend.that_belong_to(data)
     assert set.valid?
-    assert_equal "who are awesome, who have attended school, who died, and whose name is Jerome", set.to_s
+    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
   
   test "simple perform" do
@@ -26,14 +26,14 @@ class SetTest < ActiveSupport::TestCase
   test "complex perform" do
     data = [
       [:awesome],
-      [:attended, "Concordia"],
+      [:attended, 1],
       [:died],
       [:name, {:begins_with => "Jerome"}]]
     set = Friend.that_belong_to(data)
     
     expected_results = [
       [{:conditions => {:awesome => true}}],
-      [{:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.name" => "Concordia"}}],
+      [{:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}}],
       [{:conditions => {:alive => false}}],
       [{:conditions => ["friends.name LIKE ?", "Jerome%"]}]
     ]

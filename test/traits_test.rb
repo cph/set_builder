@@ -31,7 +31,7 @@ class TraitsTest < ActiveSupport::TestCase
     expected_json = [['awesome', 'reflexive'],
                      ['died', 'active'],
                      ['born', 'passive', ['date']],
-                     [['attended', 'string'], 'perfect'],
+                     [['attended', 'school'], 'perfect'],
                      ['name', 'noun', ['string']]].to_json
     assert_equal expected_json, Friend.traits.to_json
   end

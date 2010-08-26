@@ -41,6 +41,7 @@ class ModifierTest < ActiveSupport::TestCase
   test "converting modifiers to json" do
     expected_results = {
       "date" => {
+        "."           => [],
         "after"       => ["date"],
         "before"      => ["date"],
         "on"          => ["date"],

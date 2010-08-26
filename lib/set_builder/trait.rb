@@ -20,7 +20,7 @@ module SetBuilder
     
     
     
-    attr_reader :name, :part_of_speech, :modifiers
+    attr_reader :name, :part_of_speech, :modifiers, :direct_object_type
     
     
     

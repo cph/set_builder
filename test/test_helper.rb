@@ -9,6 +9,8 @@ require 'redgreen'
 
 # Sample class used by tests
 
+SetBuilder::ValueMap.register(:school, {1 => "Concordia", 2 => "McKendree"})
+
 class Friend
   extend SetBuilder
 
@@ -27,10 +29,10 @@ class Friend
   end
 
   # this trait has a direct object
-  trait(:has, {"attended" => :string}) do |query|
+  trait(:has, {"attended" => :school}) do |query|
     scoped({
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
-      :conditions => {"schools.name" => query.direct_object}
+      :conditions => {"schools.id" => query.direct_object}
     })
   end
 
