@@ -1,8 +1,13 @@
 require 'test_helper'
 
 class SetTest < ActiveSupport::TestCase
-
-
+  
+  
+  
+  test "FakeScope" do
+    assert_equal [5, 4, 3, 2], FakeScope.new(5).scoped(4).scoped(3).scoped(2).composed_scope
+  end
+  
   test "set data struture" do
     data = [
       [:awesome],
@@ -14,8 +19,15 @@ class SetTest < ActiveSupport::TestCase
     assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
   
-  test "FakeScope" do
-    assert_equal [5, 4, 3, 2], FakeScope.new(5).scoped(4).scoped(3).scoped(2).composed_scope
+  test "set structure with negations" do
+    data = [
+      ["!awesome"],
+      ["!attended", 2],
+      ["!died"],
+      ["!name", {:is => "Jerome"}]]
+    set = Friend.that_belong_to(data)
+    assert set.valid?
+    assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is not Jerome", set.to_s
   end
   
   test "simple perform" do

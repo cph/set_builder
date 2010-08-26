@@ -1,6 +1,6 @@
 require 'set_builder/constraint'
-require 'set_builder/inflector'
 require 'set_builder/modifier'
+
 
 module SetBuilder
   class Trait
@@ -10,9 +10,9 @@ module SetBuilder
     def initialize(name, part_of_speech, *args, &block)
       case name
       when Hash
-        @name, @direct_object_type = name.first[0], name.first[1]
+        @name, @direct_object_type = name.first[0].to_s, name.first[1]
       else
-        @name = name
+        @name = name.to_s
       end
       @part_of_speech, @block = part_of_speech, block
       @modifiers = (args||[]).collect {|modifier| Modifier[modifier]}
@@ -31,20 +31,19 @@ module SetBuilder
     
     
     
-    def singular
-      @singular ||= SetBuilder::Inflector.singular(part_of_speech, name)
-    end
-    
-    
-    
-    def plural
-      @plural ||= SetBuilder::Inflector.plural(part_of_speech, name)
-    end
-    
-    
-    
-    def to_s
-      plural
+    def to_s(negative=false)
+      case part_of_speech
+      when :active
+        negative ? "who have not #{name}" : "who #{name}"
+      when :perfect
+        negative ? "who have not #{name}" : "who have #{name}"
+      when :passive
+        negative ? "who were not #{name}" : "who were #{name}"
+      when :reflexive
+        negative ? "who are not #{name}" : "who are #{name}"
+      when :noun
+        "whose #{name}"
+      end
     end
     
     

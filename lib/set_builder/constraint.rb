@@ -21,7 +21,7 @@ module SetBuilder
     
     
     
-    attr_reader :trait, :direct_object, :modifiers
+    attr_reader :trait, :direct_object, :modifiers, :negative
     
     
     
@@ -39,11 +39,18 @@ module SetBuilder
     
     def to_s
       @description ||= begin
-        description = trait.to_s
+        description = trait.to_s(@negative)
         description << " #{ValueMap.to_s(direct_object_type, direct_object)}" if direct_object_required?
-        description << " #{modifiers.join(" ")}" unless modifiers.empty?
+        description << " #{modifiers.collect{|m| m.to_s(@negative)}.join(" ")}" unless modifiers.empty?
         description
       end
+    end
+    
+    
+    
+    def negate(value)
+      @negative = value
+      self
     end
     
     

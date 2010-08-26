@@ -54,9 +54,11 @@ module SetBuilder
     
     def get_constraints
       @set.inject([]) do |constraints, line|
-        trait_name, args = line.first, line[1..-1]
+        negate, trait_name, args = false, line.first.to_s, line[1..-1]
+        trait_name, negate = trait_name[1..-1], true if (trait_name[0..0] == "!")
         trait = model.traits[trait_name]
-        constraints << trait.apply(*args) if trait
+        raise("\"#{trait_name}\" is not a trait for #{model}") unless trait
+        constraints << trait.apply(*args).negate(negate)
       end
     end
     

@@ -17,6 +17,21 @@ module SetBuilder
       
       
       
+      def self.negate(operator)
+        case operator
+        when :contains
+          "does not contain"
+        when :begins_with
+          "does not begin with"
+        when :ends_with
+          "does not end with"
+        when :is
+          "is not"
+        end
+      end
+      
+      
+      
       def build_conditions_for(selector)
         case operator
         when :is

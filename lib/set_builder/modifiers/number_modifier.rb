@@ -1,5 +1,5 @@
 require 'set_builder/modifier/base'
-require 'set_builder/period'
+
 
 module SetBuilder
   module Modifiers

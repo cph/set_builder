@@ -22,14 +22,19 @@ module SetBuilder
       
       
       
-      def to_s
-        words = [operator.to_s]
+      def to_s(negative=false)
+        words = negative ? [self.class.negate(operator).to_s] : [operator.to_s]
         arguments = self.class.operators[operator]
         (0...arguments.length).each do |i|
           words << ValueMap.to_s(arguments[i], values[i])
         end
         words.join(" ")
-        # "#{operator} #{values.collect{|value| ValueMap.to_s(value)}.to_sentence}"
+      end
+      
+      
+      
+      def self.negate(operator)
+        operator
       end
       
       
