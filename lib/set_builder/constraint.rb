@@ -38,6 +38,7 @@ module SetBuilder
     
     
     def to_s
+      # p "ValueMap.to_s(#{direct_object_type} (#{direct_object_type.class}), #{direct_object} (#{direct_object.class}))"
       @description ||= begin
         description = trait.to_s(@negative)
         description << " #{ValueMap.to_s(direct_object_type, direct_object)}" if direct_object_required?

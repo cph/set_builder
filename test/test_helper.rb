@@ -7,9 +7,7 @@ require 'redgreen'
 
 
 
-# Sample class used by tests
-
-SetBuilder::ValueMap.register(:school, {1 => "Concordia", 2 => "McKendree"})
+# Mocks NamedScope so that composed scoping can be tested
 
 class FakeScope
   
@@ -28,6 +26,11 @@ class FakeScope
   
 end
 
+
+
+# Sample class used by tests
+
+SetBuilder::ValueMap.register(:school, {1 => "Concordia", 2 => "McKendree"})
 
 class Friend
   extend SetBuilder
