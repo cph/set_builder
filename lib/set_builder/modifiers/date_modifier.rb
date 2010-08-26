@@ -22,13 +22,13 @@ module SetBuilder
       def build_conditions_for(selector)
         case operator
         when :before
-          ["#{selector}<", format_value]
+          ["#{selector}<?", format_value]
         when :after
-          ["#{selector}>", format_value]
+          ["#{selector}>?", format_value]
         when :on
-          ["#{selector}=", format_value]
+          ["#{selector}=?", format_value]
         when :in_the_last
-          ["#{selector_for_period(selector)}<=", format_value]
+          ["#{selector_for_period(selector)}<=?", format_value]
         end
         []
       end
