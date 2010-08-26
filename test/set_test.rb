@@ -14,12 +14,16 @@ class SetTest < ActiveSupport::TestCase
     assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
   
+  test "FakeScope" do
+    assert_equal [5, 4, 3, 2], FakeScope.new(5).scoped(4).scoped(3).scoped(2).composed_scope
+  end
+  
   test "simple perform" do
     data = [[:awesome]]
     set = Friend.that_belong_to(data)
 
-    expected_results = [[{:conditions => {:awesome => true}}]]
-    Friend.reset_composed_scope
+    expected_results = [{:conditions => {:awesome => true}}]
+    # Friend.reset_composed_scope
     assert_equal expected_results, set.perform.composed_scope
   end
   
@@ -32,12 +36,12 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     
     expected_results = [
-      [{:conditions => {:awesome => true}}],
-      [{:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}}],
-      [{:conditions => {:alive => false}}],
-      [{:conditions => ["friends.name LIKE ?", "Jerome%"]}]
+      {:conditions => {:awesome => true}},
+      {:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}},
+      {:conditions => {:alive => false}},
+      {:conditions => ["friends.name LIKE ?", "Jerome%"]}
     ]
-    Friend.reset_composed_scope
+    # Friend.reset_composed_scope
     assert_equal expected_results, set.perform.composed_scope
   end
   

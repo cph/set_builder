@@ -43,7 +43,7 @@ module SetBuilder
     # which can fetch the objects which belong to this set
     #    
     def perform
-      constraints.inject(@scope) {|scope, constraint| scope = constraint.perform(scope)}
+      constraints.inject(@scope) {|scope, constraint| constraint.perform(scope)}
     end
     
     
