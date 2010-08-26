@@ -5,7 +5,7 @@ describe 'SetBuilder'
       ['awesome', 'reflexive'],
       ['died', 'active'],
       ['born', 'passive', ['date']],
-      [['attended', 'string'], 'perfect'],
+      [['attended', 'school'], 'perfect'],
       ['name', 'noun', ['string']]
     ]);
 
@@ -18,12 +18,28 @@ describe 'SetBuilder'
       }
     });
 
+    // SetBuilder.registerValueMap('school', [['Concordia', 1], ['McKendree', 2]]);
+    SetBuilder.registerValueMap('school', {'1':'Concordia', '2':'McKendree'});
+
     set_data = [
       ['awesome'],
-      ['attended', "school"],
+      ['attended', 2],
       ['died'],
       ['name', {'is': "Jerome"}]
     ];
+  end
+  
+  
+  
+  describe '.getValue'
+    it 'should return a value based on the key and name'
+      expect(SetBuilder.getValue('school', 1)).to(be, 'Concordia')
+      expect(SetBuilder.getValue('school', '1')).to(be, 'Concordia')
+    end
+    
+    it 'should return what it was passed if there is no value map for the key'
+      expect(SetBuilder.getValue('band', 1)).to(be, 1)
+    end
   end
   
   
@@ -119,18 +135,18 @@ describe 'SetBuilder'
       
       it 'should generate the natural language description of a complex set'
         var set = new SetBuilder.Set(set_data);
-        var expected_string = 'who are awesome, who have attended school, who died, and whose name is Jerome'
+        var expected_string = 'who are awesome, who have attended McKendree, who died, and whose name is Jerome'
         expect(set.toString()).to(be, expected_string);
       end
 
       it 'should generate the natural language description of a complex set with negation'
         var set = new SetBuilder.Set([
           ['!awesome'],
-          ['!attended', "school"],
+          ['!attended', 1],
           ['!died'],
           ['!name', {'is': "Jerome"}]
         ]);
-        var expected_string = 'who are not awesome, who have not attended school, who have not died, and whose name is not Jerome'
+        var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is not Jerome'
         expect(set.toString()).to(be, expected_string);
       end
     end

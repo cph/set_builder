@@ -2,6 +2,7 @@ var SetBuilder = (function() {
   
   var _modifiers;
   var _traits;
+  var _value_maps = {};
   
   return {
     init: function(traits, modifiers) {
@@ -14,11 +15,21 @@ var SetBuilder = (function() {
     registerModifiers: function(modifiers) {
       _modifiers = new SetBuilder.Modifiers(modifiers);
     },
+    registerValueMap: function(key, map) {
+      _value_maps[key] = map;
+    },
     traits: function() {
       return _traits;
     },
     modifiers: function() {
       return _modifiers;
+    },
+    getValueMap: function(key) {
+      return _value_maps[key];
+    },
+    getValue: function(key, value) {
+      map = _value_maps[key];
+      return map ? map[value.toString()] : value;
     }
   }
   
@@ -87,7 +98,7 @@ SetBuilder.Constraint = function(_trait, args) {
   this.toString = function(include_prefix) {
     var _description = _trait.toString(include_prefix, _negative);
     if(_direct_object) {
-      _description += ' ' + _direct_object
+      _description += ' ' + SetBuilder.getValue(_trait.direct_object_type(), _direct_object);
     }
     _modifiers.each(function(modifier) {
       _description += ' ' + modifier.toString(_negative);
@@ -106,7 +117,7 @@ SetBuilder.Constraint = function(_trait, args) {
 
 */
 
-SetBuilder.Modifier = function(_name, _operator, _values) {
+SetBuilder.Modifier = function(_name, _operator, _values, _params) {
   
   
   
@@ -125,7 +136,11 @@ SetBuilder.Modifier = function(_name, _operator, _values) {
   }
   
   this.toString = function(negative) {
-    return _operator + ' ' + _values.join(' ');
+    var words = [_operator];
+    for(var i=0; i<_values.length; i++) {
+      words.push(SetBuilder.getValue(_params[i], _values[i]));
+    }
+    return words.join(' ');
   }
 
 }
@@ -191,7 +206,7 @@ SetBuilder.Modifiers = function(_modifiers) {
     if(!(values instanceof Array)) values = [values];
     if(values.length != params.length) throw ('The operator "' + operator.toString() + '" expects ' + params.length + ' arguments.');
     
-    return new SetBuilder.Modifier(name, operator, values);
+    return new SetBuilder.Modifier(name, operator, values, params);
   }
 
 }
@@ -264,10 +279,10 @@ SetBuilder.Trait = function(_raw_data) {
   var _modifiers = _raw_data[2] || []; //.collect(function(modifier_name) {
   //     return SetBuilder.Modifiers.find(modifier_name);
   //   });
-  var _direct_object;
+  var _direct_object_type;
   
   if(typeof(_name) != 'string') {
-    _direct_object = _name[1];
+    _direct_object_type = _name[1];
     _name = _name[0];
   }
   
@@ -276,11 +291,11 @@ SetBuilder.Trait = function(_raw_data) {
   // Public methods
   
   this.requires_direct_object = function() {
-    return !!_direct_object;
+    return !!_direct_object_type;
   }
   
   this.direct_object_type = function() {
-    return _direct_object;
+    return _direct_object_type;
   }
   
   this.name = function() {
