@@ -45,7 +45,7 @@ SetBuilder.Constraint = function(_trait, args) {
   var _modifiers = _trait.modifiers().collect(function(modifier_type) {
     return SetBuilder.modifiers().apply(modifier_type, args.shift());
   });
-  var _description;
+  var _negative = false;
   
   
   
@@ -71,21 +71,26 @@ SetBuilder.Constraint = function(_trait, args) {
     return _modifiers;
   }
   
+  this.negate = function(value) {
+    _negative = value;
+    return this;
+  }
+  
   this.requires_direct_object = function() {
     return _trait.requires_direct_object();
   }
   
   this.prefix = function() {
-    return _trait.prefix();
+    return _trait.prefix(_negative);
   }
   
   this.toString = function(include_prefix) {
-    var _description = _trait.toString(include_prefix);
+    var _description = _trait.toString(include_prefix, _negative);
     if(_direct_object) {
       _description += ' ' + _direct_object
     }
     _modifiers.each(function(modifier) {
-      _description += ' ' + modifier.toString();
+      _description += ' ' + modifier.toString(_negative);
     });
     return _description;
   }
@@ -119,7 +124,7 @@ SetBuilder.Modifier = function(_name, _operator, _values) {
     return _values;
   }
   
-  this.toString = function() {
+  this.toString = function(negative) {
     return _operator + ' ' + _values.join(' ');
   }
 
@@ -203,15 +208,19 @@ SetBuilder.Modifiers = function(_modifiers) {
 SetBuilder.Set = function(_raw_data) {
   
   if(!_raw_data) _raw_data = [];
-  // if(!_traits) _traits = SetBuilder.traits();
 
   var _constraints = [];
   _raw_data.each(function(line) {
-    var trait = SetBuilder.traits().find(line[0]);
+    var trait_name = line[0];
+    var negative = false;
+    if(trait_name[0] == '!') {
+      negative = true;
+      trait_name = trait_name.slice(1);
+    }
+    var trait = SetBuilder.traits().find(trait_name);
     var args = line.slice(1);
-    // window.console.log(args);
     if(trait) {
-      _constraints.push(trait.apply(args));
+      _constraints.push(trait.apply(args).negate(negative));
     } else if(window.console && window.console.log) {
       window.console.log('trait not found with name "' + line[0] + '"');
     }
@@ -282,25 +291,26 @@ SetBuilder.Trait = function(_raw_data) {
     return _modifiers;
   }
   
-  this.prefix = function() {
+  this.prefix = function(negative) {
+    if(negative === undefined) negative = false;
     switch(_part_of_speech) {
       case 'active':
-        return 'who';
+        return negative ? 'who have not' : 'who';
       case 'perfect':
-        return 'who have';
+        return negative ? 'who have not' : 'who have';
       case 'passive':
-        return 'who were';
+        return negative ? 'who were not' : 'who were';
       case 'reflexive':
-        return 'who are';
+        return negative ? 'what are not' : 'who are';
       case 'noun':
         return 'whose';
       default:
         return undefined;
-    }    
+    }
   }
    
-  this.toString = function(include_prefix) {
-    var prefix = this.prefix();
+  this.toString = function(include_prefix, negative) {
+    var prefix = this.prefix(negative);
     if(prefix) { // return an empty string if the prefix is invalid
       return (include_prefix==false) ? this.name() : (prefix + ' ' + this.name());
     } else {

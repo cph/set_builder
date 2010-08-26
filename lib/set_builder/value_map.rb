@@ -26,12 +26,6 @@ module SetBuilder
     
     
     
-    # 
-    # Usage
-    #   register(type, modifier)
-    #   register([type, modifier], [type, modifier])
-    #   register(type, modifier, type, modifier)
-    #
     def self.register(value, map)
       @registered_value_maps[value] = map
     end

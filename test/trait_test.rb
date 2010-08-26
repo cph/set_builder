@@ -32,6 +32,12 @@ class TraitTest < ActiveSupport::TestCase
       assert_equal expected_value, Friend.traits[trait].requires_direct_object?
     end
   end
+
+  # test "traits whose direct objects support value mapping should be able to enumerate their values" do
+  #   trait = Friend.traits[:attended]
+  #   expected_map = {1 => "Concordia", 2 => "McKendree"}
+  #   actual_map = trait.
+  # end
   
   test "constraint should be valid" do
     trait = Friend.traits[:name]
