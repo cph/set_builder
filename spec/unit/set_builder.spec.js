@@ -121,8 +121,6 @@ describe 'SetBuilder'
 
   end
   
-  
-  
   describe '.Set'
     
     describe '.constraints'
@@ -144,15 +142,15 @@ describe 'SetBuilder'
         expect(set.toString()).to(be, expected_string);
       end
 
-      it 'should generate the natural language description of a complex set with negation'
+      it 'should generate the natural language description of a complex set with negation (NB: nouns are not negated)'
         var set = new SetBuilder.Set([
           ['!awesome'],
           ['!attended', 1],
           ['!died'],
           ['!name', {'is': "Jerome"}]
         ]);
-        var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is not Jerome'
-        expect(set.toString()).to(be, expected_string);
+        var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is Jerome'
+        expect(set.toString()).to(eql, expected_string);
       end
     end
     

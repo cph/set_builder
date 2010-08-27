@@ -324,7 +324,7 @@ SetBuilder.Trait = function(_raw_data) {
       case 'passive':
         return negative ? 'who were not' : 'who were';
       case 'reflexive':
-        return negative ? 'what are not' : 'who are';
+        return negative ? 'who are not' : 'who are';
       case 'noun':
         return 'whose';
       default:
