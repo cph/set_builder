@@ -9,7 +9,7 @@ module SetBuilder
       
       def self.operators
         {
-          :"." => [],
+          :ever => [],
           :before => [:date],
           :after => [:date],
           :on => [:date],
@@ -21,7 +21,7 @@ module SetBuilder
       
       def build_conditions_for(selector)
         case operator
-        when :".":
+        when :ever
           ["#{selector} IS NOT NULL"]
         when :before
           ["#{selector}<?", format_value]
