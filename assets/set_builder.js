@@ -92,7 +92,12 @@ SetBuilder.Constraint = function(_trait, args) {
   
   this.negate = function(value) {
     _negative = value;
+    if(_trait.noun()) _negative = false;
     return this;
+  }
+  
+  this.negative = function() {
+    return _negative;
   }
   
   this.requires_direct_object = function() {
@@ -308,6 +313,10 @@ SetBuilder.Trait = function(_raw_data) {
   
   this.name = function() {
     return _name;
+  }
+  
+  this.noun = function() {
+    return (_part_of_speech == 'noun');
   }
   
   this.modifiers = function() {
