@@ -39,6 +39,14 @@ module SetBuilder
       
       def build_conditions_for(selector)
         case operator
+        when :does_not_contain
+          negate(:contains)
+        when :does_not_begin_with
+          negate(:begins_with)
+        when :does_not_end_with
+          negate(:ends_with)
+        when :is_not
+          negate(:is)
         when :is
           ["#{selector}=?", values[0]]
         else
