@@ -5,7 +5,8 @@ module SetBuilder
       
       
       def initialize(hash)
-        @operator, @values = hash.first[0].to_sym, hash.first[1]
+        @operator, @values = (hash.is_a?(Hash) ? [hash.first[0].to_sym, hash.first[1]] : [nil, nil])
+        @values = [] if @values.nil?
         @values = [@values] unless @values.is_a?(Array)
       end
       
@@ -16,8 +17,10 @@ module SetBuilder
       
       
       def valid?
-        arguments = self.class.operators[operator]
-        !arguments.nil? and (arguments.length == values.length)
+        !operator.nil? and 
+        (arguments = self.class.operators[operator]) and 
+        !arguments.nil? and
+        (arguments.length == values.length)
       end
       
       
