@@ -40,8 +40,8 @@ module SetBuilder
       
       
       
-      def format_value
-        (case operator
+      def get_date
+        case operator
         when :in_the_last
           case values[1]
           when "years", "year"
@@ -55,7 +55,13 @@ module SetBuilder
           end          
         else
           values[0].to_date
-        end).strftime('%Y-%m-%d')
+        end
+      end
+      
+      
+      
+      def format_value
+        get_date.strftime('%Y-%m-%d')
       end
       
       
