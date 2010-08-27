@@ -18,7 +18,6 @@ describe 'SetBuilder'
       }
     });
 
-    // SetBuilder.registerValueMap('school', [['Concordia', 1], ['McKendree', 2]]);
     SetBuilder.registerValueMap('school', {'1':'Concordia', '2':'McKendree'});
 
     set_data = [

@@ -30,10 +30,14 @@ class ModifierTest < ActiveSupport::TestCase
   
   test "converting modifier to json" do
     expected_results = {
-      "contains"    => ["string"],
-      "begins_with" => ["string"],
-      "ends_with"   => ["string"],
-      "is"          => ["string"]
+      "contains"            => ["string"],
+      "does_not_contain"    => ["string"],
+      "begins_with"         => ["string"],
+      "does_not_begin_with" => ["string"],
+      "ends_with"           => ["string"],
+      "does_not_end_with"   => ["string"],
+      "is"                  => ["string"],
+      "is_not"              => ["string"]
     }.to_json
     assert_equal expected_results, SetBuilder::Modifier.for(:string).to_json
   end
@@ -48,10 +52,14 @@ class ModifierTest < ActiveSupport::TestCase
         "in_the_last" => ["number", "period"]
       },
       "string" => {
-        "contains"    => ["string"],
-        "begins_with" => ["string"],
-        "ends_with"   => ["string"],
-        "is"          => ["string"]
+        "contains"            => ["string"],
+        "does_not_contain"    => ["string"],
+        "begins_with"         => ["string"],
+        "does_not_begin_with" => ["string"],
+        "ends_with"           => ["string"],
+        "does_not_end_with"   => ["string"],
+        "is"                  => ["string"],
+        "is_not"              => ["string"]
       }
     }
     assert_equal expected_results, Friend.modifiers.to_hash
@@ -64,7 +72,7 @@ end
 class InvalidHashModifier
 end
 
-class HashModifier < SetBuilder::Modifier::Base
+class HashModifier < SetBuilder::Modifier::Verb
   
   def self.operators
     [:has_key]

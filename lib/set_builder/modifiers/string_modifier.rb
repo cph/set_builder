@@ -1,17 +1,22 @@
-require 'set_builder/modifier/base'
+require 'set_builder/modifier/verb'
+
 
 module SetBuilder
   module Modifiers
-    class StringModifier < Modifier::Base
+    class StringModifier < Modifier::Verb
       
       
       
       def self.operators
         {
           :contains => [:string],
+          :does_not_contain => [:string],
           :begins_with => [:string],
+          :does_not_begin_with => [:string],
           :ends_with => [:string],
-          :is => [:string]
+          :does_not_end_with => [:string],
+          :is => [:string],
+          :is_not => [:string]
         }
       end
       

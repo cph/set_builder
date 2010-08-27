@@ -19,7 +19,7 @@ class SetTest < ActiveSupport::TestCase
     assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
   
-  test "set structure with negations" do
+  test "set structure with negations (nouns are ignored)" do
     data = [
       ["!awesome"],
       ["!attended", 2],
@@ -27,7 +27,7 @@ class SetTest < ActiveSupport::TestCase
       ["!name", {:is => "Jerome"}]]
     set = Friend.that_belong_to(data)
     assert set.valid?
-    assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is not Jerome", set.to_s
+    assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is Jerome", set.to_s
   end
   
   test "simple perform" do

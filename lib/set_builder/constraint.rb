@@ -51,6 +51,7 @@ module SetBuilder
     
     def negate(value)
       @negative = value
+      @negative = false if trait.noun?
       self
     end
     

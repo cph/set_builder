@@ -1,9 +1,9 @@
-require 'set_builder/modifier/base'
+require 'set_builder/modifier/adverb'
 
 
 module SetBuilder
   module Modifiers
-    class DateModifier < Modifier::Base
+    class DateModifier < Modifier::Adverb
       
       
       

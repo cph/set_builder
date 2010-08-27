@@ -1,9 +1,9 @@
-require 'set_builder/modifier/base'
+require 'set_builder/modifier/verb'
 
 
 module SetBuilder
   module Modifiers
-    class NumberModifier < Modifier::Base
+    class NumberModifier < Modifier::Verb
       
       
       

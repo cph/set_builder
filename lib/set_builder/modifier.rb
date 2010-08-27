@@ -1,4 +1,6 @@
 require 'set_builder/modifiers'
+require 'set_builder/modifier/adverb'
+require 'set_builder/modifier/verb'
 
 module SetBuilder
   module Modifier
@@ -56,7 +58,7 @@ module SetBuilder
     
     
     def self.valid_modifier!(klass)
-      raise(ArgumentError, "#{klass} must inherit from `SetBuilder::Modifier::Base`") unless is_subclass_of?(klass, SetBuilder::Modifier::Base)
+      raise(ArgumentError, "#{klass} must inherit from either `SetBuilder::Modifier::Verb` or `SetBuilder::Modifier::Adverb`") unless (is_subclass_of?(klass, SetBuilder::Modifier::Adverb) or is_subclass_of?(klass, SetBuilder::Modifier::Verb))
       raise(ArgumentError, "#{klass} must respond to `operators`") unless klass.respond_to?(:operators)
       raise(ArgumentError, "#{klass}.operators must not be empty") if klass.operators.empty?
       klass
@@ -64,7 +66,7 @@ module SetBuilder
     
     
     
-  private  
+  private
     
     
     

@@ -31,6 +31,12 @@ module SetBuilder
     
     
     
+    def noun?
+      (self.part_of_speech == :noun)
+    end
+    
+    
+    
     def to_s(negative=false)
       case part_of_speech
       when :active
