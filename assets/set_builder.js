@@ -149,7 +149,7 @@ SetBuilder.Modifier = function(_name, _operator, _values, _params) {
   }
   
   this.toString = function(negative) {
-    var words = [_operator];
+    var words = [_operator.gsub(/_/, ' ')];
     for(var i=0; i<_values.length; i++) {
       words.push(SetBuilder.getValue(_params[i], _values[i]));
     }

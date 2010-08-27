@@ -23,7 +23,7 @@ module SetBuilder
       
       
       def to_s(negative=false)
-        words = negative ? [self.class.negate(operator).to_s] : [operator.to_s]
+        words = negative ? [self.class.negate(operator).to_s.gsub(/_/, " ")] : [operator.to_s.gsub(/_/, " ")]
         arguments = self.class.operators[operator]
         (0...arguments.length).each do |i|
           # p "ValueMap.to_s(#{arguments[i]} (#{arguments[i].class}), #{values[i]} (#{values[i].class})): #{ValueMap.to_s(arguments[i], values[i])}"
