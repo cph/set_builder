@@ -71,7 +71,7 @@ module SetBuilder
       when ActiveRecord::NamedScope::Scope
         [model_or_scope.proxy_scope, model_or_scope]
       else
-        [model_or_scope, model_or_scope.scoped()]
+        [model_or_scope, model_or_scope.scoped({})]
       end      
     end
     

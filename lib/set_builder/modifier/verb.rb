@@ -11,8 +11,8 @@ module SetBuilder
       
       
       
-      def negate(operator)
-        conditions = build_conditions_for(operator)
+      def negate(selector, operator)
+        conditions = build_conditions_for(selector, operator)
         conditions[0] = "NOT(#{conditions[0]})"
         conditions        
       end
