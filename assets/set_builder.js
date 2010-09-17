@@ -56,7 +56,7 @@ SetBuilder.Constraint = function(_trait, args) {
   
   var _direct_object;
   if(typeof(_trait) == 'string') {
-    _trait = SetBuilder.traits().find(_trait);
+    _trait = SetBuilder.traits().__find(_trait);
   }
 
   args = args.dup();
@@ -113,7 +113,7 @@ SetBuilder.Constraint = function(_trait, args) {
     if(_direct_object) {
       _description += ' ' + SetBuilder.getValue(_trait.direct_object_type(), _direct_object);
     }
-    _modifiers.each(function(modifier) {
+    _modifiers.__each(function(modifier) {
       _description += ' ' + modifier.toString(_negative);
     });
     return _description;
@@ -149,7 +149,7 @@ SetBuilder.Modifier = function(_name, _operator, _values, _params) {
   }
   
   this.toString = function(negative) {
-    var words = [_operator.gsub(/_/, ' ')];
+    var words = [_operator.replace(/_/, ' ')];
     for(var i=0; i<_values.length; i++) {
       words.push(SetBuilder.getValue(_params[i], _values[i]));
     }
@@ -238,14 +238,14 @@ SetBuilder.Set = function(_raw_data) {
   if(!_raw_data) _raw_data = [];
 
   var _constraints = [];
-  _raw_data.each(function(line) {
+  _raw_data.__each(function(line) {
     var trait_name = line[0];
     var negative = false;
     if(trait_name[0] == '!') {
       negative = true;
       trait_name = trait_name.slice(1);
     }
-    var trait = SetBuilder.traits().find(trait_name);
+    var trait = SetBuilder.traits().__find(trait_name);
     var args = line.slice(1);
     if(trait) {
       _constraints.push(trait.apply(args).negate(negative));
@@ -290,7 +290,7 @@ SetBuilder.Trait = function(_raw_data) {
   var _name = _raw_data[0];
   var _part_of_speech = _raw_data[1].toString().toLowerCase();
   var _modifiers = _raw_data[2] || []; //.collect(function(modifier_name) {
-  //     return SetBuilder.Modifiers.find(modifier_name);
+  //     return SetBuilder.Modifiers.__find(modifier_name);
   //   });
   var _direct_object_type;
   
@@ -384,8 +384,8 @@ SetBuilder.Traits = function(_raw_data) {
     });
   }
   
-  this.find = function(name) {
-    return _traits.find(function(trait) {
+  this.__find = function(name) {
+    return _traits.__find(function(trait) {
       return (trait.name() == name);
     });
   }

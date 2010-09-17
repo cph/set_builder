@@ -15,6 +15,9 @@ if(!Object.keys) {
 
 
 
+//
+// .toSentence
+//
 if(!Array.prototype.toSentence) {
   Array.prototype.toSentence = function() {
     switch(this.length) {
@@ -29,60 +32,69 @@ if(!Array.prototype.toSentence) {
     }
   }
 }
-if(!Array.prototype.dup) {
-  Array.prototype.dup = function(fn) {
-    return this.slice(0);
+
+
+
+//
+// .dup
+//
+Array.prototype.__dup = function(fn) {
+  return this.slice(0);
+}
+if(!Array.prototype.dup) Array.prototype.dup = Array.prototype.__dup;
+
+
+
+//
+// .each
+// Distinct from Prototype's each which catches exceptions (ew!)
+// so that if Prototype defines each, I can still call __each
+//
+Array.prototype.__each = function(fn) {
+  for(i=0, len=this.length; i<len; i++) {
+    fn(this[i]);
   }
 }
+if(!Array.prototype.each) Array.prototype.each = Array.prototype.__each;
 
-// Array.each = function(array, fn) {
-//   for(i=0, len=array.length; i<len; i++) {
-//     fn(array[i]);
-//   }
-// }
 
-if(!Array.prototype.each) {
-  Array.prototype.each = function(fn) {
-    for(i=0, len=this.length; i<len; i++) {
-      fn(this[i]);
+
+//
+// .collect
+//
+Array.prototype.__collect = function(fn) {
+  var new_array = [];
+  for(var i=0; i<this.length; i++) {
+    new_array.push(fn(this[i]));
+  }
+  return new_array;
+}
+if(!Array.prototype.collect) Array.prototype.collect = Array.prototype.__collect;
+
+
+
+//
+// .inject
+//
+Array.prototype.__inject = function(memo, fn) {
+  for(var i=0; i<this.length; i++) {
+    memo = fn(memo, this[i]);
+  }
+  return memo;
+}
+if(!Array.prototype.inject) Array.prototype.inject = Array.prototype.__inject;
+
+
+
+//
+// .find
+//
+Array.prototype.__find = function(fn) {
+  for(var i=0; i<this.length; i++) {
+    if(fn(this[i])) {
+      return this[i];
     }
   }
+  return null;
 }
-
-// Array.collect = function(array, fn) {
-//   var new_array = [];
-//   for(var i=0; i<array.length; i++) {
-//     new_array.push(fn(array[i]));
-//   }
-//   return new_array;
-// }
-
-if(!Array.prototype.collect) {
-  Array.prototype.collect = function(fn) {
-    var new_array = [];
-    for(var i=0; i<this.length; i++) {
-      new_array.push(fn(this[i]));
-    }
-    return new_array;
-  }
-}
-
-if(!Array.prototype.inject) {
-  Array.prototype.inject = function(memo, fn) {
-    for(var i=0; i<this.length; i++) {
-      memo = fn(memo, this[i]);
-    }
-    return memo;
-  }
-}
-
-if(!Array.prototype.find) {
-  Array.prototype.find = function(fn) {
-    for(var i=0; i<this.length; i++) {
-      if(fn(this[i])) {
-        return this[i];
-      }
-    }
-    return null;
-  }
-}
+if(!Array.prototype.find) Array.prototype.find = Array.prototype.__find;

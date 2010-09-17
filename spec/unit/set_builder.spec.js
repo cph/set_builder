@@ -89,11 +89,11 @@ describe 'SetBuilder'
   
     describe '.find'
       it 'should get a SetBuilder.Trait object by name'
-        expect(traits.find('awesome').toString()).to(eql, 'who are awesome');
-        expect(traits.find('died').toString()).to(eql,    'who died');
-        expect(traits.find('born').toString()).to(eql,    'who were born');
-        expect(traits.find('attended').toString()).to(eql,'who have attended');
-        expect(traits.find('name').toString()).to(eql,    'whose name');
+        expect(traits.__find('awesome').toString()).to(eql, 'who are awesome');
+        expect(traits.__find('died').toString()).to(eql,    'who died');
+        expect(traits.__find('born').toString()).to(eql,    'who were born');
+        expect(traits.__find('attended').toString()).to(eql,'who have attended');
+        expect(traits.__find('name').toString()).to(eql,    'whose name');
       end
     end
     
