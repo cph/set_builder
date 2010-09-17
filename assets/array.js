@@ -52,7 +52,7 @@ if(!Array.prototype.dup) Array.prototype.dup = Array.prototype.__dup;
 //
 Array.prototype.__each = function(fn) {
   for(i=0, len=this.length; i<len; i++) {
-    fn(this[i]);
+    fn(this[i], i);
   }
 }
 if(!Array.prototype.each) Array.prototype.each = Array.prototype.__each;
