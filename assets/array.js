@@ -51,7 +51,7 @@ if(!Array.prototype.dup) Array.prototype.dup = Array.prototype.__dup;
 // so that if Prototype defines each, I can still call __each
 //
 Array.prototype.__each = function(fn) {
-  for(i=0, len=this.length; i<len; i++) {
+  for(var i=0, len=this.length; i<len; i++) {
     fn(this[i], i);
   }
 }
