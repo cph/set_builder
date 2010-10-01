@@ -4,8 +4,8 @@ class ValueMapTest < ActiveSupport::TestCase
 
 
   test "value map can fetch what you supplied it" do
-    expected_hash = {1 => "Concordia", 2 => "McKendree"}
-    assert_equal expected_hash, SetBuilder::ValueMap.for(:school)
+    expected_map = [[1, "Concordia"], [2, "McKendree"]]
+    assert_equal expected_map, SetBuilder::ValueMap.for(:school)
   end
   
   
@@ -22,7 +22,7 @@ class ValueMapTest < ActiveSupport::TestCase
   
   
   test "value map should generate json that can be handed to the client-side SetBuilder" do
-    expected_json = "{\"school\":{\"1\":\"Concordia\",\"2\":\"McKendree\"}}"
+    expected_json = "{\"school\":[[1,\"Concordia\"],[2,\"McKendree\"]]}"
     assert_equal expected_json, SetBuilder::ValueMap.to_json
   end
 

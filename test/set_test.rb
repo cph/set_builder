@@ -44,7 +44,7 @@ class SetTest < ActiveSupport::TestCase
     data = [[:awesome]]
     set = Friend.that_belong_to(data)
 
-    expected_results = [{:conditions => {:awesome => true}}]
+    expected_results = [{},{:conditions => {:awesome => true}}]
     # Friend.reset_composed_scope
     assert_equal expected_results, set.perform.composed_scope
   end
@@ -58,6 +58,7 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     
     expected_results = [
+      {},
       {:conditions => {:awesome => true}},
       {:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}},
       {:conditions => {:alive => false}},

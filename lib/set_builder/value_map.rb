@@ -16,8 +16,10 @@ module SetBuilder
     
     def self.to_s(name, value)
       name = name.to_sym
-      map = @registered_value_maps[name]
-      (map ? map[value] : value).to_s
+      map = @registered_value_maps[name] || []
+      pair = map.find {|pair| pair[0] == value}
+      (pair ? pair[1] : value).to_s
+      # (map ? map[value] : value).to_s
     end
     
     
@@ -29,11 +31,16 @@ module SetBuilder
     
     
     
-    def self.register(name, map, name_method = :name, id_method = :id)
+    def self.register_collection(name, collection, name_method = :name, id_method = :id)
+      map = collection.map {|i| [i.send(id_method).to_s, i.send(name_method)]}
+      register(name, map)
+    end
+    
+    
+    
+    def self.register(name, map)
+      raise "map is expected to be an array of pairs" unless map.is_a?(Array)
       name = name.to_sym
-      if map.is_a?(Array)
-        map = map.inject({}){|hash, i| hash[i.send(id_method).to_s] = i.send(name_method); hash}
-      end
       @registered_value_maps[name] = map
     end
     

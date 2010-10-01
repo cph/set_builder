@@ -30,7 +30,7 @@ end
 
 # Sample class used by tests
 
-SetBuilder::ValueMap.register(:school, {1 => "Concordia", 2 => "McKendree"})
+SetBuilder::ValueMap.register(:school, [[1, "Concordia"], [2, "McKendree"]])
 
 class Friend
   extend SetBuilder

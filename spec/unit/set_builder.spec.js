@@ -17,9 +17,9 @@ describe 'SetBuilder'
         is: ['string']
       }
     });
-
-    SetBuilder.registerValueMap('school', {'1':'Concordia', '2':'McKendree'});
-
+    
+    SetBuilder.registerValueMap('school', [['1','Concordia'], ['2','McKendree']]);
+    
     set_data = [
       ['awesome'],
       ['attended', 2],
@@ -29,6 +29,13 @@ describe 'SetBuilder'
   end
   
   
+  
+  
+  describe '.getValueMap'
+    it 'should return an array of arrays'
+      expect(SetBuilder.getValueMap('school')).to(eql, [['1','Concordia'], ['2','McKendree']]);
+    end
+  end
   
   describe '.getValue'
     it 'should return a value based on the key and name'
