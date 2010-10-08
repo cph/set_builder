@@ -19,15 +19,21 @@ class SetTest < ActiveSupport::TestCase
     assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
 
+  test "sets with invalid modifiers should be invalid" do
+    data = [[:born, {:after => ["wrong"]}]]
+    set = Friend.that_belong_to(data)
+    assert_equal false, set.valid?
+  end
+  
   test "sets lacking expected modifiers should be invalid" do
     data = [[:born, {:ever => []}]]
     set = Friend.that_belong_to(data)
     assert_equal true, set.valid?
-
+    
     data = [[:born]]
     set = Friend.that_belong_to(data)
     assert_equal false, set.valid?
-  end
+  end  
   
   test "set structure with negations (nouns are ignored)" do
     data = [

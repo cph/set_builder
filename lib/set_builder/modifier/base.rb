@@ -6,7 +6,7 @@ module SetBuilder
       
       def initialize(hash)
         @operator, @values = (hash.is_a?(Hash) ? [hash.first[0].to_sym, hash.first[1]] : [nil, nil])
-        @values = [] if @values.nil?
+        @values ||= []
         @values = [@values] unless @values.is_a?(Array)
       end
       
@@ -17,10 +17,46 @@ module SetBuilder
       
       
       def valid?
-        !operator.nil? and 
-        (arguments = self.class.operators[operator]) and 
-        !arguments.nil? and
-        (arguments.length == values.length)
+        valid_operator?(self.operator) && valid_arguments?(self.values)
+      end
+      
+      
+      
+      def valid_operator?(operator)
+        !operator.nil? && self.class.operators.key?(operator)
+      end
+      
+      
+      
+      def valid_arguments?(values)
+        argument_types = self.class.operators[operator] || []
+        return false unless (values.length == argument_types.length)
+        values.each_with_index do |value, i|
+          return false unless valid_argument_of_type?(value, argument_types[i])
+        end
+        true
+      end
+      
+      
+      
+      def valid_argument_of_type?(argument, type)
+        validator = "valid_#{type}_argument?"
+        if respond_to?(validator)
+          send(validator, argument)
+        else
+          true
+        end
+      end
+      
+      
+      
+      def valid_date_argument?(string)
+        begin
+          Date.parse(string)
+          true
+        rescue
+          false
+        end
       end
       
       
