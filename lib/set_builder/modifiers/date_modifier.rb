@@ -13,6 +13,8 @@ module SetBuilder
           :before => [:date],
           :after => [:date],
           :on => [:date],
+          :during_month => [:month],
+          :during_year => [:number],
           :in_the_last => [:number, :period]
         }
       end
@@ -29,6 +31,10 @@ module SetBuilder
           "#{selector}>'#{format_value}'"
         when :on
           "#{selector}='#{format_value}'"
+        when :during_month
+          "MONTH(#{selector})=#{values[0]}"
+        when :during_year
+          "YEAR(#{selector})=#{values[0]}"
         when :in_the_last
           "#{selector}>='#{format_value}'"
         end
