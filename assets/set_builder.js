@@ -196,7 +196,7 @@ SetBuilder.Modifiers = function(_modifiers) {
   this.length = function() {
     return keys.length;
   }
-
+  
   // Returns the names of the operators allowed for the given modifier
   this.operators_for = function(modifier_type) {
     return Object.keys(_operators_for(modifier_type));
@@ -240,7 +240,7 @@ SetBuilder.Modifiers = function(_modifiers) {
 SetBuilder.Set = function(_raw_data) {
   
   if(!_raw_data) _raw_data = [];
-
+  
   var _constraints = [];
   _raw_data.__each(function(line) {
     var trait_name = line[0];
