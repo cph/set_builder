@@ -32,9 +32,9 @@ module SetBuilder
         when :on
           "#{selector}='#{format_value}'"
         when :during_month
-          "MONTH(#{selector})=#{values[0]}"
+          "MONTH(#{selector})=#{values[0].to_i}"
         when :during_year
-          "YEAR(#{selector})=#{values[0]}"
+          "YEAR(#{selector})=#{values[0].to_i}"
         when :in_the_last
           "#{selector}>='#{format_value}'"
         end
