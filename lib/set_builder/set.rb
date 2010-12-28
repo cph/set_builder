@@ -28,10 +28,10 @@ module SetBuilder
     end
     
     
-
+    
     #
     # Describes this set in natural language
-    #    
+    #
     def to_s
       constraints.to_sentence
     end

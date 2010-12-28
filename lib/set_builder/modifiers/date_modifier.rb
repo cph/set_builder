@@ -14,7 +14,7 @@ module SetBuilder
           :after => [:date],
           :on => [:date],
           :during_month => [:month],
-          :during_year => [:number],
+          :during_year => [:year],
           :in_the_last => [:number, :period]
         }
       end
