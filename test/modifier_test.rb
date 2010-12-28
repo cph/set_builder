@@ -49,7 +49,9 @@ class ModifierTest < ActiveSupport::TestCase
         "after"       => ["date"],
         "before"      => ["date"],
         "on"          => ["date"],
-        "in_the_last" => ["number", "period"]
+        "in_the_last" => ["number", "period"],
+        "during_month" => ["month"],
+        "during_year" => ["year"]
       },
       "string" => {
         "contains"            => ["string"],
