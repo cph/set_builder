@@ -67,12 +67,11 @@ module SetBuilder
     # !todo: this can be overriden or factored out to allow SetBuilder 
     #   to be used with other ORMs like DataMapper
     def get_model_and_scope(model_or_scope)
-      case model_or_scope # or association?
-      when ActiveRecord::NamedScope::Scope
+      if defined?(ActiveRecord::NamedScope::Scope) && model_or_scope.is_a?(ActiveRecord::NamedScope::Scope)
         [model_or_scope.proxy_scope, model_or_scope]
       else
         [model_or_scope, model_or_scope.scoped({})]
-      end      
+      end
     end
     
     

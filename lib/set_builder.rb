@@ -1,4 +1,5 @@
-require 'activerecord'
+require 'active_record'
+require 'active_support/core_ext'
 require 'set_builder/traits'
 require 'set_builder/modifiers'
 require 'set_builder/value_map'
