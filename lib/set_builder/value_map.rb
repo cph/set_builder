@@ -16,10 +16,13 @@ module SetBuilder
     
     def self.to_s(name, value)
       name = name.to_sym
-      map = @registered_value_maps[name] || []
-      pair = map.find {|pair| pair[0] == value}
-      (pair ? pair[1] : value).to_s
-      # (map ? map[value] : value).to_s
+      map = @registered_value_maps[name]
+      if map
+        pair = map.find {|pair| pair[0] == value}
+        pair ? pair[1].to_s : "(unknown)"
+      else
+        value.to_s
+      end
     end
     
     

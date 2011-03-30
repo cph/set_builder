@@ -33,10 +33,14 @@ var SetBuilder = (function() {
       return _value_maps[key];
     },
     getValue: function(key, value) {
-      var match = value.toString();
-      var map = SetBuilder.getValueMap(key) || [];
-      var pair = map.__find(function(i) { return (i[0] == match) });
-      return pair ? pair[1] : value;
+      var match = value.toString(),
+          map = SetBuilder.getValueMap(key);
+      if(map) {
+        var pair = map.__find(function(i) { return (i[0] == match) });
+        return pair ? pair[1] : '(unknown)';
+      } else {
+        return value;
+      }
       // map = _value_maps[key];
       // return map ? map[value.toString()] : value;
     },
