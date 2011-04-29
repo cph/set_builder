@@ -127,7 +127,7 @@ SetBuilder.Constraint = function(_trait, args) {
     return _description;
   }
 
-}
+};
 
 
 
@@ -164,7 +164,7 @@ SetBuilder.Modifier = function(_name, _operator, _values, _params) {
     return words.join(' ');
   }
 
-}
+};
 
 
 
@@ -230,7 +230,7 @@ SetBuilder.Modifiers = function(_modifiers) {
     return new SetBuilder.Modifier(name, operator, values, params);
   }
 
-}
+};
 
 
 
@@ -280,7 +280,7 @@ SetBuilder.Set = function(_raw_data) {
     return this.constraints().toSentence();
   }
   
-}
+};
 
 
 
@@ -362,7 +362,7 @@ SetBuilder.Trait = function(_raw_data) {
     return new SetBuilder.Constraint(this, args);
   }
 
-}
+};
 
 
 
@@ -398,4 +398,4 @@ SetBuilder.Traits = function(_raw_data) {
     });
   }
 
-}
+};
