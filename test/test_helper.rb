@@ -3,8 +3,6 @@ require 'set_builder'
 require 'active_support'
 require 'active_support/core_ext'
 require 'active_support/test_case'
-require 'redgreen'
-
 
 
 
