@@ -218,11 +218,12 @@ SetBuilder.Modifiers = function(_modifiers) {
   }
   
   this.apply = function(modifier_type, args) {
+    args = args || {};
     var operator = Object.keys(args)[0];
     if(!operator) throw 'An operator name was not supplied.'
     
     var params = this.params_for_operator(modifier_type, operator);
-    var values = (args||{})[operator];
+    var values = (args)[operator];
 
     if(!(values instanceof Array)) values = [values];
     if(values.length != params.length) throw ('The operator "' + operator.toString() + '" expects ' + params.length + ' arguments.');
