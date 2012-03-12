@@ -217,6 +217,17 @@ SetBuilder.Modifiers = function(_modifiers) {
     }
   }
   
+  // Examples of Usage:
+  //
+  // An operator that takes one argument:
+  //   apply('date', {'before': ['2012-11-12']})
+  //
+  // An operator that takes two arguments:
+  //   apply('date', {'in_the_last': [5, 'days']})
+  //
+  //
+  // `args` is expected to be an object that has one key and one value.
+  //
   this.apply = function(modifier_type, args) {
     args = args || {};
     var operator = Object.keys(args)[0];
@@ -226,7 +237,9 @@ SetBuilder.Modifiers = function(_modifiers) {
     var values = (args)[operator];
 
     if(!(values instanceof Array)) values = [values];
-    if(values.length != params.length) throw ('The operator "' + operator.toString() + '" expects ' + params.length + ' arguments.');
+    if(values.length != params.length) {
+      throw ('The operator "' + operator.toString() + '" expects ' + params.length + ' arguments but received ' + values.length + '.');
+    }
     
     return new SetBuilder.Modifier(name, operator, values, params);
   }
