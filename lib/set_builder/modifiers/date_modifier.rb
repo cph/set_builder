@@ -15,7 +15,8 @@ module SetBuilder
           :on => [:date],
           :during_month => [:month],
           :during_year => [:year],
-          :in_the_last => [:number, :period]
+          :in_the_last => [:number, :period],
+          :between => [:date, :date]
         }
       end
       
@@ -26,17 +27,19 @@ module SetBuilder
         when :ever
           "#{selector} IS NOT NULL"
         when :before
-          "#{selector}<'#{format_value}'"
+          "#{selector}<'#{format_value(get_date)}'"
         when :after
-          "#{selector}>'#{format_value}'"
+          "#{selector}>'#{format_value(get_date)}'"
         when :on
-          "#{selector}='#{format_value}'"
+          "#{selector}='#{format_value(get_date)}'"
         when :during_month
           "MONTH(#{selector})=#{values[0].to_i}"
         when :during_year
           "YEAR(#{selector})=#{values[0].to_i}"
         when :in_the_last
-          "#{selector}>='#{format_value}'"
+          "#{selector}>='#{format_value(get_date)}'"
+        when :between
+          "(#{selector}>='#{format_value(values[0].to_date)}' AND #{selector}<='#{format_value(values[1].to_date)}')"
         end
       end
       
@@ -66,8 +69,8 @@ module SetBuilder
       
       
       
-      def format_value
-        get_date.strftime('%Y-%m-%d')
+      def format_value(date)
+        date.strftime('%Y-%m-%d')
       end
       
       
