@@ -12,6 +12,7 @@ module SetBuilder
           :is => [:number],
           :is_less_than => [:number],
           :is_greater_than => [:number],
+          :is_between => [:number, :number]
         }
       end
       
@@ -25,6 +26,8 @@ module SetBuilder
           ["#{selector}<?", format_value]
         when :is_greater_than
           ["#{selector}>?", format_value]
+        when :is_between
+          ["#{selector}>=? AND #{selector}<=?", values[0], values[1]]
         end
       end
       
