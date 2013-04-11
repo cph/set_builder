@@ -39,7 +39,7 @@ module SetBuilder
         when :in_the_last
           "#{selector}>='#{format_value(get_date)}'"
         when :between
-          "(#{selector}>='#{format_value(values[0].to_date)}' AND #{selector}<='#{format_value(values[1].to_date)}')"
+          "(#{selector}>='#{format_value(Date.parse values[0])}' AND #{selector}<='#{format_value(Date.parse values[1])}')"
         end
       end
       
@@ -61,9 +61,9 @@ module SetBuilder
             values[0].to_i.weeks.ago
           when "days", "day"
             values[0].to_i.days.ago
-          end          
+          end
         else
-          values[0].to_date
+          Date.parse values[0]
         end
       end
       
