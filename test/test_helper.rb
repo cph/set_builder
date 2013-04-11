@@ -1,8 +1,9 @@
 require 'rubygems'
+require "rails"
+require "rails/test_help"
+require "active_support/core_ext"
+require "turn"
 require 'set_builder'
-require 'active_support'
-require 'active_support/core_ext'
-require 'active_support/test_case'
 
 
 
