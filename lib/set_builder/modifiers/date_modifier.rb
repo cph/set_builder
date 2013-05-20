@@ -33,7 +33,7 @@ module SetBuilder
         when :on
           "#{selector}='#{format_value(get_date)}'"
         when :during_month
-          "MONTH(#{selector})=#{values[0].to_i}"
+          "extract(month from #{selector})=#{values[0].to_i}"
         when :during_year
           year = values[0].to_i
           return "TRUE" if year <= 0
