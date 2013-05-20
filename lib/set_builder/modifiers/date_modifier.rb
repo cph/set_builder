@@ -36,6 +36,7 @@ module SetBuilder
           "MONTH(#{selector})=#{values[0].to_i}"
         when :during_year
           year = values[0].to_i
+          return "TRUE" if year <= 0
           "#{selector} BETWEEN '#{year}-01-01' AND '#{year}-12-31'"
         when :in_the_last
           "#{selector}>='#{format_value(get_date)}'"
