@@ -58,6 +58,11 @@ module SetBuilder
           false
         end
       end
+
+
+      def valid_number_argument?(number)
+        !(number.to_s =~ /\A\d+\Z/).nil?
+      end
       
       
       

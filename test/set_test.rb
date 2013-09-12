@@ -24,6 +24,18 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     assert_equal false, set.valid?
   end
+
+  test "sets should not allow non-numbers in a number modifiers" do
+    data = [[:age, {:is => ["12a"]}]]
+    set = Friend.that_belong_to(data)
+    refute set.valid?
+  end
+
+  test "sets should not allow empty string in a number modifiers" do
+    data = [[:age, {:is => [""]}]]
+    set = Friend.that_belong_to(data)
+    refute set.valid?
+  end
   
   test "sets lacking expected modifiers should be invalid" do
     data = [[:born, {:ever => []}]]
