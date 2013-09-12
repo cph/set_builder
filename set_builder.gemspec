@@ -6,10 +6,10 @@ require 'set_builder/version'
 Gem::Specification.new do |spec|
   spec.name          = "set_builder"
   spec.version       = SetBuilder::VERSION
-  spec.authors       = ["Bob Lail and Gene Doyel"]
-  spec.email         = ["pair=bob.lail+gene.doyel@cphepdev.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.authors       = ["Bob Lail"]
+  spec.email         = ["bob.lailfamily@gmail.com"]
+  spec.description   = %q{A gem for describing constraints on data sets}
+  spec.summary       = %q{Define traits on a model, create sets that constrain those traits, and generate both natural-language descriptions of the sets and queries to select them}
   spec.homepage      = ""
   spec.license       = "MIT"
 
