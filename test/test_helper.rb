@@ -49,6 +49,10 @@ class Friend
     {:conditions => query.modifiers[0].build_conditions_for("friends.birthday")}
   end
 
+  trait(:whose, "age", :number) do |query|
+    {:conditions => query.modifiers[0].build_conditions_for("friends.age")}
+  end
+
   # this trait has a direct object
   trait(:has, {"attended" => :school}) do |query|
     {
