@@ -54,6 +54,12 @@ class ModifierTest < ActiveSupport::TestCase
         "during_year" => ["year"],
         "between"     => ["date", "date"]
       },
+      "number"=> {
+        "is"=>["number"],
+        "is_less_than"=>["number"],
+        "is_greater_than"=>["number"],
+        "is_between"=>["number", "number"]
+      },
       "string" => {
         "contains"            => ["string"],
         "does_not_contain"    => ["string"],

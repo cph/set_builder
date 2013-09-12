@@ -5,7 +5,7 @@ class TraitsTest < ActiveSupport::TestCase
 
 
   test "traits" do
-    expected_traits = %w{attended awesome born died name}
+    expected_traits = %w{age attended awesome born died name}
     assert_equal expected_traits, Friend.traits.collect(&:name).sort
   end
   
@@ -23,7 +23,7 @@ class TraitsTest < ActiveSupport::TestCase
   end
   
   test "collection of modifiers" do
-    expected_modifiers = %w{DateModifier StringModifier}.collect {|name| "SetBuilder::Modifiers::#{name}"}
+    expected_modifiers = %w{DateModifier NumberModifier StringModifier}.collect {|name| "SetBuilder::Modifiers::#{name}"}
     assert_equal expected_modifiers, Friend.traits.modifiers.collect(&:name).sort
   end
   
@@ -31,6 +31,7 @@ class TraitsTest < ActiveSupport::TestCase
     expected_json = [['awesome', 'reflexive'],
                      ['died', 'active'],
                      ['born', 'passive', ['date']],
+                     ['age', 'noun', ['number']],
                      [['attended', 'school'], 'perfect'],
                      ['name', 'noun', ['string']]].to_json
     assert_equal expected_json, Friend.traits.to_json
