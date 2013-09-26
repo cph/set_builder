@@ -58,26 +58,7 @@ module SetBuilder
     
     
     def perform(scope)
-      # _block, _self = @block, self
-      # scope.instance_eval do      # the idea is to compose scopes: to filter within the context of the current scope
-      #   p self.class
-      #   p self.composed_scope.count
-      #   _result = _block.call(_self)
-      #   p _result.composed_scope.count
-      #   return _result
-      # end
-      # scope.scoped(@block.call(self))
-      _perform(scope, &@block)
-    end
-    
-    
-    
-  private
-    
-    
-    
-    def _perform(scope, &block)
-      scope.scoped(yield(self))
+      scope.scoped(@block.call(self, scope))
     end
     
     
