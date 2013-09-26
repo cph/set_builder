@@ -41,7 +41,7 @@ module SetBuilder
         when :in_the_last
           "#{selector}>='#{format_value(get_date)}'"
         when :between
-          "(#{selector}>='#{format_value(Date.parse values[0])}' AND #{selector}<='#{format_value(Date.parse values[1])}')"
+          "#{selector} BETWEEN '#{format_value(Date.parse values[0])}' AND '#{format_value(Date.parse values[1])}'"
         end
       end
       
