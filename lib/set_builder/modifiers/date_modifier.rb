@@ -72,6 +72,7 @@ module SetBuilder
       
       
       def format_value(date)
+        date = [Date.new(1,1,1), date].max # constrain dates to A.D.
         date.strftime('%Y-%m-%d')
       end
       
