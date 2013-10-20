@@ -1,7 +1,12 @@
 SetBuilder
 ==========
 
+[![Build Status](https://travis-ci.org/boblail/set_builder.png?branch=master)](https://travis-ci.org/boblail/set_builder)
+
+[![Code Climate](https://codeclimate.com/github/boblail/set_builder.png)](https://codeclimate.com/github/boblail/set_builder)
+
 SetBuilder's purpose is to transform _described_ data sets into queries or natural language.
+
 
 
 Example
