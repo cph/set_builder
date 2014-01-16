@@ -22,6 +22,7 @@ module SetBuilder
     
     
     attr_reader :trait, :direct_object, :modifiers, :negative
+    alias :negative? :negative
     
     
     
