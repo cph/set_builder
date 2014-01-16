@@ -4,10 +4,6 @@ class SetTest < ActiveSupport::TestCase
   
   
   
-  test "FakeScope" do
-    assert_equal [5, 4, 3, 2], FakeScope.new(5).scoped(4).scoped(3).scoped(2).composed_scope
-  end
-  
   test "set data struture" do
     data = [
       [:awesome],
@@ -63,8 +59,7 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     
     expected_results = [{:conditions => {:awesome => true}}]
-    # Friend.reset_composed_scope
-    assert_equal expected_results, set.perform.composed_scope
+    assert_equal expected_results, set.perform
   end
   
   test "complex perform" do
@@ -81,8 +76,7 @@ class SetTest < ActiveSupport::TestCase
       {:conditions => {:alive => false}},
       {:conditions => ["friends.name LIKE ?", "Jerome%"]}
     ]
-    # Friend.reset_composed_scope
-    assert_equal expected_results, set.perform.composed_scope
+    assert_equal expected_results, set.perform
   end
   
   test "invalid set" do

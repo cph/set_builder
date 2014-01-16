@@ -3,14 +3,15 @@ module SetBuilder
     
     
     
-    def initialize(model_or_scope, raw_data)
-      @model, @scope = get_model_and_scope(model_or_scope)
+    def initialize(model, scope, raw_data)
+      @model = model
+      @scope = scope
       @set = raw_data
     end
     
     
     
-    attr_reader :model
+    attr_reader :model, :scope
     
     
     
@@ -43,7 +44,7 @@ module SetBuilder
     # which can fetch the objects which belong to this set
     #    
     def perform
-      constraints.inject(@scope) {|scope, constraint| constraint.perform(scope)}
+      constraints.inject(scope) { |scope, constraint| constraint.perform(scope) }
     end
     
     
@@ -52,26 +53,15 @@ module SetBuilder
     
     
     
+    attr_reader :set
+    
     def get_constraints
-      @set.inject([]) do |constraints, line|
+      set.inject([]) do |constraints, line|
         negate, trait_name, args = false, line.first.to_s, line[1..-1]
         trait_name, negate = trait_name[1..-1], true if (trait_name[0..0] == "!")
         trait = model.traits[trait_name]
         raise("\"#{trait_name}\" is not a trait for #{model}") unless trait
         constraints << trait.apply(*args).negate(negate)
-      end
-    end
-    
-    
-    
-    # !todo: this can be overriden or factored out to allow SetBuilder 
-    #   to be used with other ORMs like DataMapper
-    def get_model_and_scope(model_or_scope)
-      if defined?(ActiveRecord::NamedScope::Scope) && model_or_scope.is_a?(ActiveRecord::NamedScope::Scope)
-        [model_or_scope.proxy_scope, model_or_scope]
-      else
-        # [model_or_scope, model_or_scope.scoped({})]
-        [model_or_scope, model_or_scope.scoped]
       end
     end
     

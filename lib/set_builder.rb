@@ -25,7 +25,12 @@ module SetBuilder
   
   
   def that_belong_to(set)
-    SetBuilder::Set.new(self, set)
+    SetBuilder::Set.new(self, to_scope, set)
+  end
+  
+  
+  def to_scope
+    scoped
   end
   
   

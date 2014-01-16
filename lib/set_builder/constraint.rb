@@ -58,7 +58,7 @@ module SetBuilder
     
     
     def perform(scope)
-      scope.scoped(@block.call(self, scope))
+      @block.call(self, scope)
     end
     
     
