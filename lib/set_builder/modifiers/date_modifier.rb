@@ -47,6 +47,32 @@ module SetBuilder
       
       
       
+      def build_arel_for(selector)
+        case operator
+        when :ever
+          selector.not_eq(nil)
+        when :before
+          selector.lt(get_date)
+        when :after
+          selector.gt(get_date)
+        when :on
+          selector.eq(get_date)
+        when :during_month
+          Arel::Nodes::Extract.new(selector, "month").eq(values[0].to_i)
+        when :during_year
+          Arel::Nodes::Extract.new(selector, "year").eq(values[0].to_i)
+        when :in_the_last
+          selector.gteq(get_date)
+        when :between
+          selector.between(
+            Date.parse(values[0]),
+            Date.parse(values[1])
+          )
+        end
+      end
+      
+      
+      
     protected
       
       

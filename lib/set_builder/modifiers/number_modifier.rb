@@ -33,12 +33,31 @@ module SetBuilder
       
       
       
+      def build_arel_for(selector)
+        case operator
+        when :is
+          selector.eq(value)
+        when :is_less_than
+          selector.lt(value)
+        when :is_greater_than
+          selector.gt(value)
+        when :is_between
+          selector.gteq(value).and(selector.lteq(value))
+        end
+      end
+      
+      
+      
     private
       
       
       
-      def format_value
+      def value
         values[0]
+      end
+      
+      def format_value
+        value
       end
       
       
