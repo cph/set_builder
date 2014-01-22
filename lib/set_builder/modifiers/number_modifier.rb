@@ -21,11 +21,11 @@ module SetBuilder
       def build_conditions_for(selector)
         case operator
         when :is
-          ["#{selector}=?", format_value]
+          ["#{selector}=?", value]
         when :is_less_than
-          ["#{selector}<?", format_value]
+          ["#{selector}<?", value]
         when :is_greater_than
-          ["#{selector}>?", format_value]
+          ["#{selector}>?", value]
         when :is_between
           ["#{selector}>=? AND #{selector}<=?", values[0], values[1]]
         end
@@ -44,20 +44,6 @@ module SetBuilder
         when :is_between
           selector.gteq(value).and(selector.lteq(value))
         end
-      end
-      
-      
-      
-    private
-      
-      
-      
-      def value
-        values[0]
-      end
-      
-      def format_value
-        value
       end
       
       

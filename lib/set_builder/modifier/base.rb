@@ -14,6 +14,10 @@ module SetBuilder
       
       attr_reader :operator, :values
       
+      def value
+        values[0]
+      end
+      
       
       
       def valid?
