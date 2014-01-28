@@ -64,10 +64,7 @@ module SetBuilder
         when :in_the_last
           selector.gteq(get_date)
         when :between
-          selector.between(
-            Date.parse(values[0]),
-            Date.parse(values[1])
-          )
+          selector.in(Date.parse(values[0])..Date.parse(values[1]))
         end
       end
       
