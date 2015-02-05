@@ -18,7 +18,7 @@ module SetBuilder
       name = name.to_sym
       map = @registered_value_maps[name]
       if map
-        pair = map.find {|pair| pair[0] == value}
+        pair = map.find { |pair| pair[0] == value || pair[0] == value.to_s }
         pair ? pair[1].to_s : "(unknown)"
       else
         value.to_s
