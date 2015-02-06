@@ -1,9 +1,7 @@
-gem 'minitest'
 require "rubygems"
 require "rails"
 require "rails/test_help"
 require "active_support/core_ext"
-require "turn"
 require "set_builder"
 require "pry"
 require "support/fake_connection"
