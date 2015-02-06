@@ -15,8 +15,17 @@ module SetBuilder
     
     
     def self.to_s(name, value)
+      if value.is_a?(Array)
+        values = value.map { |value| self.send(__method__, name, value) }
+        return case value.length
+        when 0; ""
+        when 1; values.first
+        when 2; "#{values.first} or #{values.last}"
+        else; "#{values[0..-2].join(', ')}, or #{values.last}"
+        end
+      end 
       name = name.to_sym
-      map = @registered_value_maps[name]
+      map = @registered_value_maps[name]     
       if map
         pair = map.find { |pair| pair[0] == value || pair[0] == value.to_s }
         pair ? pair[1].to_s : "(unknown)"
