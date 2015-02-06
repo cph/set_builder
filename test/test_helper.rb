@@ -1,3 +1,4 @@
+gem 'minitest'
 require "rubygems"
 require "rails"
 require "rails/test_help"
