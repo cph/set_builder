@@ -42,7 +42,7 @@ module SetBuilder
         when :is_greater_than
           selector.gt(value)
         when :is_between
-          selector.gteq(value).and(selector.lteq(value))
+          selector.gteq(values[0]).and(selector.lteq(values[1]))
         end
       end
       
