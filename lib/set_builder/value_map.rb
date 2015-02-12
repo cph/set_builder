@@ -16,14 +16,15 @@ module SetBuilder
     
     def self.to_s(name, value)
       if value.is_a?(Array)
-        values = value.map { |value| self.send(__method__, name, value) }
-        return case value.length
-        when 0; ""
-        when 1; values.first
-        when 2; "#{values.first} or #{values.last}"
-        else; "#{values[0..-2].join(', ')}, or #{values.last}"
+        values = value.map { |value| to_s(name, value) }
+        case value.length
+        when 0 then return ""
+        when 1 then return values.first
+        when 2 then return "#{values.first} or #{values.last}"
+        else return "#{values[0..-2].join(', ')}, or #{values.last}"
         end
       end 
+      
       name = name.to_sym
       map = @registered_value_maps[name]     
       if map
@@ -44,7 +45,7 @@ module SetBuilder
     
     
     def self.register_collection(name, collection, name_method = :name, id_method = :id)
-      map = collection.map {|i| [i.send(id_method).to_s, i.send(name_method)]}
+      map = collection.map { |i| [i.send(id_method).to_s, i.send(name_method)] }
       register(name, map)
     end
     
