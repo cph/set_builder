@@ -16,13 +16,11 @@ module SetBuilder
     
     def initialize(trait_expression, &block)
       @parsed_expression = parse(trait_expression)
-      @__part_of_speech = parsed_expression.select { |token, value| token == :string }.first[1].split(' ').first.to_sym rescue nil
+      @__part_of_speech = find(:string).split(' ').first.to_sym rescue nil
       @part_of_speech = get_part_of_speech(@__part_of_speech)
+      @name, @direct_object_type = find(:name), find(:direct_object_type)
       @block = block
-      @name = parsed_expression.select { |token, value| token == :name }.first[1]
-      @direct_object_type = parsed_expression.select { |token, value| token == :direct_object_type }.first
-      @direct_object_type = @direct_object_type ? @direct_object_type[1] : nil
-      @modifiers = parsed_expression.select { |token, value| token == :modifier }.map { |_, modifier| Modifier[modifier.to_sym]  }
+      @modifiers = find_all(:modifier ).map { |_, modifier| Modifier[modifier.to_sym]  }
     end
     
     def requires_direct_object?
@@ -47,6 +45,15 @@ module SetBuilder
       when :noun
         "whose #{name}"
       end
+    end
+    
+    def find_all(token)
+      parsed_expression.select { |_token, value| _token == token }
+    end
+    
+    def find(token)
+      result = find_all(token).first
+      result[1] if result
     end
     
     def to_json
