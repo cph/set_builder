@@ -8,8 +8,7 @@ require 'set_builder/engine'
 
 
 module SetBuilder
-  
-  
+    
   def self.extended(base)
     base.instance_variable_set("@traits", SetBuilder::Traits.new)
     base.send(:include, SetBuilder::Modifiers)
@@ -18,47 +17,22 @@ module SetBuilder
   
   attr_reader :traits
   
-  
   def modifiers
     traits.modifiers
   end
-  
   
   def that_belong_to(set)
     SetBuilder::Set.new(self, to_scope, set)
   end
   
-  
   def to_scope
     scoped
   end
-  
-  
+
 protected
-  
-  
-  
-  def trait(*args, &block)
-    part_of_speech = get_part_of_speech(args.shift)
-    name = args.shift
-    traits << Trait.new(name, part_of_speech, *args, &block)
+
+  def trait(trait_expression, &block)
+    traits << Trait.new(trait_expression, &block)
   end
-  
-  
-  def get_part_of_speech(arg)
-    case arg
-    when :is, :are, :reflexive
-      :reflexive
-    when nil, :active
-      :active
-    when :was, :were, :passive
-      :passive
-    when :has, :have, :perfect
-      :perfect
-    when :whose, :noun
-      :noun
-    end
-  end
-  
   
 end
