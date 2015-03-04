@@ -27,5 +27,11 @@ SetBuilder can render this Set in plain English:
 It can also generate a NamedScope on an ActiveRecord model to fetch the people who fit in this set.
 
 
+### Running the tests
 
-Copyright (c) 2010 Bob Lail, released under the MIT license
+*Ruby* `bundle exec rake test`
+
+*Javascript* `jspec run --browsers ff`
+
+
+Copyright (c) 2010, 2015 Bob Lail, released under the MIT license
