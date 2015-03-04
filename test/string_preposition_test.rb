@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StringModifierTest < ActiveSupport::TestCase
+class StringPrepositionTest < ActiveSupport::TestCase
   include SetBuilder::Modifiers
   
   attr_reader :table
@@ -11,7 +11,7 @@ class StringModifierTest < ActiveSupport::TestCase
   
   
   test "#build_arel_for should generate the correct SQL" do
-    modifier = StringModifier.new({:does_not_contain => ["banana"]})
+    modifier = StringPreposition.new({:does_not_contain => ["banana"]})
     assert_equal "\"fruits\".\"name\" NOT LIKE '%banana%'", modifier.build_arel_for(table[:name]).to_sql
   end
   

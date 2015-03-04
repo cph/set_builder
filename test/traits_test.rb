@@ -23,7 +23,7 @@ class TraitsTest < ActiveSupport::TestCase
   end
   
   test "collection of modifiers" do
-    expected_modifiers = %w{DateModifier NumberModifier StringModifier}.collect {|name| "SetBuilder::Modifiers::#{name}"}
+    expected_modifiers = %w{DatePreposition NumberPreposition StringPreposition}.collect {|name| "SetBuilder::Modifiers::#{name}"}
     assert_equal expected_modifiers, Friend.traits.modifiers.collect(&:name).sort
   end
   

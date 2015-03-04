@@ -98,9 +98,9 @@ module SetBuilder
   # Force predefined modifiers to pass `valid_modifier?`
   #
   Modifier.register(
-    [:date,     Modifiers::DateModifier],
-    [:number,   Modifiers::NumberModifier],
-    [:string,   Modifiers::StringModifier]
+    [:date,     Modifiers::DatePreposition],
+    [:number,   Modifiers::NumberPreposition],
+    [:string,   Modifiers::StringPreposition]
   )
   
   

@@ -5,11 +5,11 @@ class ModifierTest < ActiveSupport::TestCase
 
 
   test "get type with string" do
-    assert_equal StringModifier, SetBuilder::Modifier["String"]
+    assert_equal StringPreposition, SetBuilder::Modifier["String"]
   end
   
   test "get type with symbol" do
-    assert_equal StringModifier, SetBuilder::Modifier[:string]
+    assert_equal StringPreposition, SetBuilder::Modifier[:string]
   end
 
   test "registering a modifier" do

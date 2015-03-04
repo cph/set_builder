@@ -3,7 +3,7 @@ require 'set_builder/modifier/adverb'
 
 module SetBuilder
   module Modifiers
-    class DateModifier < Modifier::Adverb
+    class DatePreposition < Modifier::Adverb
       
       
       

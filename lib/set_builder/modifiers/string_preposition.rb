@@ -3,7 +3,7 @@ require 'set_builder/modifier/verb'
 
 module SetBuilder
   module Modifiers
-    class StringModifier < Modifier::Verb
+    class StringPreposition < Modifier::Verb
       
       
       
