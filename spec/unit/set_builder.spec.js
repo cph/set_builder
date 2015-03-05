@@ -2,11 +2,25 @@ describe 'SetBuilder'
   before_each
 
     SetBuilder.registerTraits([
-      ['awesome', 'reflexive'],
-      ['died', 'active'],
-      ['born', 'passive', ['date']],
-      [['attended', 'school'], 'perfect'],
-      ['name', 'noun', ['string']]
+      [['string','who are'],
+        ['negative','not'],
+        ['name','awesome']],
+       [['string','who'],
+        ['negative','have not'],
+        ['name','died']],
+       [['string','who were'],
+        ['name','born'],
+        ['modifier','date']],
+       [['string','whose'],
+        ['name','age'],
+        ['modifier','number']],
+       [['string','who have'],
+        ['negative','not'],
+        ['name','attended'],
+        ['direct_object_type','school']],
+       [['string','whose'],
+        ['name','name'],
+        ['modifier','string']]
     ]);
 
     SetBuilder.registerModifiers({
@@ -60,20 +74,20 @@ describe 'SetBuilder'
   
     describe '.constructor'
       it 'should correctly parse simple parameters'
-        var trait = new SetBuilder.Trait(['awesome', 'reflexive']);
+        var trait = new SetBuilder.Trait([['string', 'who are'], ['name', 'awesome']]);
         expect(trait.name()).to(be, 'awesome');
         expect(trait.toString()).to(eql, 'who are awesome');
       end
     
       it 'should correctly identify direct objects'
-        var trait = new SetBuilder.Trait([['attended', 'string'], 'perfect']);
+        var trait = new SetBuilder.Trait([['string', 'who have'], ['name', 'attended'], ['direct_object_type', 'string']]);
         expect(trait.name()).to(be, 'attended');
         expect(trait.requires_direct_object()).to(be, true);
         expect(trait.toString()).to(eql, 'who have attended');
       end
     
       it 'should correctly parse paramters with modifiers'
-        var trait = new SetBuilder.Trait(['born', 'passive', ['date']]);
+        var trait = new SetBuilder.Trait([['string', 'who were'], ['name', 'born'], ['modifier', 'date']]);
         expect(trait.modifiers().length).to(be, 1);
         expect(trait.toString()).to(eql, 'who were born');
       end
@@ -90,7 +104,7 @@ describe 'SetBuilder'
   
     describe '.length'
       it 'should have parsed the data structure correctly'
-        expect(traits.length()).to(be, 5);
+        expect(traits.length()).to(be, 6);
       end
     end
   

@@ -6,7 +6,7 @@ module SetBuilder
   class Trait
     
     attr_reader :name, :parsed_expression, :part_of_speech, :modifiers, :direct_object_type
-    
+        
     LEXER = { 
       name: /("[^"]+")/,
       direct_object_type: /(:\w+)/,
@@ -16,11 +16,9 @@ module SetBuilder
     
     def initialize(trait_expression, &block)
       @parsed_expression = parse(trait_expression)
-      @__part_of_speech = find(:string).split(' ').first.to_sym rescue nil
-      @part_of_speech = get_part_of_speech(@__part_of_speech)
       @name, @direct_object_type = find(:name), find(:direct_object_type)
       @block = block
-      @modifiers = find_all(:modifier ).map { |_, modifier| Modifier[modifier.to_sym]  }
+      @modifiers = find_all(:modifier ).map { |modifier| Modifier[modifier.to_sym]  }
     end
     
     def requires_direct_object?
@@ -29,43 +27,33 @@ module SetBuilder
     alias :direct_object_required? :requires_direct_object?
 
     def noun?
-      (self.part_of_speech == :noun)
+      !negative?
+    end
+    
+    def negative?
+      find(:negative)
     end
 
     def to_s(negative=false)
-      case part_of_speech
-      when :active
-        negative ? "who have not #{name}" : "who #{name}"
-      when :perfect
-        negative ? "who have not #{name}" : "who have #{name}"
-      when :passive
-        negative ? "who were not #{name}" : "who were #{name}"
-      when :reflexive
-        negative ? "who are not #{name}" : "who are #{name}"
-      when :noun
-        "whose #{name}"
-      end
+      parsed_expression.reject do |token, _|
+        [:modifier, :direct_object_type].include?(token) || (!negative && token == :negative)
+      end.map do |token, value|
+        token == :name ? name : value
+      end.join(" ")
     end
     
     def find_all(token)
-      parsed_expression.select { |_token, value| _token == token }
+      parsed_expression.select { |(_token, _)| _token == token }.map { |(_, value)| value }
     end
     
     def find(token)
-      result = find_all(token).first
-      result[1] if result
+      find_all(token).first
     end
     
-    def to_json
-      array = []
-      array << (requires_direct_object? ? [name, @direct_object_type] : name)
-      array << part_of_speech
-      array << modifiers.collect{|klass| Modifier.name(klass)} unless modifiers.empty?
-      array.to_json
+    def as_json(*)
+      parsed_expression
     end
-    
-    
-    
+
     def apply(*args)
       SetBuilder::Constraint.new(self, *args, &@block)
     end
@@ -86,21 +74,6 @@ module SetBuilder
     
     def value_for(lexeme)
       lexeme.to_s.strip.gsub(/[<>"\[\]:]/, "")
-    end
-
-    def get_part_of_speech(arg)
-      case arg
-      when :is, :are, :reflexive
-        :reflexive
-      when nil, :active
-        :active
-      when :was, :were, :passive
-        :passive
-      when :has, :have, :perfect
-        :perfect
-      when :whose, :noun
-        :noun
-      end
     end
 
   end

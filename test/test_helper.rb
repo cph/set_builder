@@ -15,15 +15,15 @@ SetBuilder::ValueMap.register(:school, [[1, "Concordia"], [2, "McKendree"]])
 class Friend
   extend SetBuilder
 
-  trait('is "awesome"') do |query, scope|
+  trait('who are [not] "awesome"') do |query, scope|
     scope << {:conditions => {:awesome => true}}
   end
 
-  trait('"died"') do |query, scope|
+  trait('who [have not] "died"') do |query, scope|
     scope << {:conditions => {:alive => false}}
   end
 
-  trait('was "born" <date>') do |query, scope|
+  trait('who were "born" <date>') do |query, scope|
     scope << {:conditions => query.modifiers[0].build_conditions_for("friends.birthday")}
   end
 
@@ -31,7 +31,7 @@ class Friend
     scope << {:conditions => query.modifiers[0].build_conditions_for("friends.age")}
   end
 
-  trait('has [not] "attended" :school') do |query, scope|
+  trait('who have [not] "attended" :school') do |query, scope|
     scope << {
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
       :conditions => {"schools.id" => query.direct_object}
