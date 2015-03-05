@@ -18,7 +18,7 @@ module SetBuilder
       @parsed_expression = parse(trait_expression)
       @name, @direct_object_type = find(:name), find(:direct_object_type)
       @block = block
-      @modifiers = find_all(:modifier ).map { |modifier| Modifier[modifier.to_sym]  }
+      @modifiers = find_all(:modifier ).map { |modifier| Modifier[modifier]  }
     end
     
     def requires_direct_object?

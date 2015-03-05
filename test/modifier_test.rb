@@ -5,7 +5,7 @@ class ModifierTest < ActiveSupport::TestCase
 
 
   test "get type with string" do
-    assert_equal StringPreposition, SetBuilder::Modifier["String"]
+    assert_equal StringPreposition, SetBuilder::Modifier["StringPreposition"]
   end
   
   test "get type with symbol" do

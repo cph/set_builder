@@ -33,8 +33,14 @@ module SetBuilder
     
     
     
-    def self.[](klass_or_symbol)
-      klass_or_symbol.is_a?(Class) ? SetBuilder::Modifier.valid_modifier!(klass_or_symbol) : SetBuilder::Modifier.for(klass_or_symbol)
+    def self.[](klassname_or_symbol)
+      is_classname = /^[A-Z]/.match(klassname_or_symbol)
+      if is_classname
+        klass = SetBuilder::Modifiers.const_get("#{klassname_or_symbol}")
+        SetBuilder::Modifier.valid_modifier!(klass)
+      else
+        SetBuilder::Modifier.for(klassname_or_symbol.to_sym)
+      end
     end
     
     
