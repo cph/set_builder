@@ -18,7 +18,7 @@ module SetBuilder
       @parsed_expression = parse(trait_expression)
       @name, @direct_object_type = find(:name), find(:direct_object_type)
       @block = block
-      @modifiers = find_all(:modifier ).map { |modifier| Modifier[modifier]  }
+      @modifiers = find_all(:modifier).map { |modifier| Modifier[modifier]  }
     end
     
     def requires_direct_object?
@@ -51,7 +51,7 @@ module SetBuilder
     end
     
     def as_json(*)
-      parsed_expression
+      parsed_expression.map { |(token, value)| [token.to_s, value] }
     end
 
     def apply(*args)
