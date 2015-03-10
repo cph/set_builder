@@ -74,28 +74,6 @@ describe 'Array'
         })).to(eql, ["this", "this"]);
       end
   end
-        
-  describe '.any'
-      it 'should return true if the supplied function evaluates to true for any member'
-        expect(["this", "nope", "that", "this"].any(function(word){
-          return word == "nope";
-        })).to(be, true);
-      end
-        
-      it 'should return false if the supplied function does not evaluate to true for any member'
-        expect(["this", "nope", "that", "this"].any(function(word){
-          return word == "whoa";
-        })).to(be, false);
-      end
-        
-      it 'should return true if the supplied value matches any member'
-        expect(["this", "nope", "that", "this"].any("nope")).to(be, true);
-      end
-        
-      it 'should return false if the supplied value does not match any member'
-        expect(["this", "nope", "that", "this"].any("whoa")).to(be, false);
-      end
-  end
   
 end
 
