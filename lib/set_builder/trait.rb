@@ -25,10 +25,6 @@ module SetBuilder
       !@direct_object_type.nil?
     end
     alias :direct_object_required? :requires_direct_object?
-
-    def noun?
-      !negative?
-    end
     
     def negative?
       find(:negative)
