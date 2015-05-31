@@ -26,7 +26,7 @@ module SetBuilder
       end 
       
       name = name.to_sym
-      map = @registered_value_maps[name]     
+      map = @registered_value_maps[name]
       if map
         pair = map.find { |pair| pair[0] == value || pair[0] == value.to_s }
         pair ? pair[1].to_s : "(unknown)"
@@ -58,6 +58,10 @@ module SetBuilder
     end
     
     
+    
+    def self.as_json(options={})
+      @registered_value_maps.dup
+    end
     
     def self.to_json
       @registered_value_maps.to_json
