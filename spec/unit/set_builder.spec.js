@@ -40,6 +40,30 @@ describe 'SetBuilder'
       ['died'],
       ['name', {'is': "Jerome"}]
     ];
+    
+    set_data_hash = {
+      '0': {
+        trait: 'awesome'
+      },
+      '1': {
+        trait: 'attended',
+        direct_object: 2
+      },
+      '2': {
+        trait: 'died'
+      },
+      '3': {
+        trait: 'name',
+        modifiers: {
+          '0': {
+            operator: 'is',
+            values: {
+              '0': 'Jerome'
+            }
+          }
+        }
+      }
+    };
   end
   
   
@@ -144,6 +168,18 @@ describe 'SetBuilder'
       it 'should have parsed the correct number of objects'
         var set = new SetBuilder.Set(set_data);
         expect(set.constraints().length).to(be, 4);
+      end
+        
+      it 'should parse hash-style objects as well as arrays'
+        var set = new SetBuilder.Set(set_data_hash);
+        expect(set.constraints().length).to(be, 4);
+      end
+        
+      it 'should consider two sets with identical constraints equal'
+        var set1 = new SetBuilder.Set(set_data);
+        var set2 = new SetBuilder.Set(set_data_hash);
+        expect(set1.isEqualTo(set2)).to(be, true);
+        expect(set2.isEqualTo(set1)).to(be, true);
       end
     end
   
