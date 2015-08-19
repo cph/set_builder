@@ -4,9 +4,9 @@ require 'set_builder/modifier_collection'
 
 module SetBuilder
   class Traits < Array
-    
-    
-    
+
+
+
     def [](index)
       case index
       when Symbol, String
@@ -16,15 +16,15 @@ module SetBuilder
         super
       end
     end
-    
-    
-    
+
+
+
     def to_json
       "[#{collect(&:to_json).join(",")}]"
     end
-    
-    
-    
+
+
+
     def modifiers
       # !nb: not sure why inject was failing but it was modifying trait.modifiers!
       @modifiers = ModifierCollection.new
@@ -35,8 +35,8 @@ module SetBuilder
       end
       @modifiers
     end
-    
-    
-    
+
+
+
   end
 end

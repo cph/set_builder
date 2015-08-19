@@ -12,7 +12,7 @@ class TraitTest < ActiveSupport::TestCase
     assert_equal 1, constraint.modifiers.length
     assert_kind_of StringPreposition, constraint.modifiers.first
   end
-  
+
   test "modifiers should find correct values" do
     trait = Friend.traits[:name]
     modifier = trait.apply({:is => "Jerome"}).modifiers.first

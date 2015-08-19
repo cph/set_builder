@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class SetTest < ActiveSupport::TestCase
-  
-  
-  
+
+
+
   test "set data struture" do
     data = [
       [:awesome],
@@ -32,7 +32,7 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     refute set.valid?
   end
-  
+
   test "sets lacking expected modifiers should be invalid" do
     data = [[:born, {:ever => []}]]
     set = Friend.that_belong_to(data)
@@ -41,8 +41,8 @@ class SetTest < ActiveSupport::TestCase
     data = [[:born]]
     set = Friend.that_belong_to(data)
     assert_equal false, set.valid?
-  end  
-  
+  end
+
   test "set structure with negations (nouns are ignored)" do
     data = [
       ["!awesome"],
@@ -53,7 +53,7 @@ class SetTest < ActiveSupport::TestCase
     assert set.valid?
     assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is Jerome", set.to_s
   end
-  
+
   test "simple perform" do
     data = [[:awesome]]
     set = Friend.that_belong_to(data)
@@ -61,7 +61,7 @@ class SetTest < ActiveSupport::TestCase
     expected_results = [{:conditions => {:awesome => true}}]
     assert_equal expected_results, set.perform
   end
-  
+
   test "complex perform" do
     data = [
       [:awesome],
@@ -69,7 +69,7 @@ class SetTest < ActiveSupport::TestCase
       [:died],
       [:name, {:begins_with => "Jerome"}]]
     set = Friend.that_belong_to(data)
-    
+
     expected_results = [
       {:conditions => {:awesome => true}},
       {:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}},
@@ -78,7 +78,7 @@ class SetTest < ActiveSupport::TestCase
     ]
     assert_equal expected_results, set.perform
   end
-  
+
   test "invalid set" do
     data = [[:name, {:starts_with => "Jerome"}]]  # starts_with is not a valid operator
     set = Friend.that_belong_to(data)

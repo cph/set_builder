@@ -47,23 +47,20 @@ class Friend
   def self.to_scope
     []
   end
-  
-  
-  
+
+
   # Stubs so that Arel can SQL
-  
+
   attr_accessor :connection_pool
-  
+
   def initialize
     @connection_pool = Fake::ConnectionPool.new
   end
-  
+
   def connection
     connection_pool.connection
   end
-  
-  
-  
+
 end
 
 Arel::Table.engine = Arel::Sql::Engine.new(Friend.new)

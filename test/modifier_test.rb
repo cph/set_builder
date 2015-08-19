@@ -7,7 +7,7 @@ class ModifierTest < ActiveSupport::TestCase
   test "get type with string" do
     assert_equal StringPreposition, SetBuilder::Modifier["StringPreposition"]
   end
-  
+
   test "get type with symbol" do
     assert_equal StringPreposition, SetBuilder::Modifier[:string]
   end
@@ -21,13 +21,13 @@ class ModifierTest < ActiveSupport::TestCase
       SetBuilder::Modifier.for(:hash)
     end
   end
-  
+
   test "registering an invalid modifier" do
     assert_raises ArgumentError do
       SetBuilder::Modifier.register(:hash, InvalidHashModifier)
     end
   end
-  
+
   test "converting modifier to json" do
     expected_results = {
       "contains"            => ["string"],
@@ -82,9 +82,9 @@ class InvalidHashModifier
 end
 
 class HashModifier < SetBuilder::Modifier::Verb
-  
+
   def self.operators
     [:has_key]
   end
-  
+
 end
