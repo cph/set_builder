@@ -6,7 +6,8 @@ require "set_builder"
 require "pry"
 require "support/fake_connection"
 
-
+require "minitest/reporters"
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 # Sample class used by tests
 
