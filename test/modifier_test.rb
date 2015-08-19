@@ -71,7 +71,7 @@ class ModifierTest < ActiveSupport::TestCase
         "is_not"              => ["string"]
       }
     }
-    assert_equal expected_results, Friend.modifiers.to_hash
+    assert_equal expected_results, $friend_traits.modifiers.to_hash
   end
 
 

@@ -5,7 +5,7 @@ class TraitTest < ActiveSupport::TestCase
 
 
   test "constraints find correct modifiers" do
-    trait = Friend.traits[:name]
+    trait = $friend_traits[:name]
     assert_equal 1, trait.modifiers.length
 
     constraint = trait.apply({:is => "Jerome"})
@@ -14,7 +14,7 @@ class TraitTest < ActiveSupport::TestCase
   end
 
   test "modifiers should find correct values" do
-    trait = Friend.traits[:name]
+    trait = $friend_traits[:name]
     modifier = trait.apply({:is => "Jerome"}).modifiers.first
     assert_equal :is, modifier.operator
     assert_equal ["Jerome"], modifier.values
@@ -29,12 +29,12 @@ class TraitTest < ActiveSupport::TestCase
       :name => false
     }
     trait_requires_direct_object.each do |trait, expected_value|
-      assert_equal expected_value, Friend.traits[trait].requires_direct_object?
+      assert_equal expected_value, $friend_traits[trait].requires_direct_object?
     end
   end
 
   test "constraint should be valid" do
-    trait = Friend.traits[:name]
+    trait = $friend_traits[:name]
     constraint = trait.apply({:is => "Jerome"})
     assert constraint.valid?
   end

@@ -13,8 +13,7 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 SetBuilder::ValueMap.register(:school, [[1, "Concordia"], [2, "McKendree"]])
 
-class Friend
-  extend SetBuilder
+$friend_traits = SetBuilder::Traits.new do
 
   trait('who are [not] "awesome"') do |query, scope|
     scope << {:conditions => {:awesome => true}}
@@ -42,9 +41,13 @@ class Friend
   trait('whose "name" <string>') do |query, scope|
     scope << {:conditions => query.modifiers[0].build_conditions_for("friends.name")}
   end
-  
-  # by stubbing out scoped, we can unit test the `performed` features
-  def self.to_scope
+end
+
+
+class Friend
+
+  # by stubbing out `all`, we can unit test `Set#perform`
+  def self.all
     []
   end
 

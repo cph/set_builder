@@ -1,9 +1,16 @@
 require 'set_builder/trait'
+require 'set_builder/trait_builder'
 require 'set_builder/modifier_collection'
 
 
 module SetBuilder
   class Traits < Array
+
+
+
+    def initialize(&block)
+      TraitBuilder.new(self).instance_eval(&block) if block_given?
+    end
 
 
 
