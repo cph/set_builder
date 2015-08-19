@@ -84,6 +84,7 @@ class SetTest < ActiveSupport::TestCase
     set = Friend.that_belong_to(data)
     
     # !todo: what to do?
+    skip "TODO: test invalid sets"
   end
 
 
