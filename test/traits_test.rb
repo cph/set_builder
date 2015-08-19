@@ -27,6 +27,34 @@ class TraitsTest < ActiveSupport::TestCase
     assert_equal expected_modifiers, $friend_traits.modifiers.collect(&:name).sort
   end
 
+  test "two collections of traits can be concatenated with `+`" do
+    traits1 = SetBuilder::Traits.new do
+      trait('who are [not] "awesome"') { |query, scope| }
+    end
+
+    traits2 = SetBuilder::Traits.new do
+      trait('who are [not] "living"') { |query, scope| }
+    end
+
+    combined_traits = traits1 + traits2
+    assert_kind_of SetBuilder::Traits, combined_traits
+    assert_equal %w{awesome living}, combined_traits.map(&:name)
+  end
+
+  test "two collections of traits can be concatenated with `concat`" do
+    traits1 = SetBuilder::Traits.new do
+      trait('who are [not] "awesome"') { |query, scope| }
+    end
+
+    traits2 = SetBuilder::Traits.new do
+      trait('who are [not] "living"') { |query, scope| }
+    end
+
+    combined_traits = traits1.concat traits2
+    assert_kind_of SetBuilder::Traits, combined_traits
+    assert_equal %w{awesome living}, combined_traits.map(&:name)
+  end
+
   test "to_json" do
     expected_json = [[["string","who are"],
       ["negative","not"],
