@@ -11,7 +11,14 @@ module SetBuilder
 
     def initialize(array=[], &block)
       super array
-      TraitBuilder.new(self).instance_eval(&block) if block_given?
+
+      if block_given?
+        if block.arity.zero?
+          TraitBuilder.new(self).instance_eval(&block)
+        else
+          yield TraitBuilder.new(self)
+        end
+      end
     end
 
 
