@@ -51,6 +51,10 @@ module SetBuilder
       self.class.new(self.__getobj__.concat other_traits.__getobj__)
     end
 
+    def sort_by(&block)
+      self.class.new(self.__getobj__.sort_by(&block))
+    end
+
 
 
     def modifiers
