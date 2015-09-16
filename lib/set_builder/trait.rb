@@ -9,7 +9,7 @@ module SetBuilder
         
     LEXER = { 
       name: /("[^"]+")/,
-      direct_object_type: /(:\w+)/,
+      direct_object_type: /(:[\w\-\.]+)/,
       negative: /(\[[^\]]+\])/,
       modifier: /(<\w+>)/
     }.freeze
