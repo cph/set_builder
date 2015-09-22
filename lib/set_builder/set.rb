@@ -60,7 +60,7 @@ module SetBuilder
         negate, trait_name, args = false, line.first.to_s, line[1..-1]
         trait_name, negate = trait_name[1..-1], true if (trait_name[0..0] == "!")
         trait = traits[trait_name]
-        raise("\"#{trait_name}\" is not a trait in `traits`") unless trait
+        raise SetBuilder::TraitNotFound, "\"#{trait_name}\" is not a trait in `traits`" unless trait
         constraints << trait.apply(*args).negate(negate)
       end
     end
