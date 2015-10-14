@@ -55,10 +55,10 @@ class ModifierTest < ActiveSupport::TestCase
         "between"     => ["date", "date"]
       },
       "number"=> {
-        "is"=>["number"],
-        "is_less_than"=>["number"],
-        "is_greater_than"=>["number"],
-        "is_between"=>["number", "number"]
+        "exactly"=>["number"],
+        "less_than"=>["number"],
+        "greater_than"=>["number"],
+        "between"=>["number", "number"]
       },
       "string" => {
         "contains"            => ["string"],

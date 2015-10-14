@@ -9,10 +9,10 @@ module SetBuilder
       
       def self.operators
         {
-          :is => [:number],
-          :is_less_than => [:number],
-          :is_greater_than => [:number],
-          :is_between => [:number, :number]
+          :exactly => [:number],
+          :less_than => [:number],
+          :greater_than => [:number],
+          :between => [:number, :number]
         }
       end
       
@@ -20,13 +20,13 @@ module SetBuilder
       
       def build_conditions_for(selector)
         case operator
-        when :is
+        when :exactly
           ["#{selector}=?", value]
-        when :is_less_than
+        when :less_than
           ["#{selector}<?", value]
-        when :is_greater_than
+        when :greater_than
           ["#{selector}>?", value]
-        when :is_between
+        when :between
           ["#{selector}>=? AND #{selector}<=?", values[0], values[1]]
         end
       end
@@ -35,13 +35,13 @@ module SetBuilder
       
       def build_arel_for(selector)
         case operator
-        when :is
+        when :exactly
           selector.eq(value)
-        when :is_less_than
+        when :less_than
           selector.lt(value)
-        when :is_greater_than
+        when :greater_than
           selector.gt(value)
-        when :is_between
+        when :between
           selector.gteq(values[0]).and(selector.lteq(values[1]))
         end
       end
