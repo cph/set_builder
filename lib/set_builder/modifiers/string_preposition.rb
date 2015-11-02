@@ -37,11 +37,11 @@ module SetBuilder
         when :is
           selector.eq(values[0])
         when :is_not
-          selector.not_eq(values[0])
+          selector.eq(nil).or(selector.not_eq(values[0]))
         when :contains, :begins_with, :ends_with
           selector.matches(get_like_value_for_operator)
         when :does_not_contain, :does_not_begin_with, :does_not_end_with
-          selector.does_not_match(get_like_value_for_operator)
+          selector.eq(nil).or(selector.does_not_match(get_like_value_for_operator))
         end
       end
 
