@@ -4,9 +4,9 @@ require 'set_builder/modifier/adverb'
 module SetBuilder
   module Modifiers
     class DatePreposition < Modifier::Adverb
-      
-      
-      
+
+
+
       def self.operators
         {
           :ever => [],
@@ -19,9 +19,9 @@ module SetBuilder
           :between => [:date, :date]
         }
       end
-      
-      
-      
+
+
+
       def build_conditions_for(selector)
         case operator
         when :ever
@@ -44,9 +44,9 @@ module SetBuilder
           "#{selector} BETWEEN '#{format_value(Date.parse values[0])}' AND '#{format_value(Date.parse values[1])}'"
         end
       end
-      
-      
-      
+
+
+
       def build_arel_for(selector)
         case operator
         when :ever
@@ -67,13 +67,13 @@ module SetBuilder
           selector.in(Date.parse(values[0])..Date.parse(values[1]))
         end
       end
-      
-      
-      
+
+
+
     protected
-      
-      
-      
+
+
+
       def get_date
         case operator
         when :in_the_last
@@ -91,16 +91,16 @@ module SetBuilder
           Date.parse values[0]
         end
       end
-      
-      
-      
+
+
+
       def format_value(date)
         date = [Date.new(1,1,1), date].max # constrain dates to A.D.
         date.strftime('%Y-%m-%d')
       end
-      
-      
-      
+
+
+
     end
   end
 end

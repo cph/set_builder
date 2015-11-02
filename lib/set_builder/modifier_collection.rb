@@ -1,8 +1,8 @@
 module SetBuilder
   class ModifierCollection < Array
-    
-    
-    
+
+
+
     # def [](index)
     #   case index
     #   when Symbol, String
@@ -12,9 +12,9 @@ module SetBuilder
     #     super
     #   end
     # end
-    
-    
-    
+
+
+
     def to_hash
       hash = {}
       each do |modifier|
@@ -22,20 +22,20 @@ module SetBuilder
       end
       hash
     end
-    
-    
-    
+
+
+
     def to_json
       to_hash.to_json
     end
-    
-    
-    
+
+
+
     # def modifiers
     #   inject([]) {|modifiers, trait| modifiers.concat(trait.modifiers)}.uniq
     # end
-    
-    
-    
+
+
+
   end
 end

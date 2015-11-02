@@ -4,9 +4,9 @@ require 'set_builder/modifier/verb'
 module SetBuilder
   module Modifiers
     class StringPreposition < Modifier::Verb
-      
-      
-      
+
+
+
       def self.operators
         {
           :contains => [:string],
@@ -19,9 +19,9 @@ module SetBuilder
           :is_not => [:string]
         }
       end
-      
-      
-      
+
+
+
       def self.negate(operator)
         case operator
         when :contains
@@ -34,13 +34,13 @@ module SetBuilder
           "is not"
         end
       end
-      
-      
-      
+
+
+
       def build_conditions_for(selector, operator=nil)
         operator ||= self.operator
         case operator
-        
+
         when :does_not_contain
           negate(selector, :contains)
         when :does_not_begin_with
@@ -49,16 +49,16 @@ module SetBuilder
           negate(selector, :ends_with)
         when :is_not
           negate(selector, :is)
-        
+
         when :is
           ["#{selector}=?", values[0]]
         else
           ["#{selector} LIKE ?", get_like_value_for_operator]
         end
       end
-      
-      
-      
+
+
+
       def build_arel_for(selector, operator=nil)
         operator ||= self.operator
         case operator
@@ -72,13 +72,13 @@ module SetBuilder
           selector.does_not_match(get_like_value_for_operator)
         end
       end
-      
-      
-      
+
+
+
     private
-      
-      
-      
+
+
+
       def get_like_value_for_operator
         case operator
         when :contains, :does_not_contain
@@ -89,9 +89,9 @@ module SetBuilder
           "%#{values[0]}"
         end
       end
-      
-      
-      
+
+
+
     end
   end
 end
