@@ -5,6 +5,7 @@ require "active_support/core_ext"
 require "set_builder"
 require "pry"
 require "support/fake_connection"
+require "timecop"
 
 require "minitest/reporters"
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
@@ -12,6 +13,8 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 # Sample class used by tests
 
 SetBuilder::ValueMap.register(:school, [[1, "Concordia"], [2, "McKendree"]])
+
+friends = Arel::Table.new(:friends)
 
 $friend_traits = SetBuilder::Traits.new do
 
@@ -24,11 +27,11 @@ $friend_traits = SetBuilder::Traits.new do
   end
 
   trait('who were "born" <date>') do |query, scope|
-    scope << {:conditions => query.modifiers[0].build_conditions_for("friends.birthday")}
+    scope << {:conditions => query.modifiers[0].build_arel_for(friends[:birthday]).to_sql}
   end
 
   trait('whose "age" <number>') do |query, scope|
-    scope << {:conditions => query.modifiers[0].build_conditions_for("friends.age")}
+    scope << {:conditions => query.modifiers[0].build_arel_for(friends[:age]).to_sql}
   end
 
   trait('who have [not] "attended" :school') do |query, scope|
@@ -39,7 +42,7 @@ $friend_traits = SetBuilder::Traits.new do
   end
 
   trait('whose "name" <string>') do |query, scope|
-    scope << {:conditions => query.modifiers[0].build_conditions_for("friends.name")}
+    scope << {:conditions => query.modifiers[0].build_arel_for(friends[:name]).to_sql}
   end
 end
 
