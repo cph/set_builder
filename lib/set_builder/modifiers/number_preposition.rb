@@ -5,8 +5,6 @@ module SetBuilder
   module Modifiers
     class NumberPreposition < Modifier::Verb
 
-
-
       def self.operators
         {
           :is => [:number],
@@ -15,23 +13,6 @@ module SetBuilder
           :is_between => [:number, :number]
         }
       end
-
-
-
-      def build_conditions_for(selector)
-        case operator
-        when :is
-          ["#{selector}=?", value]
-        when :is_less_than
-          ["#{selector}<?", value]
-        when :is_greater_than
-          ["#{selector}>?", value]
-        when :is_between
-          ["#{selector}>=? AND #{selector}<=?", values[0], values[1]]
-        end
-      end
-
-
 
       def build_arel_for(selector)
         case operator
@@ -45,8 +26,6 @@ module SetBuilder
           selector.gteq(values[0]).and(selector.lteq(values[1]))
         end
       end
-
-
 
     end
   end

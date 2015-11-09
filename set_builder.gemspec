@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "jspec"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "minitest-reporters"
+  spec.add_development_dependency "timecop"
 end

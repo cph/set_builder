@@ -65,7 +65,7 @@ class SetTest < ActiveSupport::TestCase
       {:conditions => {:awesome => true}},
       {:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}},
       {:conditions => {:alive => false}},
-      {:conditions => ["friends.name LIKE ?", "Jerome%"]}
+      {:conditions => "\"friends\".\"name\" LIKE 'Jerome%'"}
     ]
     assert_equal expected_results, set.perform
   end
