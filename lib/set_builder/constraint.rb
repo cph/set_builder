@@ -32,7 +32,14 @@ module SetBuilder
 
 
     def valid?
-      (!direct_object_required? or !direct_object.nil?) and modifiers.all?(&:valid?)
+      errors.none?
+    end
+
+    def errors
+      [].tap do |errors|
+        errors.push "#{direct_object_type} is blank" if direct_object_required? && direct_object.nil?
+        errors.concat modifiers.flat_map(&:errors)
+      end
     end
 
     def negative?

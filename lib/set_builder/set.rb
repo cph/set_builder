@@ -25,7 +25,14 @@ module SetBuilder
     # Returns true if all of the constraints in this set are valid
     #
     def valid?
-      constraints.all?(&:valid?)
+      errors.none?
+    end
+
+    def errors
+      @errors ||= constraints.each_with_object({}) do |constraint, hash|
+        errors = constraint.errors
+        hash[constraint.trait.name] = errors if errors.any?
+      end
     end
 
 

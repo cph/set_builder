@@ -50,11 +50,13 @@ class SetTest < ActiveSupport::TestCase
   test "sets should not allow non-numbers in a number modifiers" do
     set = to_set [{ trait: :age, modifiers: [{ operator: :is, values: ["12a"] }] }]
     refute set.valid?
+    assert_match /"12a" is not a valid number/, set.errors.values.join(", ")
   end
 
   test "sets should not allow empty string in a number modifiers" do
     set = to_set [{ trait: :age, modifiers: [{ operator: :is, values: [""] }] }]
     refute set.valid?
+    assert_match /number is blank/, set.errors.values.join(", ")
   end
 
   test "sets lacking expected modifiers should be invalid" do
