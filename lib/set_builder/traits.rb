@@ -1,7 +1,7 @@
-require 'set_builder/trait'
-require 'set_builder/trait_builder'
-require 'set_builder/modifier_collection'
-require 'delegate'
+require "set_builder/trait"
+require "set_builder/trait_builder"
+require "set_builder/modifier_collection"
+require "delegate"
 
 
 module SetBuilder

@@ -1,4 +1,4 @@
-require 'set_builder/modifier/adverb'
+require "set_builder/modifier/adverb"
 
 
 module SetBuilder

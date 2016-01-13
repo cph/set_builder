@@ -1,5 +1,5 @@
-require 'set_builder/constraint'
-require 'set_builder/modifier'
+require "set_builder/constraint"
+require "set_builder/modifier"
 
 
 module SetBuilder

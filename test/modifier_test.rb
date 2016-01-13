@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ModifierTest < ActiveSupport::TestCase
   include SetBuilder::Modifiers

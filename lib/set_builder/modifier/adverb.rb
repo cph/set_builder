@@ -1,4 +1,4 @@
-require 'set_builder/modifier/base'
+require "set_builder/modifier/base"
 
 
 module SetBuilder
