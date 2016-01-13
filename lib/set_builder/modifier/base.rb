@@ -4,10 +4,11 @@ module SetBuilder
 
 
 
-      def initialize(hash)
-        @operator, @values = (hash.is_a?(Hash) ? [hash.first[0].to_sym, hash.first[1]] : [nil, nil])
-        @values ||= []
-        @values = [@values] unless @values.is_a?(Array)
+      def initialize(params)
+        params.symbolize_keys!
+        @operator = params[:operator]
+        @operator = @operator.to_sym if @operator
+        @values = Array(params[:values])
       end
 
 
@@ -74,7 +75,6 @@ module SetBuilder
         words = negative ? [self.class.negate(operator).to_s.gsub(/_/, " ")] : [operator.to_s.gsub(/_/, " ")]
         arguments = self.class.operators[operator] || []
         (0...arguments.length).each do |i|
-          # p "ValueMap.to_s(#{arguments[i]} (#{arguments[i].class}), #{values[i]} (#{values[i].class})): #{ValueMap.to_s(arguments[i], values[i])}"
           words << ValueMap.to_s(arguments[i], values[i])
         end
         words.join(" ")

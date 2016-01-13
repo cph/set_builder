@@ -6,49 +6,77 @@ class SetTest < ActiveSupport::TestCase
 
   test "set data struture" do
     set = to_set [
-      [:awesome],
-      [:attended, 2],
-      [:died],
-      [:name, {:is => "Jerome"}]]
+      { trait: :awesome },
+      { trait: :attended, school: 2 },
+      { trait: :died },
+      { trait: :name, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
     assert set.valid?
     assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
   end
 
+  test "parsing sets that come from HTML" do
+    set = to_set({
+      "0" => { "trait" => "awesome" },
+      "1" => { "trait" => "attended", "school" => 2 },
+      "2" => { "trait" => "died" },
+      "3" => { "trait" => "name", "modifiers" => {"0" => { "operator" => "is", "values" => {"0" => "Jerome"} }} } })
+    assert set.valid?
+    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
+  end
+
+  test "normalizing sets" do
+    expected_constraints = [
+      { trait: "awesome" },
+      { trait: "attended", school: 2 },
+      { trait: "died" },
+      { trait: "name", modifiers: [{ operator: "is", values: ["Jerome"] }] }]
+    set = to_set({
+      "0" => { "trait" => "awesome" },
+      "1" => { "trait" => "attended", "school" => 2 },
+      "2" => { "trait" => "died" },
+      "3" => { "trait" => "name", "modifiers" => {"0" => { "operator" => "is", "values" => {"0" => "Jerome"} }} } })
+    assert_equal expected_constraints, set.to_a
+  end
+
+  test "normalize should handle nil" do
+    assert_equal [], SetBuilder::Set.normalize(nil)
+  end
+
   test "sets with invalid modifiers should be invalid" do
-    set = to_set [[:born, {:after => ["wrong"]}]]
+    set = to_set [{ trait: :born, modifiers: [{ operator: :after, values: ["wrong"] }] }]
     assert_equal false, set.valid?
   end
 
   test "sets should not allow non-numbers in a number modifiers" do
-    set = to_set [[:age, {:is => ["12a"]}]]
+    set = to_set [{ trait: :age, modifiers: [{ operator: :is, values: ["12a"] }] }]
     refute set.valid?
   end
 
   test "sets should not allow empty string in a number modifiers" do
-    set = to_set [[:age, {:is => [""]}]]
+    set = to_set [{ trait: :age, modifiers: [{ operator: :is, values: [""] }] }]
     refute set.valid?
   end
 
   test "sets lacking expected modifiers should be invalid" do
-    set = to_set [[:born, {:ever => []}]]
+    set = to_set [{ trait: :born, modifiers: [{ operator: :ever, values: [] }] }]
     assert_equal true, set.valid?
 
-    set = to_set [[:born]]
+    set = to_set [{ trait: :born }]
     assert_equal false, set.valid?
   end
 
   test "set structure with negations (nouns are ignored)" do
     set = to_set [
-      ["!awesome"],
-      ["!attended", 2],
-      ["!died"],
-      ["!name", {:is => "Jerome"}]]
+      { trait: "awesome", negative: true },
+      { trait: "attended", negative: true, school: 2 },
+      { trait: "died", negative: true },
+      { trait: "name", negative: true, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
     assert set.valid?
     assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is Jerome", set.to_s
   end
 
   test "simple perform" do
-    set = to_set [[:awesome]]
+    set = to_set [{ trait: :awesome }]
 
     expected_results = [{:conditions => {:awesome => true}}]
     assert_equal expected_results, set.perform
@@ -56,22 +84,23 @@ class SetTest < ActiveSupport::TestCase
 
   test "complex perform" do
     set = to_set [
-      [:awesome],
-      [:attended, 1],
-      [:died],
-      [:name, {:begins_with => "Jerome"}]]
+      { trait: "awesome" },
+      { trait: "attended", school: 1 },
+      { trait: "died" },
+      { trait: "name", modifiers: [{ operator: :begins_with, values: ["Jer"] }] }]
 
     expected_results = [
       {:conditions => {:awesome => true}},
       {:joins => "INNER JOIN schools ON friends.school_id=schools.id", :conditions => {"schools.id" => 1}},
       {:conditions => {:alive => false}},
-      {:conditions => "\"friends\".\"name\" LIKE 'Jerome%'"}
+      {:conditions => "\"friends\".\"name\" LIKE 'Jer%'"}
     ]
     assert_equal expected_results, set.perform
   end
 
   test "invalid set" do
-    set = to_set [[:name, {:starts_with => "Jerome"}]]  # starts_with is not a valid operator
+    # starts_with is not a valid operator
+    set = to_set [{ trait: :name, modifiers: [{ operator: :starts_with, values: ["Jerome"] }] }]  
 
     # !todo: what to do?
     skip "TODO: test invalid sets"

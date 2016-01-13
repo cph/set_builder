@@ -3,32 +3,31 @@ require "set_builder/modifier"
 
 module SetBuilder
   class Constraint
+    attr_reader :trait, :direct_object, :params, :modifiers
+    delegate :direct_object_required?,
+             :direct_object_type,
+             :to => :trait
+
 
 
     #
     # Sample constraints:
     #
-    #     [:awesome],
-    #     [:attended, "school"],
-    #     [:died],
-    #     [:name, {:is => "Jerome"}]]
+    #     { trait: :awesome }
+    #     { trait: :attended, school: 2 }
+    #     { trait: :died }
+    #     { trait: :name, modifiers: [{ operator: :is, values: ["Jerome"] }] }
     #
-    def initialize(trait, *args, &block)
+    def initialize(trait, params, &block)
       @trait, @block = trait, block
-      @direct_object = args.shift if trait.requires_direct_object?
-      @modifiers = trait.modifiers.collect {|modifier_type| modifier_type.new(args.shift)}
+      @params = params
+
+      @negative = trait.negatable? && params.fetch(:negative, false)
+      @direct_object = params[direct_object_type] if trait.requires_direct_object?
+      modifiers = params.fetch(:modifiers, [])
+      @modifiers = trait.modifiers.each_with_index.map { |modifier, i|
+        modifier.new(modifiers[i] || {}) }
     end
-
-
-
-    attr_reader :trait, :direct_object, :modifiers, :negative
-    alias :negative? :negative
-
-
-
-    delegate :direct_object_required?,
-             :direct_object_type,
-             :to => :trait
 
 
 
@@ -36,24 +35,19 @@ module SetBuilder
       (!direct_object_required? or !direct_object.nil?) and modifiers.all?(&:valid?)
     end
 
+    def negative?
+      @negative
+    end
+
 
 
     def to_s
-      # p "ValueMap.to_s(#{direct_object_type} (#{direct_object_type.class}), #{direct_object} (#{direct_object.class}))"
       @description ||= begin
         description = trait.to_s(@negative)
         description << " #{ValueMap.to_s(direct_object_type, direct_object)}" if direct_object_required?
         description << " #{modifiers.collect{|m| m.to_s(@negative)}.join(" ")}" unless modifiers.empty?
         description
       end
-    end
-
-
-
-    def negate(value)
-      @negative = value
-      @negative = false unless trait.negative?
-      self
     end
 
 

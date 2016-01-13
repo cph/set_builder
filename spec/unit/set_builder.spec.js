@@ -35,34 +35,19 @@ describe 'SetBuilder'
     SetBuilder.registerValueMap('school', [['1','Concordia'], ['2','McKendree']]);
     
     set_data = [
-      ['awesome'],
-      ['attended', 2],
-      ['died'],
-      ['name', {'is': "Jerome"}]
+      { trait: 'awesome' },
+      { trait: 'attended', school: 2 },
+      { trait: 'died' },
+      { trait: 'name', modifiers: [
+        { operator: 'is', values: ['Jerome'] }] }
     ];
     
     set_data_hash = {
-      '0': {
-        trait: 'awesome'
-      },
-      '1': {
-        trait: 'attended',
-        direct_object: 2
-      },
-      '2': {
-        trait: 'died'
-      },
-      '3': {
-        trait: 'name',
-        modifiers: {
-          '0': {
-            operator: 'is',
-            values: {
-              '0': 'Jerome'
-            }
-          }
-        }
-      }
+      '0': { trait: 'awesome' },
+      '1': { trait: 'attended', school: 2 },
+      '2': { trait: 'died' },
+      '3': { trait: 'name', modifiers: {
+        '0': { operator: 'is', values: {'0': 'Jerome'} } } }
     };
   end
   
@@ -95,7 +80,6 @@ describe 'SetBuilder'
   
   
   describe '.Trait'
-  
     describe '.constructor'
       it 'should correctly parse the name of the trait'
         var trait = new SetBuilder.Trait([['string', 'who are'], ['name', 'awesome']]);
@@ -112,7 +96,6 @@ describe 'SetBuilder'
         expect(trait.modifiers().length).to(be, 1);
       end
     end
-    
   end
   
   
@@ -159,11 +142,11 @@ describe 'SetBuilder'
         expect(modifiers.operators_for('string')).to(eql, expected_modifiers);
       end
     end
-
   end
-  
+
+
+
   describe '.Set'
-    
     describe '.constraints'
       it 'should have parsed the correct number of objects'
         var set = new SetBuilder.Set(set_data);
@@ -185,7 +168,7 @@ describe 'SetBuilder'
   
     describe '.toString'
       it 'should generate the natural language description of a simple set'
-        var simple_set = new SetBuilder.Set([['awesome']]);
+        var simple_set = new SetBuilder.Set([{ trait: 'awesome' }]);
         expect(simple_set.toString()).to(eql, 'who are awesome');
       end
       
@@ -197,10 +180,10 @@ describe 'SetBuilder'
 
       it 'should generate the natural language description of a complex set with negation (NB: nouns are not negated)'
         var set = new SetBuilder.Set([
-          ['!awesome'],
-          ['!attended', 1],
-          ['!died'],
-          ['!name', {'is': "Jerome"}]
+          { trait: 'awesome', negative: true },
+          { trait: 'attended', negative: true, school: 1 },
+          { trait: 'died', negative: true },
+          { trait: 'name', negative: true, modifiers: [{ operator: 'is', values: ['Jerome'] }] }
         ]);
         var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is Jerome'
         expect(set.toString()).to(eql, expected_string);
@@ -209,4 +192,3 @@ describe 'SetBuilder'
     
   end
 end
-
