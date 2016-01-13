@@ -1,6 +1,7 @@
 module SetBuilder
   module Modifier
     class Base
+      attr_reader :operator, :values
 
 
 
@@ -12,8 +13,6 @@ module SetBuilder
       end
 
 
-
-      attr_reader :operator, :values
 
       def value
         values[0]
