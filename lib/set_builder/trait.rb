@@ -9,7 +9,7 @@ module SetBuilder
 
 
     def initialize(expression, &block)
-      @expression = expression
+      @expression = expression.to_s.strip
       @tokens = parse(expression)
       @block = block
 
@@ -39,12 +39,8 @@ module SetBuilder
 
 
 
-    def to_s(negative=false)
-      parsed_expression.reject do |token, _|
-        [:modifier, :direct_object_type].include?(token) || (!negative && token == :negative)
-      end.map do |token, value|
-        token == :name ? name : value
-      end.join(" ")
+    def to_s
+      expression
     end
 
     def as_json(*)
@@ -71,20 +67,28 @@ module SetBuilder
 
 
 
-    def parse(trait_definition)
-      regex = Regexp.union(LEXER.values)
-      trait_definition.split(regex).map do |lexeme|
-        [token_for(lexeme), value_for(lexeme)] unless lexeme.strip.empty?
-      end.compact
+    def parse(expression)
+      tokenizer = Regexp.union(LEXER.values)
+      expression.split(tokenizer).each_with_object([]) do |lexeme, output|
+        next if lexeme.empty?
+        token = token_for(lexeme)
+        output.push [token, value_for(token, lexeme)]
+      end
     end
 
     def token_for(lexeme)
       LEXER.each { |token, pattern| return token if pattern.match(lexeme) }
-      return :string
+      :string
     end
 
-    def value_for(lexeme)
-      lexeme.to_s.strip.gsub(/[<>"\[\]:]/, "")
+    def value_for(token, lexeme)
+      case token
+      when :name then lexeme[1...-1]
+      when :negative then lexeme[1...-1]
+      when :modifier then lexeme[1...-1]
+      when :direct_object_type then lexeme[1..-1]
+      else lexeme
+      end
     end
 
     LEXER = {

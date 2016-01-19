@@ -49,12 +49,7 @@ module SetBuilder
 
 
     def to_s
-      @description ||= begin
-        description = trait.to_s(@negative)
-        description << " #{ValueMap.to_s(direct_object_type, direct_object)}" if direct_object_required?
-        description << " #{modifiers.collect{|m| m.to_s(@negative)}.join(" ")}" unless modifiers.empty?
-        description
-      end
+      @description ||= stringify(trait.tokens)
     end
 
 
@@ -64,6 +59,23 @@ module SetBuilder
     end
 
 
+
+  private
+
+    def stringify(tokens)
+      enum_index = 0
+      modifier_index = 0
+      tokens.map do |token, value|
+        case token
+        when :string then value
+        when :name then trait.name
+        when :negative then trait.negative if negative?
+        when :direct_object_type then ValueMap.to_s(value, direct_object)
+        when :modifier then modifiers[modifier_index].to_s.tap { modifier_index += 1 }
+        else raise NotImplementedError, "Unrecognized token type #{token.inspect}"
+        end
+      end.join
+    end
 
   end
 end

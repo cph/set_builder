@@ -56,24 +56,31 @@ class TraitsTest < ActiveSupport::TestCase
   end
 
   test "to_json" do
-    expected_json = [[["string","who are"],
+    expected_json = [[["string","who are "],
       ["negative","not"],
+      ["string", " "],
       ["name","awesome"]],
-     [["string","who"],
+     [["string","who "],
       ["negative","have not"],
+      ["string", " "],
       ["name","died"]],
-     [["string","who were"],
+     [["string","who were "],
       ["name","born"],
+      ["string", " "],
       ["modifier","date"]],
-     [["string","whose"],
+     [["string","whose "],
       ["name","age"],
+      ["string", " "],
       ["modifier","number"]],
-     [["string","who have"],
+     [["string","who have "],
       ["negative","not"],
+      ["string", " "],
       ["name","attended"],
+      ["string", " "],
       ["direct_object_type","school"]],
-     [["string","whose"],
+     [["string","whose "],
       ["name","name"],
+      ["string", " "],
       ["modifier","string"]]].to_json
     assert_equal expected_json, $friend_traits.to_json
   end

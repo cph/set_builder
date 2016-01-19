@@ -11,7 +11,7 @@ class SetTest < ActiveSupport::TestCase
       { trait: :died },
       { trait: :name, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
     assert set.valid?
-    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
+    assert_equal "who are  awesome, who have  attended McKendree, who  died, and whose name is Jerome", set.to_s
   end
 
   test "parsing sets that come from HTML" do
@@ -21,7 +21,7 @@ class SetTest < ActiveSupport::TestCase
       "2" => { "trait" => "died" },
       "3" => { "trait" => "name", "modifiers" => {"0" => { "operator" => "is", "values" => {"0" => "Jerome"} }} } })
     assert set.valid?
-    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
+    assert_equal "who are  awesome, who have  attended McKendree, who  died, and whose name is Jerome", set.to_s
   end
 
   test "normalizing sets" do
@@ -102,7 +102,7 @@ class SetTest < ActiveSupport::TestCase
 
   test "invalid set" do
     # starts_with is not a valid operator
-    set = to_set [{ trait: :name, modifiers: [{ operator: :starts_with, values: ["Jerome"] }] }]  
+    set = to_set [{ trait: :name, modifiers: [{ operator: :starts_with, values: ["Jerome"] }] }]
 
     # !todo: what to do?
     skip "TODO: test invalid sets"
