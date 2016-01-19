@@ -10,9 +10,18 @@ module SetBuilder
 
     def initialize(expression, &block)
       @expression = expression
-      @name, @direct_object_type, @negative = find(:name), find(:direct_object_type), find(:negative)
-      @direct_object_type = @direct_object_type.to_sym if @direct_object_type
       @block = block
+
+      names = find_all(:name)
+      raise ArgumentError, "A trait must be defined with a name" if names.none?
+      raise ArgumentError, "A trait must be defined with only one name" if names.length > 1
+      @name = names[0]
+
+      direct_object_types = find_all(:direct_object_type)
+      raise ArgumentError, "A trait may define only one direct object" if direct_object_types.length > 1
+      @direct_object_type = direct_object_types[0].to_sym if direct_object_types[0]
+
+      @negative = find(:negative)
       @modifiers = find_all(:modifier).map { |modifier_type| Modifier[modifier_type] }
     end
 
