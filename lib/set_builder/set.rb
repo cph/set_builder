@@ -77,18 +77,19 @@ module SetBuilder
       end
     end
 
+
+
+  private
+    attr_reader :set
+
+
+
     def self.hash_to_array(hash)
       return hash.values if hash.is_a?(Hash)
       Array(hash)
     end
 
 
-
-  private
-
-
-
-    attr_reader :set
 
     def get_constraints
       set.map do |constraint|
