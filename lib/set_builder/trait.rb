@@ -4,12 +4,13 @@ require "set_builder/modifier"
 
 module SetBuilder
   class Trait
-    attr_reader :expression, :name, :modifiers, :direct_object_type, :negative
+    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :negative
 
 
 
     def initialize(expression, &block)
       @expression = expression
+      @tokens = parse(expression)
       @block = block
 
       names = find_all(:name)
@@ -47,7 +48,7 @@ module SetBuilder
     end
 
     def as_json(*)
-      parsed_expression.map { |(token, value)| [token.to_s, value] }
+      tokens.map { |(token, value)| [token.to_s, value] }
     end
 
     def apply(constraint)
@@ -61,7 +62,7 @@ module SetBuilder
 
 
     def find_all(token)
-      parsed_expression.select { |(_token, _)| _token == token }.map { |(_, value)| value }
+      tokens.select { |(_token, _)| _token == token }.map { |(_, value)| value }
     end
 
     def find(token)
@@ -69,10 +70,6 @@ module SetBuilder
     end
 
 
-
-    def parsed_expression
-      @parsed_expression ||= parse(expression)
-    end
 
     def parse(trait_definition)
       regex = Regexp.union(LEXER.values)
