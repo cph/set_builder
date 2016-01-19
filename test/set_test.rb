@@ -100,14 +100,6 @@ class SetTest < ActiveSupport::TestCase
     assert_equal expected_results, set.perform
   end
 
-  test "invalid set" do
-    # starts_with is not a valid operator
-    set = to_set [{ trait: :name, modifiers: [{ operator: :starts_with, values: ["Jerome"] }] }]
-
-    # !todo: what to do?
-    skip "TODO: test invalid sets"
-  end
-
 
 private
 

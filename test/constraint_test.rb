@@ -28,6 +28,35 @@ class ConstraintTest < ActiveSupport::TestCase
   end
 
 
+
+  context "A constraint" do
+    should "be invalid if it is missing a direct object" do
+      trait = Trait.new('who "attended" :school')
+      constraint = trait.apply({})
+      assert_match /school is blank/, constraint.errors.join
+    end
+
+    should "be invalid if it is missing an enumeration" do
+      trait = Trait.new('who [is|is not] "awesome"')
+      constraint = trait.apply({})
+      assert_match /should have values for 1 enums/, constraint.errors.join
+    end
+
+    should "be invalid if it supplies an unexpected value for an enumeration" do
+      trait = Trait.new('who [is|is not] "awesome"')
+      constraint = trait.apply(enums: ["is totally"])
+      assert_match /should be 'is' or 'is not'/, constraint.errors.join
+    end
+
+    should "be invalid if it supplies an unexpected value for a modifier's operator" do
+      trait = Trait.new('whose "name" <string>')
+      constraint = trait.apply(modifiers: [{ operator: "starts_with", values: ["Jer"] }])
+      assert_match /should be :contains, :does_not_contain, :begins_with, :does_not_begin_with, :ends_with, :does_not_end_with, :is, or :is_not/, constraint.errors.join
+    end
+  end
+
+
+
   context "#to_s" do
     should "carry over arbitrary text in the trait definition" do
       trait = Trait.new('who "died", tragically')
