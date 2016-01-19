@@ -35,12 +35,17 @@ class TraitTest < ActiveSupport::TestCase
       assert_raise(ArgumentError) { Trait.new('who "attended" :school :university') }
     end
 
-    should "assume that it is not negatable" do
-      refute SetBuilder::Trait.new('who "died"').negatable?
+    should "have no enums unless defined" do
+      assert_equal 0, Trait.new('who "died"').enums.length
     end
 
-    should "take bracketed text as a phrase to be included if the trait is negated" do
-      assert SetBuilder::Trait.new('who [have not] "died"').negatable?
+    should "take bracketed text as a built-in set of alternatives" do
+      trait = Trait.new('who [have|have not] "died"')
+      assert_equal [["have", "have not"]], trait.enums
+    end
+
+    should "require you to define at least two alternatives" do
+      assert_raise(ArgumentError) { Trait.new('who [have not] "died"') }
     end
 
     should "take words wrapped in angle brackets as modifiers" do

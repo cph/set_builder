@@ -2,25 +2,32 @@ describe 'SetBuilder'
   before_each
 
     SetBuilder.registerTraits([
-      [['string','who are'],
-        ['negative','not'],
-        ['name','awesome']],
-       [['string','who'],
-        ['negative','have not'],
-        ['name','died']],
-       [['string','who were'],
-        ['name','born'],
-        ['modifier','date']],
-       [['string','whose'],
-        ['name','age'],
-        ['modifier','number']],
-       [['string','who have'],
-        ['negative','not'],
-        ['name','attended'],
-        ['direct_object_type','school']],
-       [['string','whose'],
-        ['name','name'],
-        ['modifier','string']]
+      [["string","who "],
+       ["enum",["are","are not"]],
+       ["string", " "],
+       ["name","awesome"]],
+      [["string","who "],
+       ["enum",["have","have not"]],
+       ["string", " "],
+       ["name","died"]],
+      [["string","who were "],
+       ["name","born"],
+       ["string", " "],
+       ["modifier","date"]],
+      [["string","whose "],
+       ["name","age"],
+       ["string", " "],
+       ["modifier","number"]],
+      [["string","who "],
+       ["enum",["have","have not"]],
+       ["string", " "],
+       ["name","attended"],
+       ["string", " "],
+       ["direct_object_type","school"]],
+      [["string","whose "],
+       ["name","name"],
+       ["string", " "],
+       ["modifier","string"]]
     ]);
 
     SetBuilder.registerModifiers({
@@ -35,17 +42,17 @@ describe 'SetBuilder'
     SetBuilder.registerValueMap('school', [['1','Concordia'], ['2','McKendree']]);
     
     set_data = [
-      { trait: 'awesome' },
-      { trait: 'attended', school: 2 },
-      { trait: 'died' },
+      { trait: 'awesome', enums: ['are'] },
+      { trait: 'attended', enums: ['have'], school: 2 },
+      { trait: 'died', enums: ['have'] },
       { trait: 'name', modifiers: [
         { operator: 'is', values: ['Jerome'] }] }
     ];
     
     set_data_hash = {
-      '0': { trait: 'awesome' },
-      '1': { trait: 'attended', school: 2 },
-      '2': { trait: 'died' },
+      '0': { trait: 'awesome', enums: {'0': 'are'} },
+      '1': { trait: 'attended', enums: {'0': 'have'}, school: 2 },
+      '2': { trait: 'died', enums: {'0': 'have'} },
       '3': { trait: 'name', modifiers: {
         '0': { operator: 'is', values: {'0': 'Jerome'} } } }
     };
@@ -168,22 +175,22 @@ describe 'SetBuilder'
   
     describe '.toString'
       it 'should generate the natural language description of a simple set'
-        var simple_set = new SetBuilder.Set([{ trait: 'awesome' }]);
+        var simple_set = new SetBuilder.Set([{ trait: 'awesome', enums: {'0': 'are'} }]);
         expect(simple_set.toString()).to(eql, 'who are awesome');
       end
       
       it 'should generate the natural language description of a complex set'
         var set = new SetBuilder.Set(set_data);
-        var expected_string = 'who are awesome, who have attended McKendree, who died, and whose name is Jerome'
+        var expected_string = 'who are awesome, who have attended McKendree, who have died, and whose name is Jerome'
         expect(set.toString()).to(be, expected_string);
       end
 
       it 'should generate the natural language description of a complex set with negation (NB: nouns are not negated)'
         var set = new SetBuilder.Set([
-          { trait: 'awesome', negative: true },
-          { trait: 'attended', negative: true, school: 1 },
-          { trait: 'died', negative: true },
-          { trait: 'name', negative: true, modifiers: [{ operator: 'is', values: ['Jerome'] }] }
+          { trait: 'awesome', enums: ['are not'] },
+          { trait: 'attended', enums: ['have not'], school: 1 },
+          { trait: 'died', enums: ['have not'] },
+          { trait: 'name', modifiers: [{ operator: 'is', values: ['Jerome'] }] }
         ]);
         var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is Jerome'
         expect(set.toString()).to(eql, expected_string);

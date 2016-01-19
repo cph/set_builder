@@ -4,7 +4,7 @@ require "set_builder/modifier"
 
 module SetBuilder
   class Trait
-    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :negative
+    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :enums
 
 
 
@@ -22,7 +22,9 @@ module SetBuilder
       raise ArgumentError, "A trait may define only one direct object" if direct_object_types.length > 1
       @direct_object_type = direct_object_types[0].to_sym if direct_object_types[0]
 
-      @negative = find(:negative)
+      @enums = find_all(:enum)
+      raise ArgumentError, "An enum must define more than one option" if enums.any? { |options| options.length < 2 }
+
       @modifiers = find_all(:modifier).map { |modifier_type| Modifier[modifier_type] }
     end
 
@@ -32,10 +34,6 @@ module SetBuilder
       !@direct_object_type.nil?
     end
     alias :direct_object_required? :requires_direct_object?
-
-    def negatable?
-      negative.present?
-    end
 
 
 
@@ -84,7 +82,7 @@ module SetBuilder
     def value_for(token, lexeme)
       case token
       when :name then lexeme[1...-1]
-      when :negative then lexeme[1...-1]
+      when :enum then lexeme[1...-1].split("|")
       when :modifier then lexeme[1...-1]
       when :direct_object_type then lexeme[1..-1]
       else lexeme
@@ -94,7 +92,7 @@ module SetBuilder
     LEXER = {
       name: /("[^"]+")/,
       direct_object_type: /(:[\w\-\.]+)/,
-      negative: /(\[[^\]]+\])/,
+      enum: /(\[[^\]]+\])/,
       modifier: /(<\w+>)/
     }.freeze
 

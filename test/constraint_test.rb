@@ -44,6 +44,11 @@ class ConstraintTest < ActiveSupport::TestCase
       assert_equal "who was born on 2016-01-01", trait.apply({
         modifiers: [{ operator: "on", values: ["2016-01-01"] }] }).to_s
     end
+
+    should "interpolate enums" do
+      trait = Trait.new('who [was|was not] "born" in [Russia|Ukraine]')
+      assert_equal "who was born in Ukraine", trait.apply({enums: ["was", "Ukraine"] }).to_s
+    end
   end
 
 

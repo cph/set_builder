@@ -73,6 +73,7 @@ module SetBuilder
             modifier
           end
         end
+        constraint[:enums] = hash_to_array(constraint[:enums]) if constraint[:enums]
         constraint
       end
     end
