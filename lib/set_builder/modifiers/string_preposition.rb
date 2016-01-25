@@ -1,4 +1,4 @@
-require 'set_builder/modifier/verb'
+require "set_builder/modifier/verb"
 
 
 module SetBuilder

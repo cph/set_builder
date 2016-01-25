@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class DatePrepositionTest < ActiveSupport::TestCase
   include SetBuilder::Modifiers
@@ -13,8 +13,9 @@ class DatePrepositionTest < ActiveSupport::TestCase
   test "should constrain our date queries to A.D." do
     Timecop.freeze do
       time = 5.years.ago
-      modifier = DatePreposition.new(in_the_last: [5, "years"])
-      assert_equal "\"people\".\"birthday\" >= '#{time}'", modifier.build_arel_for(table[:birthday]).to_sql
+      modifier = DatePreposition.new(operator: :in_the_last, values: [5, "years"])
+      assert_equal "\"people\".\"birthday\" >= '#{time}'",
+        modifier.build_arel_for(table[:birthday]).to_sql
     end
   end
 

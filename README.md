@@ -15,16 +15,16 @@ SetBuilder is a library for:
 
 The following Set describes a group of people:
 
-     [[:awesome],
-      [:attended, "school"],
-      [:died, :not],
-      [:name, {:is => "Jerome"}]]
+     [{ trait: :awesome },
+      { trait: :attended, school: "school" },
+      { trait: :died, negative: true },
+      { trait: :name, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
 
 SetBuilder can render this Set in plain English:
 
     [Everyone] who is awesome, who attended school, who has not died, and whose name is Jerome.
 
-It can also generate a NamedScope on an ActiveRecord model to fetch the people who fit in this set.
+It can also generate an `ActiveRecord::Relation` on an ActiveRecord model to fetch the people who fit in this set.
 
 
 ### Running the tests

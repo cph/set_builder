@@ -1,5 +1,5 @@
-require 'rake'
-require 'rake/testtask'
+require "rake"
+require "rake/testtask"
 
 desc 'Run tests.'
 task :default => :test

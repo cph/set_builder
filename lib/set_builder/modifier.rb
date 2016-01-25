@@ -1,6 +1,6 @@
-require 'set_builder/modifiers'
-require 'set_builder/modifier/adverb'
-require 'set_builder/modifier/verb'
+require "set_builder/modifiers"
+require "set_builder/modifier/adverb"
+require "set_builder/modifier/verb"
 
 module SetBuilder
   module Modifier

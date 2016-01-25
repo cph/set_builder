@@ -1,7 +1,32 @@
-require 'test_helper'
+require "test_helper"
 
 class ModifierTest < ActiveSupport::TestCase
   include SetBuilder::Modifiers
+
+
+
+  test "should be valid if `values` is omitted for an operator that expects no arguments" do
+    preposition = SetBuilder::Modifiers::DatePreposition.new(operator: "ever", values: [])
+    assert_equal [], preposition.values
+    assert preposition.valid?
+
+    preposition = SetBuilder::Modifiers::DatePreposition.new(operator: "ever")
+    assert_equal [], preposition.values
+    assert preposition.valid?
+  end
+
+  test "should not flatten double-wrapped `values`" do
+    preposition = SetBuilder::Modifiers::DatePreposition.new(operator: "on", values: [["2015-01-01"]])
+    assert_equal [["2015-01-01"]], preposition.values
+    assert preposition.valid?
+  end
+
+  test "should be valid if `values` is not wrapped in an array" do
+    preposition = SetBuilder::Modifiers::DatePreposition.new(operator: "on", values: "2015-01-01")
+    assert_equal ["2015-01-01"], preposition.values
+    assert preposition.valid?
+  end
+
 
 
   test "get type with string" do
