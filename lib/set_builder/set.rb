@@ -4,6 +4,8 @@ module SetBuilder
 
 
     def initialize(traits, scope, raw_data)
+      traits = Traits.new(traits) if traits.is_a?(Array)
+      raise ArgumentError, "Expected traits to be an instance of SetBuilder::Traits" unless traits.is_a?(Traits)
       @traits = traits
       @scope = scope
       @set = self.class.normalize(raw_data)
