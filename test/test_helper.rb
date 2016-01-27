@@ -3,6 +3,7 @@ require "rails"
 require "rails/test_help"
 require "active_support/core_ext"
 require "set_builder"
+require "shoulda/context"
 require "pry"
 require "support/fake_connection"
 require "timecop"
@@ -18,11 +19,11 @@ friends = Arel::Table.new(:friends)
 
 $friend_traits = SetBuilder::Traits.new do
 
-  trait('who are [not] "awesome"') do |query, scope|
+  trait('who [are|are not] "awesome"') do |query, scope|
     scope << {:conditions => {:awesome => true}}
   end
 
-  trait('who [have not] "died"') do |query, scope|
+  trait('who [have|have not] "died"') do |query, scope|
     scope << {:conditions => {:alive => false}}
   end
 
@@ -34,7 +35,7 @@ $friend_traits = SetBuilder::Traits.new do
     scope << {:conditions => query.modifiers[0].build_arel_for(friends[:age]).to_sql}
   end
 
-  trait('who have [not] "attended" :school') do |query, scope|
+  trait('who [have|have not] "attended" :school') do |query, scope|
     scope << {
       :joins => "INNER JOIN schools ON friends.school_id=schools.id",
       :conditions => {"schools.id" => query.direct_object}

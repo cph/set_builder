@@ -6,34 +6,34 @@ class SetTest < ActiveSupport::TestCase
 
   test "set data struture" do
     set = to_set [
-      { trait: :awesome },
-      { trait: :attended, school: 2 },
-      { trait: :died },
+      { trait: :awesome, enums: ["are"] },
+      { trait: :attended, enums: ["have"], school: 2 },
+      { trait: :died, enums: ["have"] },
       { trait: :name, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
     assert set.valid?
-    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
+    assert_equal "who are awesome, who have attended McKendree, who have died, and whose name is Jerome", set.to_s
   end
 
   test "parsing sets that come from HTML" do
     set = to_set({
-      "0" => { "trait" => "awesome" },
-      "1" => { "trait" => "attended", "school" => 2 },
-      "2" => { "trait" => "died" },
+      "0" => { "trait" => "awesome", "enums" => {"0" => "are"} },
+      "1" => { "trait" => "attended", "enums" => {"0" => "have"}, "school" => 2 },
+      "2" => { "trait" => "died", "enums" => {"0" => "have"} },
       "3" => { "trait" => "name", "modifiers" => {"0" => { "operator" => "is", "values" => {"0" => "Jerome"} }} } })
     assert set.valid?
-    assert_equal "who are awesome, who have attended McKendree, who died, and whose name is Jerome", set.to_s
+    assert_equal "who are awesome, who have attended McKendree, who have died, and whose name is Jerome", set.to_s
   end
 
   test "normalizing sets" do
     expected_constraints = [
-      { trait: "awesome" },
-      { trait: "attended", school: 2 },
-      { trait: "died" },
+      { trait: "awesome", enums: ["are"] },
+      { trait: "attended", enums: ["have"], school: 2 },
+      { trait: "died", enums: ["have"] },
       { trait: "name", modifiers: [{ operator: "is", values: ["Jerome"] }] }]
     set = to_set({
-      "0" => { "trait" => "awesome" },
-      "1" => { "trait" => "attended", "school" => 2 },
-      "2" => { "trait" => "died" },
+      "0" => { "trait" => "awesome", "enums" => {"0" => "are"} },
+      "1" => { "trait" => "attended", "enums" => {"0" => "have"}, "school" => 2 },
+      "2" => { "trait" => "died", "enums" => {"0" => "have"} },
       "3" => { "trait" => "name", "modifiers" => {"0" => { "operator" => "is", "values" => {"0" => "Jerome"} }} } })
     assert_equal expected_constraints, set.to_a
   end
@@ -69,16 +69,16 @@ class SetTest < ActiveSupport::TestCase
 
   test "set structure with negations (nouns are ignored)" do
     set = to_set [
-      { trait: "awesome", negative: true },
-      { trait: "attended", negative: true, school: 2 },
-      { trait: "died", negative: true },
-      { trait: "name", negative: true, modifiers: [{ operator: :is, values: ["Jerome"] }] }]
+      { trait: "awesome", enums: ["are not"] },
+      { trait: "attended", enums: ["have not"], school: 2 },
+      { trait: "died", enums: ["have not"] },
+      { trait: "name", modifiers: [{ operator: :is, values: ["Jerome"] }] }]
     assert set.valid?
     assert_equal "who are not awesome, who have not attended McKendree, who have not died, and whose name is Jerome", set.to_s
   end
 
   test "simple perform" do
-    set = to_set [{ trait: :awesome }]
+    set = to_set [{ trait: "awesome", enums: ["are"] }]
 
     expected_results = [{:conditions => {:awesome => true}}]
     assert_equal expected_results, set.perform
@@ -86,9 +86,9 @@ class SetTest < ActiveSupport::TestCase
 
   test "complex perform" do
     set = to_set [
-      { trait: "awesome" },
-      { trait: "attended", school: 1 },
-      { trait: "died" },
+      { trait: "awesome", enums: ["are"] },
+      { trait: "attended", enums: ["have"], school: 1 },
+      { trait: "died", enums: ["have"] },
       { trait: "name", modifiers: [{ operator: :begins_with, values: ["Jer"] }] }]
 
     expected_results = [
@@ -98,14 +98,6 @@ class SetTest < ActiveSupport::TestCase
       {:conditions => "\"friends\".\"name\" LIKE 'Jer%'"}
     ]
     assert_equal expected_results, set.perform
-  end
-
-  test "invalid set" do
-    # starts_with is not a valid operator
-    set = to_set [{ trait: :name, modifiers: [{ operator: :starts_with, values: ["Jerome"] }] }]  
-
-    # !todo: what to do?
-    skip "TODO: test invalid sets"
   end
 
 

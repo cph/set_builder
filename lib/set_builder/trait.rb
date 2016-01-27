@@ -4,15 +4,27 @@ require "set_builder/modifier"
 
 module SetBuilder
   class Trait
-    attr_reader :expression, :name, :modifiers, :direct_object_type, :negative
+    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :enums
 
 
 
     def initialize(expression, &block)
-      @expression = expression
-      @name, @direct_object_type, @negative = find(:name), find(:direct_object_type), find(:negative)
-      @direct_object_type = @direct_object_type.to_sym if @direct_object_type
+      @expression = expression.to_s.strip
+      @tokens = parse(expression)
       @block = block
+
+      names = find_all(:name)
+      raise ArgumentError, "A trait must be defined with a name" if names.none?
+      raise ArgumentError, "A trait must be defined with only one name" if names.length > 1
+      @name = names[0]
+
+      direct_object_types = find_all(:direct_object_type)
+      raise ArgumentError, "A trait may define only one direct object" if direct_object_types.length > 1
+      @direct_object_type = direct_object_types[0].to_sym if direct_object_types[0]
+
+      @enums = find_all(:enum)
+      raise ArgumentError, "An enum must define more than one option" if enums.any? { |options| options.length < 2 }
+
       @modifiers = find_all(:modifier).map { |modifier_type| Modifier[modifier_type] }
     end
 
@@ -23,22 +35,14 @@ module SetBuilder
     end
     alias :direct_object_required? :requires_direct_object?
 
-    def negatable?
-      negative.present?
-    end
 
 
-
-    def to_s(negative=false)
-      parsed_expression.reject do |token, _|
-        [:modifier, :direct_object_type].include?(token) || (!negative && token == :negative)
-      end.map do |token, value|
-        token == :name ? name : value
-      end.join(" ")
+    def to_s
+      expression
     end
 
     def as_json(*)
-      parsed_expression.map { |(token, value)| [token.to_s, value] }
+      tokens.map { |(token, value)| [token.to_s, value] }
     end
 
     def apply(constraint)
@@ -52,7 +56,7 @@ module SetBuilder
 
 
     def find_all(token)
-      parsed_expression.select { |(_token, _)| _token == token }.map { |(_, value)| value }
+      tokens.select { |(_token, _)| _token == token }.map { |(_, value)| value }
     end
 
     def find(token)
@@ -61,30 +65,34 @@ module SetBuilder
 
 
 
-    def parsed_expression
-      @parsed_expression ||= parse(expression)
-    end
-
-    def parse(trait_definition)
-      regex = Regexp.union(LEXER.values)
-      trait_definition.split(regex).map do |lexeme|
-        [token_for(lexeme), value_for(lexeme)] unless lexeme.strip.empty?
-      end.compact
+    def parse(expression)
+      tokenizer = Regexp.union(LEXER.values)
+      expression.split(tokenizer).each_with_object([]) do |lexeme, output|
+        next if lexeme.empty?
+        token = token_for(lexeme)
+        output.push [token, value_for(token, lexeme)]
+      end
     end
 
     def token_for(lexeme)
       LEXER.each { |token, pattern| return token if pattern.match(lexeme) }
-      return :string
+      :string
     end
 
-    def value_for(lexeme)
-      lexeme.to_s.strip.gsub(/[<>"\[\]:]/, "")
+    def value_for(token, lexeme)
+      case token
+      when :name then lexeme[1...-1]
+      when :enum then lexeme[1...-1].split("|")
+      when :modifier then lexeme[1...-1]
+      when :direct_object_type then lexeme[1..-1]
+      else lexeme
+      end
     end
 
     LEXER = {
       name: /("[^"]+")/,
       direct_object_type: /(:[\w\-\.]+)/,
-      negative: /(\[[^\]]+\])/,
+      enum: /(\[[^\]]+\])/,
       modifier: /(<\w+>)/
     }.freeze
 

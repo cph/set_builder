@@ -55,6 +55,11 @@ module SetBuilder
       self.class.new(self.__getobj__.sort_by(&block))
     end
 
+    def <<(trait)
+      super
+      self
+    end
+
 
 
     def modifiers

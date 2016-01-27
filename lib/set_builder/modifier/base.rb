@@ -36,7 +36,7 @@ module SetBuilder
           if operator.blank?
             errors.push "operator is blank"
           else
-            errors.push "#{operator.inspect} is not recognized. It should be #{self.class.operators.keys.to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" unless self.class.operators.key?(operator)
+            errors.push "#{operator.inspect} is not recognized. It should be #{self.class.operators.keys.map(&:inspect).to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" unless self.class.operators.key?(operator)
           end
         end
       end

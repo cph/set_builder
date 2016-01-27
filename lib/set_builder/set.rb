@@ -4,6 +4,8 @@ module SetBuilder
 
 
     def initialize(traits, scope, raw_data)
+      traits = Traits.new(traits) if traits.is_a?(Array)
+      raise ArgumentError, "Expected traits to be an instance of SetBuilder::Traits" unless traits.is_a?(Traits)
       @traits = traits
       @scope = scope
       @set = self.class.normalize(raw_data)
@@ -73,9 +75,17 @@ module SetBuilder
             modifier
           end
         end
+        constraint[:enums] = hash_to_array(constraint[:enums]) if constraint[:enums]
         constraint
       end
     end
+
+
+
+  private
+    attr_reader :set
+
+
 
     def self.hash_to_array(hash)
       return hash.values if hash.is_a?(Hash)
@@ -83,12 +93,6 @@ module SetBuilder
     end
 
 
-
-  private
-
-
-
-    attr_reader :set
 
     def get_constraints
       set.map do |constraint|
