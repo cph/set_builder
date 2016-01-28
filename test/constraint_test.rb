@@ -3,6 +3,8 @@ require "test_helper"
 class ConstraintTest < ActiveSupport::TestCase
   include SetBuilder
 
+  attr_reader :trait, :constraint
+
 
   test "constraints find correct modifiers" do
     trait = $friend_traits[:name]
@@ -29,23 +31,45 @@ class ConstraintTest < ActiveSupport::TestCase
 
 
 
+  context "When a Constraint has fewer enum values than the Trait expects, it" do
+    setup do
+      @trait = Trait.new('who [is|is not] "awesome" at [basketball|golf|hockey]')
+      @constraint = trait.apply({enums: ["is not"]})
+    end
+
+    should "be valid" do
+      assert constraint.valid?, "The constraint was not valid: #{constraint.errors.join(";")}"
+    end
+
+    should "fill in the missing values with the first option the Trait defines" do
+      assert_equal "who is not awesome at basketball", constraint.to_s
+    end
+  end
+
+
+
+  context "When a Constraint is given an enum value that the Trait doesn't expect, it" do
+    setup do
+      @trait = Trait.new('who [is|is not] "awesome" at [basketball|golf|hockey]')
+      @constraint = trait.apply({enums: ["are not", "soccer"]})
+    end
+
+    should "be valid" do
+      assert constraint.valid?, "The constraint was not valid: #{constraint.errors.join(";")}"
+    end
+
+    should "replace the value with the first option the Trait defines" do
+      assert_equal "who is awesome at basketball", constraint.to_s
+    end
+  end
+
+
+
   context "A constraint" do
     should "be invalid if it is missing a direct object" do
       trait = Trait.new('who "attended" :school')
       constraint = trait.apply({})
       assert_match /school is blank/, constraint.errors.join
-    end
-
-    should "be invalid if it is missing an enumeration" do
-      trait = Trait.new('who [is|is not] "awesome"')
-      constraint = trait.apply({})
-      assert_match /should have values for 1 enums/, constraint.errors.join
-    end
-
-    should "be invalid if it supplies an unexpected value for an enumeration" do
-      trait = Trait.new('who [is|is not] "awesome"')
-      constraint = trait.apply(enums: ["is totally"])
-      assert_match /should be 'is' or 'is not'/, constraint.errors.join
     end
 
     should "be invalid if it supplies an unexpected value for a modifier's operator" do

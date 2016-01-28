@@ -23,7 +23,17 @@ module SetBuilder
       @params = params
 
       @direct_object = params[direct_object_type] if trait.requires_direct_object?
-      @enums = params[:enums] || []
+
+      # Map supplied enum values to what the Trait has defined.
+      # If there are any discrepancies or missing values, fill them
+      # in with values that will work.
+      enum_values = params[:enums] || []
+      @enums = trait.enums.each_with_index.map do |expected_values, i|
+        value = enum_values[i]
+        value = expected_values[0] unless expected_values.include?(value)
+        value
+      end
+
       modifiers = params.fetch(:modifiers, [])
       @modifiers = trait.modifiers.each_with_index.map { |modifier, i|
         modifier.new(modifiers[i] || {}) }
@@ -38,13 +48,6 @@ module SetBuilder
     def errors
       [].tap do |errors|
         errors.push "#{direct_object_type} is blank" if direct_object_required? && direct_object.nil?
-        if enums.length != trait.enums.length
-          errors.push "should have values for #{trait.enums.length} enums"
-        else
-          trait.enums.each_with_index do |expected_values, i|
-            errors.push "enum ##{i + 1} should be #{expected_values.map { |value| "'#{value}'" }.to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" unless expected_values.member?(enums[i])
-          end
-        end
         errors.concat modifiers.flat_map(&:errors)
       end
     end
