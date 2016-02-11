@@ -60,6 +60,20 @@ describe 'SetBuilder'
 
 
 
+  describe '.registerValueMap'
+    it 'should accept an array of arrays as a valueMap'
+      SetBuilder.registerValueMap('name', [['1', 'John'], ['2', 'Susan']]);
+      expect(SetBuilder.getValueMap('name')).to(eql, [['1', 'John'], ['2', 'Susan']]);
+    end
+
+    it 'should accept and call a function as a valueMap'
+      var events = [['1', 'Band Rehearsal']];
+      SetBuilder.registerValueMap('event', function () { return events });
+      expect(SetBuilder.getValueMap('event')).to(eql, events);
+      events.push(['2', 'Basketball Practice']);
+      expect(SetBuilder.getValueMap('event')).to(eql, events);
+    end
+  end
 
   describe '.getValueMap'
     it 'should return an array of arrays'
@@ -80,7 +94,7 @@ describe 'SetBuilder'
 
   describe '.getValueMaps'
     it 'should return the names of the value maps registered'
-      expect(SetBuilder.getValueMaps()).to(eql, ['school']);
+      expect(SetBuilder.getValueMaps()).to(eql, ['school', 'name', 'event']);
     end
   end
 
