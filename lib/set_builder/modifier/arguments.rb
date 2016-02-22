@@ -1,13 +1,15 @@
-require "pry"
+require "set_builder/parser"
 
 module SetBuilder
   module Modifier
     class Arguments
       attr_reader :arguments, :expression, :tokens
 
+      include Parser
+
       def initialize(expression)
         @expression = expression.respond_to?(:each) ? map_legacy_arguments(expression) : expression
-        @tokens = parse
+        @tokens = parse(@expression)
       end
 
       def arity
@@ -42,33 +44,6 @@ module SetBuilder
         puts "DEPRECATED: SetBuilder::Modifier should use expression style argumenents now e.g.-> \"#{_expression}\""
         _expression
       end
-
-      def parse
-        tokenizer = Regexp.union(LEXER.values)
-        expression.split(tokenizer).each_with_object([]) do |lexeme, output|
-          next if lexeme.empty?
-          token = token_for(lexeme)
-          output.push [token, value_for(token, lexeme)]
-        end
-      end
-
-      def token_for(lexeme)
-        LEXER.each { |token, pattern| return token if pattern.match(lexeme) }
-        :string
-      end
-
-      def value_for(token, lexeme)
-        case token
-        when :arg then lexeme[1...-1]
-        when :enum then lexeme[1...-1].split("|")
-        else lexeme
-        end
-      end
-
-      LEXER = {
-        arg:  /(\{[^\}]+\})/,
-        enum: /(\[[^\]]+\])/
-      }.freeze
 
     end
   end
