@@ -80,7 +80,7 @@ module SetBuilder
 
 
 
-      def to_s(negative=false)
+      def to_s
         arguments = self.class.parsed_operators[operator] || Arguments.new("")
         operator.to_s.gsub(/_/, " ") + " " + arguments.to_s(values)
       end
@@ -88,13 +88,8 @@ module SetBuilder
 
 
       def self.parsed_operators
-        @parsed_operators ||= begin
-          Hash[
-            operators.map do |operator, arguments|
-              [operator, Arguments.new(arguments)]
-            end
-          ]
-        end
+        @parsed_operators ||= Hash[operators.map { |operator, arguments|
+          [operator, Arguments.new(arguments)] }]
       end
 
 
@@ -106,11 +101,8 @@ module SetBuilder
 
 
       def self.to_hash
-        Hash[
-          parsed_operators.map do |operator, arguments|
-            [operator.to_s, arguments.as_json]
-          end
-        ]
+        Hash[parsed_operators.map { |operator, arguments|
+            [operator.to_s, arguments.as_json] }]
       end
 
 
