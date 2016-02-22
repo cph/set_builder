@@ -7,14 +7,14 @@ module SetBuilder
 
       def self.operators
         {
-          :ever => [],
-          :before => [:date],
-          :after => [:date],
-          :on => [:date],
-          :during_month => [:month],
-          :during_year => [:year],
-          :in_the_last => [:number, :period],
-          :between => [:date, :date]
+          :ever => "",
+          :before => "{date}",
+          :after => "{date}",
+          :on => "{date}",
+          :during_month => "{month}",
+          :during_year => "{year}",
+          :in_the_last => "{number} {period}",
+          :between => "{date} and {date}"
         }
       end
 

@@ -7,14 +7,14 @@ module SetBuilder
 
       def self.operators
         {
-          :contains => [:string],
-          :does_not_contain => [:string],
-          :begins_with => [:string],
-          :does_not_begin_with => [:string],
-          :ends_with => [:string],
-          :does_not_end_with => [:string],
-          :is => [:string],
-          :is_not => [:string]
+          :contains => "{string}",
+          :does_not_contain => "{string}",
+          :begins_with => "{string}",
+          :does_not_begin_with => "{string}",
+          :ends_with => "{string}",
+          :does_not_end_with => "{string}",
+          :is => "{string}",
+          :is_not => "{string}"
         }
       end
 

@@ -32,10 +32,10 @@ describe 'SetBuilder'
 
     SetBuilder.registerModifiers({
       string: {
-        contains: ['string'],
-        begins_with: ['string'],
-        ends_with: ['string'],
-        is: ['string']
+        contains: [['arg', 'string']],
+        begins_with: [['arg', 'string']],
+        ends_with: [['arg', 'string']],
+        is: [['arg', 'string']]
       }
     });
 

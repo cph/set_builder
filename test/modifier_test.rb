@@ -55,14 +55,14 @@ class ModifierTest < ActiveSupport::TestCase
 
   test "converting modifier to json" do
     expected_results = {
-      "contains"            => ["string"],
-      "does_not_contain"    => ["string"],
-      "begins_with"         => ["string"],
-      "does_not_begin_with" => ["string"],
-      "ends_with"           => ["string"],
-      "does_not_end_with"   => ["string"],
-      "is"                  => ["string"],
-      "is_not"              => ["string"]
+      "contains"            => [["arg", "string"]],
+      "does_not_contain"    => [["arg", "string"]],
+      "begins_with"         => [["arg", "string"]],
+      "does_not_begin_with" => [["arg", "string"]],
+      "ends_with"           => [["arg", "string"]],
+      "does_not_end_with"   => [["arg", "string"]],
+      "is"                  => [["arg", "string"]],
+      "is_not"              => [["arg", "string"]]
     }.to_json
     assert_equal expected_results, SetBuilder::Modifier.for(:string).to_json
   end
@@ -71,29 +71,29 @@ class ModifierTest < ActiveSupport::TestCase
     expected_results = {
       "date" => {
         "ever"        => [],
-        "after"       => ["date"],
-        "before"      => ["date"],
-        "on"          => ["date"],
-        "in_the_last" => ["number", "period"],
-        "during_month"=> ["month"],
-        "during_year" => ["year"],
-        "between"     => ["date", "date"]
+        "before"      => [["arg", "date"]],
+        "after"       => [["arg", "date"]],
+        "on"          => [["arg", "date"]],
+        "during_month"=> [["arg", "month"]],
+        "during_year" => [["arg", "year"]],
+        "in_the_last" => [["arg", "number"], ["string", " "], ["arg", "period"]],
+        "between"     => [["arg", "date"], ["string", " and "], ["arg", "date"]]
       },
-      "number"=> {
-        "is"=>["number"],
-        "is_less_than"=>["number"],
-        "is_greater_than"=>["number"],
-        "is_between"=>["number", "number"]
+      "number" => {
+        "is"=>[["arg", "number"]],
+        "is_less_than"=>[["arg", "number"]],
+        "is_greater_than"=>[["arg", "number"]],
+        "is_between"=>[["arg", "number"], ["string", " and "], ["arg", "number"]]
       },
       "string" => {
-        "contains"            => ["string"],
-        "does_not_contain"    => ["string"],
-        "begins_with"         => ["string"],
-        "does_not_begin_with" => ["string"],
-        "ends_with"           => ["string"],
-        "does_not_end_with"   => ["string"],
-        "is"                  => ["string"],
-        "is_not"              => ["string"]
+        "contains"            => [["arg", "string"]],
+        "does_not_contain"    => [["arg", "string"]],
+        "begins_with"         => [["arg", "string"]],
+        "does_not_begin_with" => [["arg", "string"]],
+        "ends_with"           => [["arg", "string"]],
+        "does_not_end_with"   => [["arg", "string"]],
+        "is"                  => [["arg", "string"]],
+        "is_not"              => [["arg", "string"]]
       }
     }
     assert_equal expected_results, $friend_traits.modifiers.to_hash
