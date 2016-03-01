@@ -13,10 +13,10 @@ module SetBuilder
       end
 
       def arity
-        list.count
+        types.count
       end
 
-      def list
+      def types
         @types ||= @tokens
           .select { |token, _| token == :arg }
           .map { |_, type| type }

@@ -47,9 +47,9 @@ module SetBuilder
         [].tap do |errors|
           arguments = self.class.parsed_operators[operator] || Arguments.new("")
           if values.length != arguments.arity
-            errors.push "wrong number of arguments; expected #{arguments.arity} (#{arguments.list.join(", ")})"
+            errors.push "wrong number of arguments; expected #{arguments.arity} (#{arguments.types.join(", ")})"
           else
-            errors.concat values.each_with_index.flat_map { |value, i| errors_with_value_type(value, arguments.list[i]) }
+            errors.concat values.each_with_index.flat_map { |value, i| errors_with_value_type(value, arguments.types[i]) }
           end
         end
       end
