@@ -7,10 +7,10 @@ module SetBuilder
 
       def self.operators
         {
-          :is => [:number],
-          :is_less_than => [:number],
-          :is_greater_than => [:number],
-          :is_between => [:number, :number]
+          :is => "{number}",
+          :is_less_than => "{number}",
+          :is_greater_than => "{number}",
+          :is_between => "{number} and {number}"
         }
       end
 

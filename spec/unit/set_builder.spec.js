@@ -32,10 +32,13 @@ describe 'SetBuilder'
 
     SetBuilder.registerModifiers({
       string: {
-        contains: ['string'],
-        begins_with: ['string'],
-        ends_with: ['string'],
-        is: ['string']
+        contains: [['arg', 'string']],
+        begins_with: [['arg', 'string']],
+        ends_with: [['arg', 'string']],
+        is: [['arg', 'string']]
+      },
+      date: {
+        between: [['arg', 'date'], ['string', ' and '], ['arg', 'date']]
       }
     });
 
@@ -153,7 +156,7 @@ describe 'SetBuilder'
 
     describe '.length'
       it 'should have parsed the data structure correctly'
-        expect(modifiers.length()).to(be, 1);
+      expect(modifiers.length()).to(be, 2);
       end
     end
 
@@ -207,6 +210,14 @@ describe 'SetBuilder'
           { trait: 'name', modifiers: [{ operator: 'is', values: ['Jerome'] }] }
         ]);
         var expected_string = 'who are not awesome, who have not attended Concordia, who have not died, and whose name is Jerome'
+        expect(set.toString()).to(eql, expected_string);
+      end
+
+      it 'should generate the natural language description of a set with extra text in modifier arguments'
+        var set = new SetBuilder.Set([
+          { trait: 'born', modifiers: [{ operator: 'between', values: ['Jan 1, 2016', 'Jan 2, 2016'] }]}
+        ])
+        var expected_string = 'who were born between Jan 1, 2016 and Jan 2, 2016';
         expect(set.toString()).to(eql, expected_string);
       end
     end

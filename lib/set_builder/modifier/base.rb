@@ -1,3 +1,5 @@
+require "set_builder/modifier/arguments"
+
 module SetBuilder
   module Modifier
     class Base
@@ -43,11 +45,11 @@ module SetBuilder
 
       def errors_with_values
         [].tap do |errors|
-          types = self.class.operators[operator] || []
-          if values.length != types.length
-            errors.push "wrong number of arguments; expected #{types.length} (#{types.join(", ")})"
+          arguments = self.class.parsed_operators[operator] || Arguments.new("")
+          if values.length != arguments.arity
+            errors.push "wrong number of arguments; expected #{arguments.arity} (#{arguments.types.join(", ")})"
           else
-            errors.concat values.each_with_index.flat_map { |value, i| errors_with_value_type(value, types[i]) }
+            errors.concat values.each_with_index.flat_map { |value, i| errors_with_value_type(value, arguments.types[i]) }
           end
         end
       end
@@ -78,13 +80,16 @@ module SetBuilder
 
 
 
-      def to_s(negative=false)
-        words = negative ? [self.class.negate(operator).to_s.gsub(/_/, " ")] : [operator.to_s.gsub(/_/, " ")]
-        arguments = self.class.operators[operator] || []
-        (0...arguments.length).each do |i|
-          words << ValueMap.to_s(arguments[i], values[i])
-        end
-        words.join(" ")
+      def to_s
+        arguments = self.class.parsed_operators[operator] || Arguments.new("")
+        operator.to_s.gsub(/_/, " ") + " " + arguments.to_s(values)
+      end
+
+
+
+      def self.parsed_operators
+        @parsed_operators ||= Hash[operators.map { |operator, arguments|
+          [operator, Arguments.new(arguments)] }]
       end
 
 
@@ -96,11 +101,8 @@ module SetBuilder
 
 
       def self.to_hash
-        hash = {}
-        operators.each do |operator, array|
-          hash[operator.to_s] = array.map {|type| type.to_s }
-        end
-        hash
+        Hash[parsed_operators.map { |operator, arguments|
+            [operator.to_s, arguments.as_json] }]
       end
 
 
