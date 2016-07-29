@@ -1,7 +1,8 @@
 # SetBuilder
 
-[![Build Status](https://travis-ci.org/boblail/set_builder.png?branch=master)](https://travis-ci.org/boblail/set_builder)
-[![Code Climate](https://codeclimate.com/github/boblail/set_builder.png)](https://codeclimate.com/github/boblail/set_builder)
+[![Gem Version](https://badge.fury.io/rb/set_builder.svg)](https://rubygems.org/gems/set_builder)
+[![Code Climate](https://codeclimate.com/github/boblail/set_builder.svg)](https://codeclimate.com/github/boblail/set_builder)
+[![Build Status](https://travis-ci.org/boblail/set_builder.svg)](https://travis-ci.org/boblail/set_builder)
 
 SetBuilder is a library for:
 
