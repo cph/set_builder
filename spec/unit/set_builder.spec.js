@@ -180,6 +180,12 @@ describe 'SetBuilder'
       it 'should parse hash-style objects as well as arrays'
         var set = new SetBuilder.Set(set_data_hash);
         expect(set.constraints().length).to(be, 4);
+        set.constraints().each(function(constraint) {
+          expect(constraint.modifiers()).to(be_an, Array);
+        });
+        set.constraints().each(function(constraint) {
+          expect(constraint.enums()).to(be_an, Array);
+        });
       end
 
       it 'should consider two sets with identical constraints equal'
