@@ -20,6 +20,11 @@ class ValueMapTest < ActiveSupport::TestCase
     assert_equal expected_school, SetBuilder::ValueMap.to_s("school", 1)
   end
 
+  test "#to_s should use the :label attribute if value is a hash" do
+    expected_address = "The North Pole"
+    assert_equal expected_address, SetBuilder::ValueMap.to_s("address", {label: "The North Pole", latitude: 0, longitude: 0})
+  end
+
 
   test "value map should generate json that can be handed to the client-side SetBuilder" do
     expected_json = "{\"school\":[[1,\"Concordia\"],[2,\"McKendree\"]]}"

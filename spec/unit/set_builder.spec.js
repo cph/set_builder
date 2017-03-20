@@ -27,7 +27,11 @@ describe 'SetBuilder'
       [["string","whose "],
        ["name","name"],
        ["string", " "],
-       ["modifier","string"]]
+       ["modifier","string"]],
+      [["string","whose "],
+       ["name","address"],
+       ["string", " is "],
+       ["modifier","address"]]
     ]);
 
     SetBuilder.registerModifiers({
@@ -39,6 +43,9 @@ describe 'SetBuilder'
       },
       date: {
         between: [['arg', 'date'], ['string', ' and '], ['arg', 'date']]
+      },
+      address: {
+        within: [['arg', 'string'], ['string', ' miles of '], ['arg', 'object']]
       }
     });
 
@@ -131,7 +138,7 @@ describe 'SetBuilder'
 
     describe '.length'
       it 'should have parsed the data structure correctly'
-        expect(traits.length()).to(be, 6);
+        expect(traits.length()).to(be, 7);
       end
     end
 
@@ -156,7 +163,7 @@ describe 'SetBuilder'
 
     describe '.length'
       it 'should have parsed the data structure correctly'
-      expect(modifiers.length()).to(be, 2);
+      expect(modifiers.length()).to(be, 3);
       end
     end
 
@@ -224,6 +231,14 @@ describe 'SetBuilder'
           { trait: 'born', modifiers: [{ operator: 'between', values: ['Jan 1, 2016', 'Jan 2, 2016'] }]}
         ])
         var expected_string = 'who were born between Jan 1, 2016 and Jan 2, 2016';
+        expect(set.toString()).to(eql, expected_string);
+      end
+
+      it 'should generate the natural language description of a set with objects as modifier arguments'
+        var set = new SetBuilder.Set([
+          { trait: 'address', modifiers: [{ operator: 'within', values: ['5', {label: "The North Pole", latitude: 0, longitude: 0}] }]}
+        ])
+        var expected_string = 'whose address is within 5 miles of The North Pole';
         expect(set.toString()).to(eql, expected_string);
       end
     end
