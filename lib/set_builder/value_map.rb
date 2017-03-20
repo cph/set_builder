@@ -31,7 +31,12 @@ module SetBuilder
         pair = map.find { |pair| pair[0] == value || pair[0] == value.to_s }
         pair ? pair[1].to_s : "(unknown)"
       else
-        value.to_s
+        case value
+        when Hash
+          value.symbolize_keys[:label]
+        else
+          value.to_s
+        end
       end
     end
 
