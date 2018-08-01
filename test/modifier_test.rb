@@ -42,7 +42,7 @@ class ModifierTest < ActiveSupport::TestCase
       SetBuilder::Modifier.for(:hash)
     end
     SetBuilder::Modifier.register(:hash, HashModifier)
-    assert_nothing_raised ArgumentError do
+    assert_nothing_raised do
       SetBuilder::Modifier.for(:hash)
     end
   end

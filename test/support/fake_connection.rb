@@ -107,5 +107,9 @@ module Fake
     def schema_cache
       connection
     end
+
+    def data_source_exists? source
+      source
+    end
   end
 end
