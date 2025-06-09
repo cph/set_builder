@@ -1,5 +1,5 @@
 module SetBuilder
-  module ValueMap
+  class ValueMap
     @registered_value_maps = {}
 
     def self.__registered_value_maps

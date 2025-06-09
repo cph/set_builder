@@ -13,7 +13,7 @@ Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 # Sample class used by tests
 
-SetBuilder::ValueMap.register(:school, [[1, "Concordia"], [2, "McKendree"]])
+SetBuilder.value_map.register(:school, [[1, "Concordia"], [2, "McKendree"]])
 
 friends = Arel::Table.new(:friends)
 
