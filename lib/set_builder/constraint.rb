@@ -76,7 +76,7 @@ module SetBuilder
         when :string then value
         when :name then trait.name
         when :enum then enums[enum_index].to_s.tap { enum_index += 1 }
-        when :direct_object_type then ValueMap.to_s(value, direct_object)
+        when :direct_object_type then SetBuilder.value_map.to_s(value, direct_object)
         when :modifier then modifiers[modifier_index].to_s.tap { modifier_index += 1 }
         else raise NotImplementedError, "Unrecognized token type #{token.inspect}"
         end

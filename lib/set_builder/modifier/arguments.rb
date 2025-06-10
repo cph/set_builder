@@ -30,7 +30,7 @@ module SetBuilder
         _values = values.dup
         tokens.map do |token, token_value|
           if token == :arg
-            ValueMap.to_s(token_value, _values.shift)
+            SetBuilder.value_map.to_s(token_value, _values.shift)
           else
             token_value
           end

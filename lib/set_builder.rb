@@ -9,4 +9,13 @@ require "set_builder/engine"
 
 
 module SetBuilder
+  @__value_map = ValueMap
+
+  def self.value_map
+    @__value_map
+  end
+
+  def self.value_map=(value_map)
+    @__value_map = value_map
+  end
 end
