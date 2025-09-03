@@ -6,8 +6,8 @@ module SetBuilder
       @traits = traits
     end
 
-    def trait(trait_expression, &block)
-      traits << Trait.new(trait_expression, &block)
+    def trait(trait_expression, **options, &block)
+      traits << Trait.new(trait_expression, **options, &block)
     end
 
   end
