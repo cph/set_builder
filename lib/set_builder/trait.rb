@@ -5,12 +5,12 @@ require "set_builder/parser"
 
 module SetBuilder
   class Trait
-    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :enums
+    attr_reader :expression, :tokens, :name, :modifiers, :direct_object_type, :enums, :attributes
 
     include Parser
 
 
-    def initialize(expression, &block)
+    def initialize(expression, **options, &block)
       @expression = expression.to_s.strip
       @tokens = parse(expression)
       @block = block
@@ -28,6 +28,7 @@ module SetBuilder
       raise ArgumentError, "An enum must define more than one option" if enums.any? { |options| options.length < 2 }
 
       @modifiers = find_all(:modifier).map { |modifier_type| Modifier[modifier_type] }
+      @attributes = options[:attributes] || []
     end
 
 
