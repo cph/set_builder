@@ -100,6 +100,13 @@ class SetTest < ActiveSupport::TestCase
     assert_equal expected_results, set.perform
   end
 
+  test "perform with a date range" do
+    set = to_set [{ trait: "born", modifiers: [{ operator: :between, values: ["2015-01-01", "2015-12-31"] }] }]
+
+    expected_results = [{:conditions => "\"friends\".\"birthday\" BETWEEN '2015-01-01' AND '2015-12-31'"}]
+    assert_equal expected_results, set.perform
+  end
+
 
 private
 
