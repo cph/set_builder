@@ -19,5 +19,11 @@ class DatePrepositionTest < ActiveSupport::TestCase
     end
   end
 
+  test "should constrain dates between two dates with BETWEEN" do
+    modifier = DatePreposition.new(operator: :between, values: ["2015-01-01", "2015-12-31"])
+    assert_equal "\"people\".\"birthday\" BETWEEN '2015-01-01' AND '2015-12-31'",
+      modifier.build_arel_for(table[:birthday]).to_sql
+  end
+
 
 end
